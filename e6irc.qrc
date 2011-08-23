@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="icon64.png">icons/64/e6irc.png</file>
+    </qresource>
+    <qresource prefix="/qml">
+        <file>qml/ActiveServerList.qml</file>
+        <file>qml/ChoiceButton.qml</file>
+        <file>qml/DropMenu.qml</file>
+        <file>qml/IrcChannelBox.qml</file>
+        <file>qml/IrcChannelGroup.qml</file>
+        <file>qml/IrcControl.qml</file>
+        <file>qml/IrcFloatBox.qml</file>
+        <file>qml/IrcTestBox.qml</file>
+        <file>qml/KnownServerList.qml</file>
+        <file>qml/Main.qml</file>
+    </qresource>
+</RCC>
