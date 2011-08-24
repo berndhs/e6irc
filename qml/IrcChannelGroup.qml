@@ -38,9 +38,10 @@ Rectangle {
   signal selectedChannel (string link)
   signal changedChannelBox (real newWidth, real newHeight)
   signal hideMe ()
+  signal showControl ()
 
   function addChannel () {
-    console.log ("  channelGroup add ")
+    console.log ("  XXXXXXXXXXXXX channelGroup add ")
     var compo =  Qt.createComponent("IrcChannelBox.qml")
     console.log (" create returns " + compo + "  status " + compo.status)
     if (compo.status == Component.Error) {
@@ -57,9 +58,10 @@ Rectangle {
     }
     return null
   }
-  function setChannelList (theList) {
+  function setChannelList (theCount, theList) {
     console.log ("Channel Group list " + theList)
     channelListText.text = theList
+    channelList.channelCount = theCount
   }
   function adjustChannelHeight (newTopHeight) {
     channelTopMargin = newTopHeight
@@ -70,6 +72,7 @@ Rectangle {
     width: channelGroup.width
     height: childrenRect.height
     color: "transparent"
+    property int channelCount: 0
     z: channelGroup.z + 2
     anchors {top: channelGroup.top; left: channelGroup.left}
     Text {
@@ -87,22 +90,49 @@ Rectangle {
       }
     }
   }
+
   Rectangle {
     id: emptyBox
     width: 200; height: 100
-    anchors.centerIn: parent
+    anchors { 
+      top: parent.top; topMargin: parent.height * 0.1;
+      horizontalCenter: parent.horizontalCenter
+    }
     color: "#ffffcc"
+    visible: channelList.channelCount <= 0
     MouseArea {
       anchors.fill: parent
-      onPressed: {
+      onClicked: {
        console.log (" clicked empty box to hide channel group")
-        channelGroup.hideMe ()
+       Qt.quit () // channelGroup.hideMe ()
       }
     }
     Text {
       anchors.centerIn: parent
       horizontalAlignment: Text.AlignHCenter
       text: qsTr ("No Channels\n\n( Close )")
+    }
+  }
+  Rectangle {
+    id: addChannelsBox
+    width: 200; height: 100
+    anchors { 
+      top: emptyBox.bottom; topMargin: parent.height * 0.1;
+      horizontalCenter: parent.horizontalCenter
+    }
+    color: "#ccffff"
+    visible: channelList.channelCount <= 0
+    MouseArea {
+      anchors.fill: parent
+      onClicked: {
+       console.log (" clicked  add channels")
+       channelGroup.showControl ()
+      }
+    }
+    Text {
+      anchors.centerIn: parent
+      horizontalAlignment: Text.AlignHCenter
+      text: qsTr ("Add Chanels")
     }
   }
   Component.onCompleted: {

@@ -3,6 +3,7 @@
 
 #include <QDeclarativeView>
 #include "irc-qml-control.h"
+#include "irc-qml-channel-group.h"
 
 namespace egalite
 {
@@ -11,13 +12,15 @@ class E6Irc : public QDeclarativeView
 Q_OBJECT
 public:
 
-  E6Irc (QWidget *parent=0);
+  E6Irc (QWidget *parent, bool isPhone);
   
   void run ();
   
 private:
 
- IrcQmlControl *control; 
+  bool                  isProbablyPhone;
+  IrcQmlChannelGroup  * channelGroup;
+  IrcQmlControl       * control; 
   
 };
 

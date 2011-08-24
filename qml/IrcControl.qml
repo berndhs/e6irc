@@ -28,12 +28,12 @@ Rectangle {
 
   property alias activeServerModel: activeServerList.model
   property string baseColor: "#f7fbe0"
-  property real rollDelay: 200
+  property real rollDelay: 100
 
   property real topHeight: knownListRect.height + activeListBox.height
   property real restHeight: height - topHeight
   property real middleButtonWidth: 90
-
+  property real buttonHeight: 32
   width: 600
   height: 400
   x: 0
@@ -45,6 +45,10 @@ Rectangle {
     console.log ("make visible " + objectName)
     visible = true 
   }
+  function channelAdded () {
+    console.log (objectName + " added channel")
+    addedChannel ()
+  }
 
   signal hideMe ()
   signal tryConnect (string host, int port)
@@ -52,12 +56,13 @@ Rectangle {
   signal selectChannel (string name)
   signal selectNick (string name)
   signal join ()
-  signal login ();
-
+  signal login ()
+  signal addedChannel ()
+  
   ChoiceButton {
     anchors {top: parent.top; right: parent.right }
     labelText: qsTr ("Hide")
-    height: 30
+    height: ircControlBox.buttonHeight - 2
     width: 80
     onClicked: {
       console.log ("Hide Button clicked x " + ircControlBox.x + "  y " + ircControlBox.y)
@@ -151,7 +156,7 @@ Rectangle {
       Behavior on width { PropertyAnimation { duration: rollDelay  } }
       onSelectServer: console.log ("picked server " + name + " port " + port)
       onConnectServer: {
-        console.log ("connect server " + name + " port " + port )
+        console.log (" >>>>> connect server " + name + " port " + port )
         normalSize = false
         adjustRows ()
         knownButton.adjust ()
@@ -264,7 +269,7 @@ Rectangle {
           Rectangle {
             id: channelDelegateBox 
             width: channelListBox.width
-            height: 32
+            height: ircControlBox.buttonHeight
             color: "transparent"
             MouseArea {
               anchors.fill: parent
@@ -341,10 +346,10 @@ Rectangle {
           Rectangle {
             id: nickDelegateBox 
             width: nickListBox.width
-            height: 32
+            height: ircControlBox.buttonHeight
             color: "transparent"
             MouseArea {
-              height: 32
+              height: ircControlBox.buttonHeight
               anchors.fill: parent
               onClicked:  { 
                 nickList.currentIndex = index; 

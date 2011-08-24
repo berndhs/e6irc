@@ -55,18 +55,19 @@ main (int argc, char *argv[])
   QString imei = sdi.imei();
   bool isPhone (!(imsi.isEmpty() || imei.isEmpty()));
 
-  egalite::E6Irc * view = new egalite::E6Irc;
+  egalite::E6Irc * view = new egalite::E6Irc (0, isPhone);
   QDeclarativeEngine * engine = view->engine();
   QDeclarativeContext * context = view->rootContext();
 
   if (context) {
     context->setContextProperty ("isProbablyPhone", QVariant(isPhone));
   }
-
+  
   if (isPhone) {
     QFont appFont = app.font();
-    appFont.setPointSize (appFont.pointSize() + 4);
+    appFont.setPointSize (appFont.pointSize() + 6);
     app.setFont (appFont);
+    qDebug () << " it is a phone, set point size to " << appFont.pointSize();
   }
 
   const char uri[] = "moui.geuzen.utils.static";
@@ -82,10 +83,10 @@ main (int argc, char *argv[])
   } else {
     view->setGeometry (0,0,600,400);
   }
-  qDebug () << " view set to size " << view->size();
+  view->show ();
+  qDebug () << " view has size " << view->size();
   view->setResizeMode (QDeclarativeView::SizeRootObjectToView);
 
-  view->show ();
   QObject::connect (engine, SIGNAL (quit()),&app, SLOT(quit()));
   int ok = app.exec ();
   return ok;

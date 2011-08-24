@@ -51,9 +51,9 @@ Q_OBJECT
 
 public:
 
-  IrcQmlControl (QObject *parent, QDeclarativeView * view);
+  IrcQmlControl (QObject *parent, QDeclarativeView * view, IrcQmlChannelGroup * channelGroup);
   
-  void fillContext ();
+  void fillContext (bool assumePhone);
 
   int   OpenCount ();
   bool  IsRunning () { return isRunning; }
@@ -84,6 +84,7 @@ public slots:
   void  EditChannels ();
   void  EditIgnores ();
   void  SendRaw (QString sockName, QString data);
+  void  ShowControl ();
 
 private slots:
 
@@ -119,11 +120,6 @@ private slots:
   
   void ViewStatusChange (QDeclarativeView::Status status);
 
-protected:
-
-#if EGALITE_IRC_CONTROL_RESIZE
-  void resizeEvent (QResizeEvent * event);
-#endif
 
 signals:
 
@@ -158,6 +154,7 @@ private:
   void AddChannel (IrcSocket * sock, 
                    const QString & chanName, 
                    bool isRaw=false);
+  void EmitAddedChannel ();
   void DropChannel (IrcSocket * sock, 
                     const QString & chanName);
   void PartAll (const QString & sockName);

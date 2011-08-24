@@ -129,6 +129,7 @@ qDebug () << "user " << user << " sock user "
       chan.remove (0,1);
     }
     if (user == sock->Nick()) {
+    qDebug () << " look for channel " << chan << " in context " << context;
       if (!context->channels.contains (chan)) {
         context->AddChannel (sock, chan);
       }

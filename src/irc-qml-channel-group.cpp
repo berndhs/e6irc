@@ -34,9 +34,10 @@
 namespace egalite
 {
 
-IrcQmlChannelGroup::IrcQmlChannelGroup (QWidget *parent)
-  :QDeclarativeView (parent),
-   qmlRoot (0),
+IrcQmlChannelGroup::IrcQmlChannelGroup (QObject *parent, QDeclarativeView * view)
+  :QObject (parent),
+   dView (view),
+   qmlObject (0),
    debugTimer (this),
    chanLinkPrefix 
      ("chanlink://channel_"),
@@ -50,7 +51,8 @@ IrcQmlChannelGroup::IrcQmlChannelGroup (QWidget *parent)
    channelMaskIdle 
      ("[%1] ")
 {
-  //setWindowTitle (tr ("%1 IRC Channels").arg(Magic::Name));
+  qmlRegisterType<IrcTextBrowser>
+              ("net.sf.egalite",1,0,"IrcTextBrowser");
   activeIcon = QIcon (":/ircicons/active.png");
   quietIcon = QIcon (":/ircicons/inactive.png");
   connect (&debugTimer, SIGNAL (timeout()),
@@ -62,35 +64,28 @@ IrcQmlChannelGroup::IrcQmlChannelGroup (QWidget *parent)
 void
 IrcQmlChannelGroup::Start ()
 {
-  int handle = qmlRegisterType<IrcTextBrowser>
-              ("net.sf.egalite",1,0,"IrcTextBrowser");
-  setSource (QUrl("qrc:///qml/IrcChannelGroup.qml"));
 
-  qmlRoot = rootObject();
-  if (qmlRoot == 0) {
-    QMessageBox::critical (0, "Fatal", "QML Load Failure");
+  QObject *root = dView->rootObject();
+  if (root == 0) {
     return;
   }
-  QRectF scene = sceneRect ();
-  qreal width = scene.width();
-  qreal height = scene.height();
-  qDebug () << __PRETTY_FUNCTION__ << " new size w " << width << " h " << height;
-  qmlRoot->setProperty ("width", width);
-  qmlRoot->setProperty ("height", height);
-  qDebug () << " ----------------------- "
-             "IrcQmlChannelGroup registered type as " << handle;
-  connect (qmlRoot, SIGNAL (selectedChannel (QString)),
+  qmlObject  = root->findChild<QDeclarativeItem*>("ChannelGroup");
+  qDebug () << __PRETTY_FUNCTION__ << " qml object " << qmlObject;
+  if (qmlObject == 0) {
+    return;
+  }
+  connect (qmlObject, SIGNAL (selectedChannel (QString)),
            this, SLOT (ClickedChannel (QString)));
-  connect (qmlRoot, SIGNAL (changedChannelBox (qreal, qreal)),
+  connect (qmlObject, SIGNAL (changedChannelBox (qreal, qreal)),
            this, SLOT (ChangedChannelBox (qreal, qreal)));
-  connect (qmlRoot, SIGNAL (hideMe()),
+  connect (qmlObject, SIGNAL (hideMe()),
            this, SLOT (hide ()));
 }
 
 void
 IrcQmlChannelGroup::SetChannelList ()
 {
-  if (qmlRoot) {
+  if (qmlObject) {
     QString chanAnchList;
     int nc = channelList.count ();
     for (int i=0; i<nc; i++) {
@@ -103,7 +98,8 @@ IrcQmlChannelGroup::SetChannelList ()
              );
        }
     }
-    QMetaObject::invokeMethod (qmlRoot, "setChannelList",
+    QMetaObject::invokeMethod (qmlObject, "setChannelList",
+             Q_ARG (QVariant, nc),
              Q_ARG (QVariant, chanAnchList));
   }
 }
@@ -111,14 +107,16 @@ IrcQmlChannelGroup::SetChannelList ()
 void
 IrcQmlChannelGroup::AddChannel (IrcAbstractChannel * newchan)
 {
+  qDebug () << __PRETTY_FUNCTION__ << newchan << " in " << qmlObject;
   if (newchan == 0) {
     return;
   }
   QVariant chanObjVar;
-  QMetaObject::invokeMethod (qmlRoot, "addChannel",
+  QMetaObject::invokeMethod (qmlObject, "addChannel",
               Qt::DirectConnection,
               Q_RETURN_ARG (QVariant, chanObjVar));
   QObject *chanObj = chanObjVar.value<QObject*>();
+  qDebug () << __PRETTY_FUNCTION__ << " addChannel from qml returns " << chanObj;
   if (chanObj) {
     chanObj->setProperty ("boxLabel",newchan->Name());
     QObject * model = qobject_cast<QObject*>(newchan->userNamesModel());
@@ -221,46 +219,8 @@ IrcQmlChannelGroup::Close ()
 }
 
 void
-IrcQmlChannelGroup::show ()
-{
-  QDeclarativeView::show ();
-}
-
-void
 IrcQmlChannelGroup::ShowChannel (IrcAbstractChannel *chan)
 {
-}
-
-
-void
-IrcQmlChannelGroup::hide ()
-{
-  QDeclarativeView::hide ();
-}
-
-void
-IrcQmlChannelGroup::closeEvent (QCloseEvent *event)
-{
-  hide ();
-  event->ignore ();
-}
-
-void
-IrcQmlChannelGroup::resizeEvent (QResizeEvent *event)
-{
-  if (event && qmlRoot) {
-    QSize size = event->size();
-    qreal width = size.width();
-    qreal height = size.height();
-    qDebug () << __PRETTY_FUNCTION__ << " new size w " << width << " h " << height;
-    qmlRoot->setProperty ("width", width);
-    qmlRoot->setProperty ("height", height);
-    int nc = channelList.count();
-    for (int i=0; i<nc; i++) {
-      channelList.at(i)->ParentSizeChanged (width, height);
-    }
-  }
-  QDeclarativeView::resizeEvent (event);
 }
 
 void

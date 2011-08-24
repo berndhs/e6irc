@@ -26,14 +26,17 @@ OTHER_FILES += \
     qml/Main.qml \
     e6irc.png
     
-desktopfile.files += harmattan/$${PROJECT}.desktop
-desktopfile.path = /usr/share/applications
-
-icon.files = icons/64/e6irc.png
-icon.path = /usr/share/icons/hicolor/64x64/apps
 
 unix:!symbian:!maemo5 {
-    target.path = /opt/e6irc-harmattan/bin
+    desktopfile.files += harmattan/e6irc.desktop
+    desktopfile.path = /usr/share/applications
+    INSTALLS += desktopfile
+
+    icon.files = icons/64/e6irc.png
+    icon.path = /usr/share/icons/hicolor/64x64/apps
+    INSTALLS += icon
+
+    target.path = /opt/e6irc/bin
     INSTALLS += target
 }
 

@@ -41,13 +41,13 @@ namespace egalite
 
 class IrcAbstractChannel;
 
-class IrcQmlChannelGroup : public QDeclarativeView
+class IrcQmlChannelGroup : public QObject
 {
 Q_OBJECT
 
 public:
 
-  IrcQmlChannelGroup (QWidget *parent=0);
+  IrcQmlChannelGroup (QObject *parent, QDeclarativeView * view);
 
   void Start ();
 
@@ -61,8 +61,6 @@ public:
 
 public slots:
 
-  void show ();
-  void hide ();
 
 private slots:
 
@@ -71,11 +69,6 @@ private slots:
                           qreal leftMargin, qreal topMargin);
   void DebugCheck ();
 
-protected:
-
-  void closeEvent (QCloseEvent *event);
-  void resizeEvent (QResizeEvent * event); 
-
 private:
 
   QString  ChannelAnchor (const QString & name);
@@ -83,9 +76,10 @@ private:
   void     SetTopmostChannel (IrcAbstractChannel * topChan);
   void     SetTopmostChannel (const QString & topName);
 
+  QDeclarativeView       *dView;
   QIcon                   activeIcon;
   QIcon                   quietIcon;
-  QGraphicsObject        *qmlRoot;
+  QDeclarativeItem       *qmlObject;
   QList <IrcAbstractChannel*>  channelList;
   QTimer                  debugTimer;
   QString                 chanLinkPrefix;

@@ -4,19 +4,23 @@
 namespace egalite
 {
 
-E6Irc::E6Irc (QWidget *parent)
+E6Irc::E6Irc (QWidget *parent, bool isPhone)
   :QDeclarativeView (parent),
+   isProbablyPhone (isPhone),
+   channelGroup (0),
    control (0)
 {
-  control = new IrcQmlControl (this,this);
+  channelGroup = new IrcQmlChannelGroup (this, this);
+  control = new IrcQmlControl (this,this, channelGroup);
 }
 
 void
 E6Irc::run ()
 {
   CertStore::IF().Init();
-  control->fillContext();
+  control->fillContext(isProbablyPhone);
   setSource (QUrl ("qrc:///qml/Main.qml"));
+  channelGroup->Start();
   control->Run ();
 }
 

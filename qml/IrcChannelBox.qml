@@ -425,6 +425,9 @@ Item {
     }
   }
 
-  Component.onCompleted: console.log ("Loaded ChannelBox.qml")
+  Component.onCompleted: {
+    console.log ("YYYYYYYYYY Loaded IrcChannelBox.qml")
+    console.log ("YYYYYY " + channelName)
+  }
 }
 

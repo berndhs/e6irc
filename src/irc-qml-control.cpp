@@ -47,12 +47,15 @@ using namespace deliberate;
 namespace egalite
 {
 
-IrcQmlControl::IrcQmlControl (QObject *parent, QDeclarativeView * view)
+IrcQmlControl::IrcQmlControl (QObject *parent, 
+                              QDeclarativeView * view,
+                              IrcQmlChannelGroup * channelGroup)
   :QObject (parent),
    dView (view),
    initDone (false),
    qmlObject (0),
    isRunning (false),
+   dockedChannels (channelGroup),
    isConnected (false),
    hidSelf (false),
    knownServers (0),
@@ -62,9 +65,7 @@ IrcQmlControl::IrcQmlControl (QObject *parent, QDeclarativeView * view)
    selectedServer (0)
 {
   knownServers = new KnownServerModel (this);
-  dockedChannels = new IrcQmlChannelGroup (0 /*parentWidget ()*/);
   dockedChannels->Start ();
-  dockedChannels->hide ();
   commandXform ["MSG"] = IrcQmlSockStatic::TransformPRIVMSG;
   commandXform ["ME"] = IrcQmlSockStatic::TransformME;
   commandXform ["JOIN"] = IrcQmlSockStatic::TransformJOIN;
@@ -85,13 +86,11 @@ IrcQmlControl::IrcQmlControl (QObject *parent, QDeclarativeView * view)
 
   connect (&activeServers, SIGNAL (wantDisconnect (IrcSocket*)),
            this, SLOT (DisconnectServer (IrcSocket*)));
-  connect (this, SIGNAL (statusChanged (DeclarativeView::Status)),
-           this, SLOT (ViewStatusChange (QDeclarativeView::Status)));
-  qDebug () << " IrcQmlControl allocated and initialized";\
+  qDebug () << " IrcQmlControl allocated and initialized";
 }
 
 void
-IrcQmlControl::fillContext ()
+IrcQmlControl::fillContext (bool assumePhone)
 {
   QDeclarativeContext * context = dView->rootContext ();
   if (context == 0) {
@@ -101,6 +100,7 @@ IrcQmlControl::fillContext ()
   context->setContextProperty ("cppActiveServerModel", &activeServers);
   context->setContextProperty ("cppChannelListModel",&channelModel);
   context->setContextProperty ("cppNickListModel",&nickModel);
+  context->setContextProperty ("isProbablyPhone", assumePhone);
 }
 
 bool
@@ -168,7 +168,6 @@ IrcQmlControl::LoadLists ()
 void
 IrcQmlControl::ConnectGui ()
 {
-  connect (qmlObject, SIGNAL (hideMe()), this, SLOT (Hide()));
   connect (qmlObject, SIGNAL (tryConnect(const QString &, int)),
            this, SLOT (TryConnect (const QString &, int)));
   connect (qmlObject, SIGNAL (selectActiveServer (int)),
@@ -205,10 +204,10 @@ IrcQmlControl::Exiting ()
 void
 IrcQmlControl::TryConnect (const QString & host, int port)
 {
+  qDebug () << __PRETTY_FUNCTION__ << host << port;
   QString baseHost (host);
   if (baseHost == noNameServer) {
     qDebug () << " missing code to enter a server name";
-  } else {
     return;
   }
   qDebug () << " try connect to " << baseHost;
@@ -277,6 +276,7 @@ void
 IrcQmlControl::ReceiveLine (IrcSocket * sock, QByteArray line)
 {
   QString data (QString::fromUtf8(line.data()));
+  qDebug () << __PRETTY_FUNCTION__ ;
   qDebug () << " received Line " << data;
   qDebug () << "       from " << sock->Name();
   if (data.startsWith(QChar (':'))) {
@@ -300,11 +300,15 @@ IrcQmlControl::ReceiveLine (IrcSocket * sock, QByteArray line)
     rest = data.right (restlen);
     cmd = cmd.trimmed ();
     QRegExp numericRx ("\\d\\d\\d");
+    qDebug () << __PRETTY_FUNCTION__ << " cmd " << cmd;
     if (receiveHandler.contains (cmd.toUpper())) {
+      qDebug () << "                 " << " have handler ";
       (*receiveHandler [cmd]) (this, sock, first, cmd, rest);
     } else if (numericRx.exactMatch (cmd)) {
+      qDebug () << "                 " << " numeric ";
       IrcQmlSockStatic::ReceiveNumeric (this, sock, first, cmd, rest);
     } else {
+      qDebug () << "                 " << " default ";
       IrcQmlSockStatic::ReceiveDefault (this, sock, first, cmd, rest);
     }
     ReceiveRaw (sock, line);
@@ -478,6 +482,7 @@ IrcQmlControl::AddChannel (IrcSocket * sock,
                            const QString & chanName, 
                            bool isRaw)
 {
+  qDebug () << __PRETTY_FUNCTION__ << sock << chanName << isRaw;
   if (channels.contains (chanName)) {
     return;
   }
@@ -488,7 +493,6 @@ IrcQmlControl::AddChannel (IrcSocket * sock,
         new IrcAbstractChannel (chanName, sock->Name(), this);
   channels [chanName] = newchan;
   dockedChannels->AddChannel (newchan);
-  dockedChannels->show ();
   newchan->SetHost (sock->HostName());
   newchan->SetPartMsg (sock->PartMsg ());
   newchan->SetRaw (isRaw);
@@ -512,10 +516,6 @@ IrcQmlControl::AddChannel (IrcSocket * sock,
            this, SLOT (ChanWantsDock (IrcAbstractChannel *)));
   connect (newchan, SIGNAL (WantClose (IrcAbstractChannel *)),
            this, SLOT (ChanWantsClose (IrcAbstractChannel *)));
-  connect (newchan, SIGNAL (HideAllChannels ()),
-           this, SLOT (HideAll ()));
-  connect (newchan, SIGNAL (HideDock ()),
-           this, SLOT (HideGroup ()));
   connect (newchan, SIGNAL (HideChannel (IrcAbstractChannel *)),
            this, SLOT (HideChannel (IrcAbstractChannel *)));
   connect (newchan, SIGNAL (ToggleFloat (IrcAbstractChannel *)),
@@ -523,7 +523,17 @@ IrcQmlControl::AddChannel (IrcSocket * sock,
   connect (newchan, SIGNAL (WantWhois (QString, QString, bool)),
            this, SLOT (WantsWhois (QString, QString, bool)));
   connect (newchan, SIGNAL (ShowControl()),
-           this, SLOT (Show()));
+           this, SLOT (ShowControl()));
+  EmitAddedChannel ();
+}
+
+void
+IrcQmlControl::EmitAddedChannel ()
+{
+  qDebug () << __PRETTY_FUNCTION__ <<  " to " << qmlObject;
+  if (qmlObject) {
+    QMetaObject::invokeMethod (qmlObject,"channelAdded");
+  }
 }
 
 void
@@ -592,6 +602,14 @@ IrcQmlControl::HideChannel (IrcAbstractChannel * chanBox)
 {
   if (floatingChannels.contains (chanBox)) {
     floatingChannels [chanBox]->Hide();
+  }
+}
+
+void
+IrcQmlControl::ShowControl ()
+{
+  if (qmlObject) {
+    QMetaObject::invokeMethod (qmlObject,"showControl");
   }
 }
 
@@ -666,7 +684,6 @@ IrcQmlControl::ChanWantsDock (IrcAbstractChannel *chan)
   }
   if (!dockedChannels->HaveChannel (chan)) {
     dockedChannels->AddChannel (chan);
-    dockedChannels->show ();
   }
 }
 
@@ -1016,7 +1033,7 @@ IrcQmlControl::SetCurrentNick (const QString & nick)
 void
 IrcQmlControl::Join ()
 {
-  qDebug () << "IrcQmlControl::Join " << selectedChannel << selectedServer;
+  qDebug () << __PRETTY_FUNCTION__ << selectedChannel << selectedServer;
   if (selectedServer) {
     if (selectedChannel == rawServer) {
       qDebug () << "IrcQmlControl:: Join " << selectedServer->HostName();

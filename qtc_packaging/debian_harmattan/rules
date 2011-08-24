@@ -28,7 +28,7 @@ build-stamp: configure-stamp
 
 	# Add here commands to compile the package.
 	# $(MAKE) # Uncomment this line for use without Qt Creator
-	#docbook-to-man debian/e6irc-harmattan.sgml > e6irc-harmattan.1
+	#docbook-to-man debian/e6irc.sgml > e6irc.1
 
 	touch $@
 
@@ -48,8 +48,8 @@ install: build
 	dh_clean -k 
 	dh_installdirs
 
-	# Add here commands to install the package into debian/e6irc-harmattan.
-	$(MAKE) INSTALL_ROOT="$(CURDIR)"/debian/e6irc-harmattan install
+	# Add here commands to install the package into debian/e6irc.
+	$(MAKE) INSTALL_ROOT="$(CURDIR)"/debian/e6irc install
 
 
 # Build architecture-independent files here.

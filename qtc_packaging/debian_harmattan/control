@@ -1,14 +1,14 @@
-Source: e6irc-harmattan
+Source: e6irc
 Section: user/other
 Priority: optional
-Maintainer: Bernd Stramm <bernd@unknown>
+Maintainer: Bernd Stramm <bernd.stramm@gmail.com>
 Build-Depends: debhelper (>= 5), libqt4-dev
 Standards-Version: 3.7.3
-Homepage: <insert the upstream URL, if relevant>
+Homepage: http://egalite.sourceforge.net
 
-Package: e6irc-harmattan
+Package: e6irc
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: <insert up to 60 chars description>
- <insert long description, indented with spaces>
-XSBC-Maemo-Display-Name: e6irc-harmattan
+Description: IRC Chat
+ Chat on IRC with your friends and enemies
+XSBC-Maemo-Display-Name: e6irc

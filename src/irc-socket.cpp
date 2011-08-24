@@ -137,7 +137,7 @@ void
 IrcSocket::Receive ()
 {
   QByteArray bytes = readAll ();
-qDebug () << " got " << bytes.size() << " bytes " << bytes;
+qDebug () << __PRETTY_FUNCTION__ << " got " << bytes.size() << " bytes " << bytes;
   numBytesIn += bytes.size();
   QByteArray last2 = lineData.right(2);
   if (last2.size () < 2) {
