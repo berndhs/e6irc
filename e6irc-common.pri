@@ -1,6 +1,6 @@
 
 TEMPALTE = app
-QT += core gui declarative sql
+QT += core gui declarative sql network
 CONFIG += mobility
 MOBILITY += systeminfo sensors
 

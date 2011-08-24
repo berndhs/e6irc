@@ -344,7 +344,7 @@ Item {
     id: userListBox
     color: "transparent"
     anchors { top: channelBox.top; right: channelBox.right }
-    height: channelBox.height - textEnterBox.height
+    height: cookedFlickBox.height
     width: countWidth
     property bool shortView: true
     Rectangle {
@@ -419,7 +419,11 @@ Item {
 
       ListView {
         id: userList
-        anchors.fill: parent
+        anchors { 
+          top: userListDataRect.top; 
+          horizontalCenter: userListDataRect.horizontalCenter 
+        }
+        height: userListDataRect.height; width: userListDataRect.width
         clip: true
         delegate: horizontalDelegate
       }
