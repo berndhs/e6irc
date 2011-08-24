@@ -26,7 +26,7 @@ import QtQuick 1.0
 
 Column {
   id: dropMenu
-  property real itemHeight: 32
+  property real itemHeight: standardRowHeight
   property real itemWidth: 100
   property real rollDelay: 175
   property bool isShown: true

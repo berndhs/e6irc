@@ -34,6 +34,7 @@ Rectangle {
   color: "#f0f0f3"
 
   property real channelTopMargin: 24
+  property real standardRowHeight: 32
 
   signal selectedChannel (string link)
   signal changedChannelBox (real newWidth, real newHeight)
@@ -54,6 +55,8 @@ Rectangle {
       newBox.width = channelGroup.width
       newBox.anchors.top = channelList.bottom
       newBox.dynamic = true
+      newBox.standardRowHeight = channelGroup.standardRowHeight
+      console.log ("+++++++ set channel rowHeight to " + newBox.standardRowHeight)
       return newBox
     }
     return null
@@ -70,7 +73,7 @@ Rectangle {
   Rectangle {
     id: channelList
     width: channelGroup.width
-    height: childrenRect.height
+    height: Math.max (childrenRect.height,0.5* channelGroup.standardRowHeight)
     color: "transparent"
     property int channelCount: 0
     z: channelGroup.z + 2
@@ -94,11 +97,13 @@ Rectangle {
   Rectangle {
     id: emptyBox
     width: 200; height: 100
+    radius: 0.3*height
     anchors { 
       top: parent.top; topMargin: parent.height * 0.1;
       horizontalCenter: parent.horizontalCenter
     }
     color: "#ffffcc"
+    border.color: "#ffffff"; border.width: 2
     visible: channelList.channelCount <= 0
     MouseArea {
       anchors.fill: parent
@@ -116,11 +121,13 @@ Rectangle {
   Rectangle {
     id: addChannelsBox
     width: 200; height: 100
+    radius: 0.3*height
     anchors { 
       top: emptyBox.bottom; topMargin: parent.height * 0.1;
       horizontalCenter: parent.horizontalCenter
     }
     color: "#ccffff"
+    border.color: "#ffffff"; border.width: 2
     visible: channelList.channelCount <= 0
     MouseArea {
       anchors.fill: parent

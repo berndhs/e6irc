@@ -10,16 +10,26 @@ Rectangle {
   property real mainWidth: width
   property real mainHeight: height
   property real restMainHeight: mainHeight
+  property real standardRowHeight: 32
+  property bool showControl: true
+
+  function phoneSettings (isPhone) {
+    isProbablyPhone = isPhone
+    standardRowHeight = isPhone ? 64 : 32
+    console.log ("changed standard row height to " + standardRowHeight)
+    return standardRowHeight
+  }
   IrcChannelGroup {
     id: channelGroup
     objectName:"ChannelGroup"
     width: mainWidth
     height: restMainHeight
+    standardRowHeight: mainBox.standardRowHeight
     anchors { top: mainBox.top; horizontalCenter: mainBox.horizontalCenter }
     
-    visible: false
+    visible: !mainBox.showControl
     onShowControl: {
-      visible = false
+      mainBox.showControl = true
     }
   }
   Rectangle {
@@ -27,7 +37,7 @@ Rectangle {
     color: "#ff77ee"
     width: mainWidth
     height: restMainHeight
-    visible: !channelGroup.visible
+    visible: mainBox.showControl
     anchors {top: mainBox.top; horizontalCenter: mainBox.horizontalCenter }
 
     IrcControl {
@@ -36,15 +46,16 @@ Rectangle {
       anchors { top: controlBox.top; horizontalCenter: controlBox.horizontalCenter }
       width: parent.width-2
       height: parent.height-2
-      buttonHeight: isProbablyPhone ? 48 : 32
+      buttonHeight: mainBox.standardRowHeight
+      standardRowHeight: mainBox.standardRowHeight
       function showControl () {
-        channelGroup.visible = false
+        mainBox.showControl = true
       }
       onAddedChannel: {
-        channelGroup.visible = true
+        mainBox.showControl = false
       }
       onHideMe: {
-        channelGroup.visible = true
+        mainBox.showControl = false
       }
     }
   }

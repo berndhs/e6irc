@@ -198,6 +198,7 @@ private:
   bool                initDone;
   QDeclarativeItem   *qmlObject;
   bool                isRunning;
+  bool                isProbablyPhone;
 
   IrcQmlChannelGroup    *dockedChannels;
 

@@ -55,6 +55,7 @@ IrcQmlControl::IrcQmlControl (QObject *parent,
    initDone (false),
    qmlObject (0),
    isRunning (false),
+   isProbablyPhone (false),
    dockedChannels (channelGroup),
    isConnected (false),
    hidSelf (false),
@@ -92,6 +93,7 @@ IrcQmlControl::IrcQmlControl (QObject *parent,
 void
 IrcQmlControl::fillContext (bool assumePhone)
 {
+  isProbablyPhone = assumePhone;
   QDeclarativeContext * context = dView->rootContext ();
   if (context == 0) {
     return ;
@@ -113,7 +115,8 @@ IrcQmlControl::Run ()
   QObject * root = dView->rootObject ();
   QObject *obj  = root->findChild<QObject*>("ControlPanel");
   qmlObject = qobject_cast<QDeclarativeItem*> (obj);
-  qDebug () << " control root " << root << " qml object is " << obj << " or " << qmlObject;
+  qDebug () << " control root " << root << " qml object is " 
+            << obj << " or " << qmlObject;
   if (qmlObject == 0) {
     return false;
   }

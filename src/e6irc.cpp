@@ -1,5 +1,6 @@
 #include "e6irc.h"
 #include "cert-store.h"
+#include <QDeclarativeItem>
 
 namespace egalite
 {
@@ -22,6 +23,13 @@ E6Irc::run ()
   setSource (QUrl ("qrc:///qml/Main.qml"));
   channelGroup->Start();
   control->Run ();
+  QObject * qmlRoot = rootObject();
+  QDeclarativeItem * qmlItem = qobject_cast<QDeclarativeItem*> (qmlRoot);
+  if (qmlItem) {
+    qDebug () << __PRETTY_FUNCTION__ << " phone ? " << isProbablyPhone;
+    QMetaObject::invokeMethod (qmlItem, "phoneSettings",
+      Q_ARG (QVariant, isProbablyPhone));
+  }
 }
 
 }

@@ -29,10 +29,9 @@ ListView {
 
   property real nameWidth: 250
   property real portWidth:  100
-  property real buttonWidth: 100
+  property real buttonWidth: rowHeight * 4
   property real rowWidth: portWidth + nameWidth + buttonWidth
   property real rowHeight: 32
-
   signal selectServer (string name, int port)
   signal connectServer (string name, int port)
   signal doneLoading ()

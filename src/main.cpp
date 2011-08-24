@@ -54,7 +54,7 @@ main (int argc, char *argv[])
   QString imsi = sdi.imsi();
   QString imei = sdi.imei();
   bool isPhone (!(imsi.isEmpty() || imei.isEmpty()));
-
+  qDebug () << __PRETTY_FUNCTION__ << " phone ? " << isPhone;
   egalite::E6Irc * view = new egalite::E6Irc (0, isPhone);
   QDeclarativeEngine * engine = view->engine();
   QDeclarativeContext * context = view->rootContext();

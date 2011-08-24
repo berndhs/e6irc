@@ -33,7 +33,8 @@ Rectangle {
   property real topHeight: knownListRect.height + activeListBox.height
   property real restHeight: height - topHeight
   property real middleButtonWidth: 90
-  property real buttonHeight: 32
+  property real standardRowHeight: 32
+  property real buttonHeight: standardRowHeight
   width: 600
   height: 400
   x: 0
@@ -61,9 +62,9 @@ Rectangle {
   
   ChoiceButton {
     anchors {top: parent.top; right: parent.right }
-    labelText: qsTr ("Hide")
+    labelText: qsTr ("Show Channels")
     height: ircControlBox.buttonHeight - 2
-    width: 80
+    width: 160
     onClicked: {
       console.log ("Hide Button clicked x " + ircControlBox.x + "  y " + ircControlBox.y)
       ircControlBox.hideMe ()
@@ -80,7 +81,7 @@ Rectangle {
     property string noShowString: qsTr (" Hide Known Servers ")
     ChoiceButton {
       id: knownButton
-      height: 32
+      height: ircControlBox.standardRowHeight
       width: knownServerList.nameWidth
       anchors { left: parent.left; top: parent.top }
       radius: 0.5 * height
@@ -119,6 +120,7 @@ Rectangle {
       property real numRowsToShow: 3.5
       height: 0
       width: 0
+      rowHeight: ircControlBox.standardRowHeight
       anchors {top : knownButton.bottom; left: knownButton.left }
       nameWidth: 300
       portWidth: 90
@@ -200,6 +202,7 @@ Rectangle {
       anchors { left: parent.left; top:activeListHead.bottom }
       nameWidth: 200
       addressWidth: 150
+      rowHeight: ircControlBox.standardRowHeight
       height: 0.5 * rowHeight
       clip: true
       width: activeListBox.width
@@ -305,7 +308,7 @@ Rectangle {
         id: joinButton 
         labelText: qsTr ("<-- Join")
         radius: 8
-        height: 48
+        height: ircControlBox.standardRowHeight
         width: middleButtonWidth
         onClicked: {
           ircControlBox.join ()
@@ -315,7 +318,7 @@ Rectangle {
         id: loginButton 
         labelText: qsTr ("Login -->")
         radius: 8
-        height: 48
+        height: ircControlBox.standardRowHeight
         width: middleButtonWidth
         onClicked: {
           ircControlBox.login ()

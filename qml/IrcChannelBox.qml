@@ -31,8 +31,6 @@ Item {
 
   property string channelName: qsTr ("no channel")
   property bool topmost: true
-  property real labelHeight:36
-  property real inputHeight: 28
   property real userNameHeight: 20
   property real countWidth: 0.25 * width
   property real rollDelay: 200
@@ -47,6 +45,9 @@ Item {
   property real topMargin: 0
   property real visibleHeight: 300
   property bool dynamic: false
+  property real standardRowHeight: 32
+  property real inputHeight: standardRowHeight - 4
+  property real labelHeight: standardRowHeight + 4
 
   objectName: "ChannelBox_" + channelName
 
@@ -110,7 +111,7 @@ Item {
 
   Rectangle {
     id: channelBoxLabelRect
-    height: channelBoxLabel.height + 4
+    height: Math.max (0.5* channelBox.standardRowHeight, channelBoxLabel.height + 4)
     width: channelBoxLabel.width + 8
     anchors { top: parent.top; left: parent.left }
     color: "#ff99aa"
@@ -132,6 +133,7 @@ Item {
       }
     }
     Text {
+      id: channelBoxLabel
       anchors { 
         left: channelBoxLabelRect.left
         leftMargin: 4
@@ -139,11 +141,10 @@ Item {
         verticalCenter: parent.verticalCenter 
       }
       horizontalAlignment: Text.AlignHCenter
-      id: channelBoxLabel
       text: " "
     }
   }
-
+  
   DropMenu {
    id: channelMenu
     anchors { 
@@ -153,7 +154,7 @@ Item {
       topMargin: 0
     }
     itemWidth: 150
-    itemHeight: 32
+    itemHeight: channelBox.standardRowHeight
     property real buttonRadius: 0.4 * itemHeight
     z: parent.z + 2
     isShown: false
