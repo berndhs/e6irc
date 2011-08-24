@@ -3,15 +3,15 @@
         <file alias="icon64.png">icons/64/e6irc.png</file>
     </qresource>
     <qresource prefix="/qml">
-        <file>qml/ActiveServerList.qml</file>
-        <file>qml/ChoiceButton.qml</file>
-        <file>qml/DropMenu.qml</file>
-        <file>qml/IrcChannelBox.qml</file>
-        <file>qml/IrcChannelGroup.qml</file>
-        <file>qml/IrcControl.qml</file>
-        <file>qml/IrcFloatBox.qml</file>
-        <file>qml/IrcTestBox.qml</file>
-        <file>qml/KnownServerList.qml</file>
-        <file>qml/Main.qml</file>
+        <file alias="ActiveServerList.qml">qml/ActiveServerList.qml</file>
+        <file alias="ChoiceButton.qml">qml/ChoiceButton.qml</file>
+        <file alias="DropMenu.qml">qml/DropMenu.qml</file>
+        <file alias="IrcChannelBox.qml">qml/IrcChannelBox.qml</file>
+        <file alias="IrcChannelGroup.qml">qml/IrcChannelGroup.qml</file>
+        <file alias="IrcControl.qml">qml/IrcControl.qml</file>
+        <file alias="IrcFloatBox.qml">qml/IrcFloatBox.qml</file>
+        <file alias="IrcTestBox.qml">qml/IrcTestBox.qml</file>
+        <file alias="KnownServerList.qml">qml/KnownServerList.qml</file>
+        <file alias="Main.qml">qml/Main.qml</file>
     </qresource>
 </RCC>

@@ -33,13 +33,19 @@ Rectangle {
   property alias labelHeight: label.height
   property alias labelWidth: label.width
   property real commonMargin: 4
+  property color topColor: "#d3d3d3"
+  property color bottomColor: "#f0f0f0"
 
   signal labelChanged (string text)
 
   width: 100
   height: 100
   radius: 5
-  color: "#d3d3d3"
+  gradient: Gradient {
+    GradientStop { position: 0.0; color: topColor }
+    GradientStop { position: 1.0; color: bottomColor }
+  }
+
   anchors { 
     topMargin: commonMargin; bottomMargin: commonMargin; 
     leftMargin: commonMargin; rightMargin: commonMargin

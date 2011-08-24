@@ -32,5 +32,8 @@ desktopfile.path = /usr/share/applications
 icon.files = icons/64/e6irc.png
 icon.path = /usr/share/icons/hicolor/64x64/apps
 
-RESOURCES += \
-    e6irc.qrc
+unix:!symbian:!maemo5 {
+    target.path = /opt/e6irc-harmattan/bin
+    INSTALLS += target
+}
+

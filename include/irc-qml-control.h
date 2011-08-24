@@ -45,13 +45,15 @@ namespace egalite
 class IrcAbstractChannel;
 class IrcQmlChannelGroup;
 
-class IrcQmlControl : public QDeclarativeView
+class IrcQmlControl : public QObject
 {
 Q_OBJECT
 
 public:
 
-  IrcQmlControl (QWidget *parent=0);
+  IrcQmlControl (QObject *parent, QDeclarativeView * view);
+  
+  void fillContext ();
 
   int   OpenCount ();
   bool  IsRunning () { return isRunning; }
@@ -78,14 +80,6 @@ public:
 public slots:
 
   bool  Run ();
-  void  Show ();
-  void  Hide ();
-  void  ShowGroup ();
-  void  ShowFloats ();
-  void  ShowAll ();
-  void  HideGroup ();
-  void  HideFloats ();
-  void  HideAll ();
   void  EditServers ();
   void  EditChannels ();
   void  EditIgnores ();
@@ -95,8 +89,6 @@ private slots:
 
   void Exit ();
   void Exiting ();
-  void HalfSize ();
-  void FullSize ();
   void TryConnect (const QString & host, int port);
   void TryDisconnect ();
   void DisconnectServer (IrcSocket * sock);
@@ -205,8 +197,9 @@ private:
   static QStringList LoadIgnores ();
 
 
+  QDeclarativeView   *dView;
   bool                initDone;
-  QGraphicsObject    *qmlRoot;
+  QDeclarativeItem   *qmlObject;
   bool                isRunning;
 
   IrcQmlChannelGroup    *dockedChannels;

@@ -4,13 +4,15 @@ QT += core gui declarative sql
 CONFIG += mobility
 MOBILITY += systeminfo sensors
 
-RESOURCES = e6irc.qrc
+
+RESOURCES += \
+    e6irc.qrc
 
 QMAKE_CXXFLAGS = -std=c++0x
 
-MOC_FILES = tmp/moc
-RCC_FILES = tmp/rcc
-OBJECT_FILES = tmp/obj
+MOC_DIR = tmp/moc
+RCC_DIR = tmp/rcc
+OBJECTS_DIR = tmp/obj
 
 INCLUDEPATH += ./include
 
@@ -33,7 +35,8 @@ HEADERS = \
     include/cert-store.h \
     include/dchat-magic.h \
     include/qml-text-browser.h \
-    include/deliberate.h
+    include/deliberate.h \
+    include/e6irc.h
 
 SOURCES = \
     src/irc-abstract-channel.cpp \
@@ -55,7 +58,8 @@ SOURCES = \
     src/qml-text-browser.cpp \
     src/deliberate.cpp \
     src/html-mangle.cpp \
-    src/dchat-magic.cpp
+    src/dchat-magic.cpp \
+    src/e6irc.cpp
 
 OTHER_FILES += \
     qml/Main.qml \

@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Egalite Internet Messenger
+Name[fr]=Messagerie internet Égalité
+GenericName=Internet Messenger
+GenericName[fr]=Messagerie internet
+Comment=Chat over IRC, Google Talk, Jabber/XMPP, Direct SSL Connections
+Exec=egalite
+Icon=egalite
+StartupNotify=false
+Terminal=false
+Type=Application
+Categories=Network;InstantMessaging;
+X-Desktop-File-Install-Version=0.16

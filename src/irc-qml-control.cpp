@@ -47,10 +47,11 @@ using namespace deliberate;
 namespace egalite
 {
 
-IrcQmlControl::IrcQmlControl (QWidget *parent)
-  :QDeclarativeView (parent),
+IrcQmlControl::IrcQmlControl (QObject *parent, QDeclarativeView * view)
+  :QObject (parent),
+   dView (view),
    initDone (false),
-   qmlRoot (0),
+   qmlObject (0),
    isRunning (false),
    isConnected (false),
    hidSelf (false),
@@ -60,10 +61,6 @@ IrcQmlControl::IrcQmlControl (QWidget *parent)
    nickModel (this),
    selectedServer (0)
 {
-  setWindowTitle (tr ("%1 IRC Control")
-               .arg(Magic::Name));
-  setResizeMode (QDeclarativeView::SizeRootObjectToView);
-  hide ();
   knownServers = new KnownServerModel (this);
   dockedChannels = new IrcQmlChannelGroup (0 /*parentWidget ()*/);
   dockedChannels->Start ();
@@ -94,68 +91,16 @@ IrcQmlControl::IrcQmlControl (QWidget *parent)
 }
 
 void
-IrcQmlControl::Show ()
+IrcQmlControl::fillContext ()
 {
-  show ();
-  if (isRunning) {
-    LoadLists ();
-  } else {
-    Run ();
+  QDeclarativeContext * context = dView->rootContext ();
+  if (context == 0) {
+    return ;
   }
-  if (hidSelf) {
-    resize (oldSize);
-    move (oldPos);
-    hidSelf = false;
-  }
-  raise ();
-}
-
-void
-IrcQmlControl::Hide ()
-{
-  oldSize = size ();
-  oldPos = pos();
-  hidSelf = true;
-  hide ();
-}
-
-void
-IrcQmlControl::ShowGroup ()
-{
-  if (!isRunning) {
-    Run ();
-  }
-  if (dockedChannels) {
-    dockedChannels->show ();
-  }
-}
-
-void
-IrcQmlControl::HideGroup ()
-{
-  if (dockedChannels) {
-    dockedChannels->hide ();
-  }
-}
-
-void
-IrcQmlControl::ShowFloats ()
-{ 
-  FloatingMapType::iterator fit;
-  for (fit=floatingChannels.begin (); fit != floatingChannels.end(); fit++) {
-    fit.value()->Show ();
-  }
-}
-
-
-
-void
-IrcQmlControl::HideFloats ()
-{
-  FloatingMapType::iterator fit;
-  for (fit=floatingChannels.begin (); fit != floatingChannels.end(); fit++) {
-    fit.value()->Hide ();
-  }
+  context->setContextProperty ("cppKnownServerModel", knownServers);
+  context->setContextProperty ("cppActiveServerModel", &activeServers);
+  context->setContextProperty ("cppChannelListModel",&channelModel);
+  context->setContextProperty ("cppNickListModel",&nickModel);
 }
 
 bool
@@ -164,66 +109,30 @@ IrcQmlControl::Run ()
   LoadLists ();
   if (!isRunning) {
     qDebug () << __PRETTY_FUNCTION__ << " Start IrcQmlControl";
-    QSize defaultSize = size();
-    QSize newsize = Settings().value ("sizes/ircsock", defaultSize).toSize();
-    resize (newsize);
-    QSize  groupBoxSize = dockedChannels->size();
-    groupBoxSize = Settings().value ("sizes/channelgroup", groupBoxSize)
-                   .toSize();
-    dockedChannels->resize (groupBoxSize);
   }
-
-  QDeclarativeContext * context = rootContext ();
-  if (context == 0) {
-    QMessageBox::critical (this, "Fatal", "QML Context Missing");
-    return false;
-  }
-  context->setContextProperty ("cppKnownServerModel", knownServers);
-  context->setContextProperty ("cppActiveServerModel", &activeServers);
-  context->setContextProperty ("cppChannelListModel",&channelModel);
-  context->setContextProperty ("cppNickListModel",&nickModel);
-  //QUrl qmlSource (QUrl::fromLocalFile ("qml/IrcControl.qml"));
-  QUrl qmlSource (QUrl(QString::fromAscii("qrc:///qml/IrcControl.qml")));
-
-  qDebug () << " load qml from " << qmlSource;
-  setSource (qmlSource);
-  qDebug () << "     back from load " << status ();
-  qmlRoot = rootObject();
-  if (qmlRoot == 0) {
-    QMessageBox::critical (this, "Fatal", "QML Load Failure");
+  QObject * root = dView->rootObject ();
+  QObject *obj  = root->findChild<QObject*>("ControlPanel");
+  qmlObject = qobject_cast<QDeclarativeItem*> (obj);
+  qDebug () << " control root " << root << " qml object is " << obj << " or " << qmlObject;
+  if (qmlObject == 0) {
     return false;
   }
   ConnectGui ();
-  fullWidth = size().width();
-  fullHeight = size().height();
-  show ();
-  QTimer::singleShot (75, this, SLOT(HalfSize()));
-  QTimer::singleShot (200, this, SLOT(FullSize()));
-  ViewStatusChange (status());
+  fullWidth = dView->size().width();
+  fullHeight = dView->size().height();
+  ViewStatusChange (dView->status());
 
   isRunning = true;
   return true;
 }
 
 void
-IrcQmlControl::HalfSize ()
-{
-  resize (fullWidth/4, fullHeight/4);
-}
-
-void
-IrcQmlControl::FullSize ()
-{
-  resize (fullWidth, fullHeight);
-}
-
-void
 IrcQmlControl::ViewStatusChange ( QDeclarativeView::Status status)
 {
   qDebug () << __PRETTY_FUNCTION__ << " status change " << status;
-  qDebug () << "                 " << qmlRoot;
-  if (status == QDeclarativeView::Ready && qmlRoot) {
-    QMetaObject::invokeMethod (qmlRoot, "makeVisible");
+  qDebug () << "                 " << qmlObject;
+  if (status == QDeclarativeView::Ready && qmlObject) {
+    QMetaObject::invokeMethod (qmlObject, "makeVisible");
   }
 }
 
@@ -245,7 +154,6 @@ IrcQmlControl::LoadLists ()
   nicks.sort ();
   nickModel.setStringList (nicks);
 
-
   QStringList  chans = CertStore::IF().IrcChannels ();
   noNameChannel = tr("# --- New Channel ---");
   rawServer = tr("# --- Raw Server ---");
@@ -260,18 +168,18 @@ IrcQmlControl::LoadLists ()
 void
 IrcQmlControl::ConnectGui ()
 {
-  connect (qmlRoot, SIGNAL (hideMe()), this, SLOT (Hide()));
-  connect (qmlRoot, SIGNAL (tryConnect(const QString &, int)),
+  connect (qmlObject, SIGNAL (hideMe()), this, SLOT (Hide()));
+  connect (qmlObject, SIGNAL (tryConnect(const QString &, int)),
            this, SLOT (TryConnect (const QString &, int)));
-  connect (qmlRoot, SIGNAL (selectActiveServer (int)),
+  connect (qmlObject, SIGNAL (selectActiveServer (int)),
            this, SLOT (SetActiveServer (int)));
-  connect (qmlRoot, SIGNAL (selectChannel (const QString &)),
+  connect (qmlObject, SIGNAL (selectChannel (const QString &)),
            this, SLOT (SetCurrentChannel (const QString &)));
-  connect (qmlRoot, SIGNAL (selectNick (const QString & )),
+  connect (qmlObject, SIGNAL (selectNick (const QString & )),
            this, SLOT (SetCurrentNick (const QString & )));
-  connect (qmlRoot, SIGNAL (join ()),
+  connect (qmlObject, SIGNAL (join ()),
            this, SLOT (Join ()));
-  connect (qmlRoot, SIGNAL (login()),
+  connect (qmlObject, SIGNAL (login()),
            this, SLOT (Login ()));
 }
 
@@ -281,40 +189,17 @@ IrcQmlControl::Exit ()
   dockedChannels->Close ();
   TryDisconnect ();
   CloseCleanup ();
-  hide ();
 }
 
 
 void
 IrcQmlControl::CloseCleanup ()
 {
-  QSize currentSize = size();
-  Settings().setValue ("sizes/ircsock",currentSize);
-  QSize  groupBoxSize = dockedChannels->size();
-  Settings().setValue ("sizes/channelgroup", groupBoxSize);
-  Settings().sync();
-}
-
-void
-IrcQmlControl::HideAll ()
-{
-  HideGroup ();
-  HideFloats ();
-}
-
-void
-IrcQmlControl::ShowAll ()
-{
-  ShowGroup ();
-  ShowFloats ();
 }
 
 void
 IrcQmlControl::Exiting ()
 {
-  QSize currentSize = size();
-  Settings().setValue ("sizes/ircsock",currentSize);
-  Settings().sync();
 }
 
 void
@@ -1182,9 +1067,9 @@ IrcQmlControl::resizeEvent (QResizeEvent * event)
 void
 IrcQmlControl::Resize (qreal width, qreal height)
 {
-  if (qmlRoot) {
-    qmlRoot->setProperty ("width",width);
-    qmlRoot->setProperty ("height",height);
+  if (qmlObject) {
+    qmlObject->setProperty ("width",width);
+    qmlObject->setProperty ("height",height);
   }
 }
 

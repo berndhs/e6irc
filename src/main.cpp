@@ -31,6 +31,9 @@
 #include <qdeclarative.h>
 #include "qml-text-browser.h"
 #include "orientation.h"
+#include "e6irc.h"
+#include "deliberate.h"
+#include "version.h"
 
 #include <QDebug>
 
@@ -39,6 +42,11 @@ QTM_USE_NAMESPACE
 int
 main (int argc, char *argv[])
 {
+  QCoreApplication::setApplicationName ("egalite");
+  QCoreApplication::setOrganizationName ("BerndStramm");
+  QCoreApplication::setOrganizationDomain ("egalite.sourceforge.net");
+  deliberate::ProgramVersion pv ("E6Irc");
+  QCoreApplication::setApplicationVersion (pv.Version());
   QApplication app (argc, argv);
 
   QSystemDeviceInfo sdi;
@@ -47,7 +55,7 @@ main (int argc, char *argv[])
   QString imei = sdi.imei();
   bool isPhone (!(imsi.isEmpty() || imei.isEmpty()));
 
-  QDeclarativeView * view = new QDeclarativeView;
+  egalite::E6Irc * view = new egalite::E6Irc;
   QDeclarativeEngine * engine = view->engine();
   QDeclarativeContext * context = view->rootContext();
 
@@ -67,7 +75,7 @@ main (int argc, char *argv[])
   qmlRegisterType<geuzen::OrientationWatcher>(uri, 1, 0, "GeuzenOrientation");
 
   view->setWindowIcon (QIcon (":/icon64.png"));
-  view->setSource (QUrl ("qrc:/Main.qml"));
+  view->run ();
   if (isPhone) {
     view->setGeometry (app.desktop()->screenGeometry());
     view->showFullScreen ();

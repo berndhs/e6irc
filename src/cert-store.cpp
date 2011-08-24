@@ -101,6 +101,7 @@ void
               + QString ("addressing.sql");
   dbFileName = Settings().value ("files/addressing",dbFileName).toString();
   Settings().setValue ("files/addressing",dbFileName);
+  qDebug () << "trying for dbname " << dbFileName;
 
   conName = QString ("addressingDB");
   certDB = QSqlDatabase::addDatabase ("QSQLITE",conName);
