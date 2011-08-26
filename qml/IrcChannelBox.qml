@@ -24,7 +24,7 @@
 /** \brief This is the box around a single IRC channel */
 
 import QtQuick 1.0
-import net.sf.egalite 1.0
+import moui.geuzen.utils.static 1.0
 
 Item {
   id: channelBox
@@ -257,7 +257,7 @@ Item {
       anchors { top: parent.top; left: parent.left}
       height: 64 //Math.min (32, childrenRect.height)
       width: parent.width
-      IrcTextBrowser {
+      GeuzenTextBrowser {
         id: topicBoxContent
         name: "Topic_" + channelBox.channelName
         onActivatedLink: {
@@ -294,7 +294,7 @@ Item {
       console.log ("cooked box contentY set to " + contentY)
     }
     
-    IrcTextBrowser {
+    GeuzenTextBrowser {
       id: cookedLogBox
       name: "Cooked_" + channelBox.channelName
       onActivatedLink: { 

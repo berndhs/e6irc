@@ -97,12 +97,16 @@ Rectangle {
   Rectangle {
     id: emptyBox
     width: 200; height: 100
-    radius: 0.3*height
+    radius: 0.45*height
+    property color baseColor: "#eeeebb"
     anchors { 
       top: parent.top; topMargin: parent.height * 0.1;
       horizontalCenter: parent.horizontalCenter
     }
-    color: "#ffffcc"
+    gradient: Gradient {
+      GradientStop { position: 0.0; color: emptyBox.baseColor }
+      GradientStop { position: 1.0; color: Qt.lighter (emptyBox.baseColor,2) }
+    }
     border.color: "#ffffff"; border.width: 2
     visible: channelList.channelCount <= 0
     MouseArea {
@@ -121,12 +125,16 @@ Rectangle {
   Rectangle {
     id: addChannelsBox
     width: 200; height: 100
-    radius: 0.3*height
+    radius: 0.45*height
+    property color baseColor: "#ccffff"
     anchors { 
       top: emptyBox.bottom; topMargin: parent.height * 0.1;
       horizontalCenter: parent.horizontalCenter
     }
-    color: "#ccffff"
+    gradient: Gradient {
+      GradientStop { position: 0.0; color: addChannelsBox.baseColor }
+      GradientStop { position: 1.0; color: Qt.lighter (addChannelsBox.baseColor,2) }
+    }
     border.color: "#ffffff"; border.width: 2
     visible: channelList.channelCount <= 0
     MouseArea {

@@ -39,6 +39,7 @@ QmlTextBrowser::QmlTextBrowser (QGraphicsItem *prnt)
   setObjectName ("QmlTextBrowser_");
   connect (this, SIGNAL (linkActivated(const QString &)),
            this, SLOT (doActivateLink(const QString &)));
+  qDebug () << __PRETTY_FUNCTION__ << this << " parent " << prnt;
 }
 
 QRectF

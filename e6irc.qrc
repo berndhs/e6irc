@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file alias="icon64.png">icons/64/e6irc.png</file>
+        <file alias="palee6.png">images/pale.png</file>
     </qresource>
     <qresource prefix="/qml">
         <file alias="ActiveServerList.qml">qml/ActiveServerList.qml</file>

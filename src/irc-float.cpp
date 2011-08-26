@@ -23,7 +23,6 @@
  ****************************************************************/
 
 #include <QCloseEvent>
-#include "irc-text-browser.h"
 #include <QRectF>
 #include <QMetaObject>
 #include <QMessageBox>
@@ -39,8 +38,6 @@ IrcFloat::IrcFloat (QWidget *parent)
    qmlChannel (0)
 {
   setResizeMode (QDeclarativeView::SizeRootObjectToView);
-  qmlRegisterType<IrcTextBrowser>
-              ("net.sf.egalite",1,0,"IrcTextBrowser");
   setSource (QUrl ("qrc:///qml/IrcFloatBox.qml"));
   qmlRoot = rootObject ();
   if (!qmlRoot) {

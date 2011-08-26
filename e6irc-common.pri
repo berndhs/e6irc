@@ -27,7 +27,6 @@ HEADERS = \
     include/irc-qml-control.h \
     include/irc-qml-sock-static.h \
     include/irc-socket.h \
-    include/irc-text-browser.h \
     include/version.h \
     include/name-list-model.h \
     include/html-mangle.h \
@@ -49,7 +48,6 @@ SOURCES = \
     src/irc-qml-control.cpp \
     src/irc-qml-sock-static.cpp \
     src/irc-socket.cpp \
-    src/irc-text-browser.cpp \
     src/version.cpp \
     src/orientation.cpp \
     src/name-list-model.cpp \

@@ -28,7 +28,7 @@
 #include <QDeclarativeItem>
 #include <QRectF>
 #include "irc-abstract-channel.h"
-#include "irc-text-browser.h"
+#include "qml-text-browser.h"
 #include "dchat-magic.h"
 
 namespace egalite
@@ -51,8 +51,6 @@ IrcQmlChannelGroup::IrcQmlChannelGroup (QObject *parent, QDeclarativeView * view
    channelMaskIdle 
      ("[%1] ")
 {
-  qmlRegisterType<IrcTextBrowser>
-              ("net.sf.egalite",1,0,"IrcTextBrowser");
   activeIcon = QIcon (":/ircicons/active.png");
   quietIcon = QIcon (":/ircicons/inactive.png");
   connect (&debugTimer, SIGNAL (timeout()),
