@@ -185,6 +185,8 @@ IrcQmlControl::ConnectGui ()
            this, SLOT (Login ()));
   connect (qmlObject, SIGNAL (wantNewServer (const QString &, int, bool)),
            this, SLOT (ConnectNewServer (const QString &, int, bool)));
+  connect (qmlObject, SIGNAL (wantNewChannel (const QString &, bool)),
+           this, SLOT (ConnectNewChannel (const QString &, bool)));
   connect (qmlObject, SIGNAL (wantNewUser (const QString &, 
                                            const QString &,
                                            const QString &,
@@ -225,6 +227,16 @@ IrcQmlControl::ConnectNewServer (const QString & name,
     LoadLists ();
   }
   TryConnect (name, port);  
+}
+
+void
+IrcQmlControl::ConnectNewChannel (const QString &name, bool save)
+{
+  qDebug () << __PRETTY_FUNCTION__ << name << save;
+  if (save) {
+    CertStore::IF().SaveIrcChannel (name);
+    LoadLists ();
+  }
 }
 
 void
@@ -1080,21 +1092,8 @@ IrcQmlControl::Join ()
       AddChannel (selectedServer, selectedServer->HostName(), true);
     } else {
       if (selectedChannel == noNameChannel) {
-      #if 0
-        //EnterString enter (this);
-        bool picked = enter.Choose (tr("IRC Channel"), tr("Channel:"));
-        if (picked) {
-          selectedChannel = enter.Value ();
-          if (enter.Save()) {
-            CertStore::IF().SaveIrcChannel (selectedChannel);
-            QStringList knownChans = CertStore::IF().IrcChannels ();
-            knownChans.append (selectedChannel);
-            channelModel.setStringList (knownChans);
-          }
-        } else {
-          return;
-        }
-        #endif
+        QMetaObject::invokeMethod (qmlObject,"askNewChannel");
+        return;
       }
       selectedServer->Send (QString ("JOIN %1").arg(selectedChannel));
     }

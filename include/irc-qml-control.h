@@ -123,6 +123,7 @@ private slots:
   void ConnectNewServer (const QString & name, int port, bool save);
   void ConnectNewUser (const QString & nick, const QString & realName,
                        const QString & pass, bool save);
+  void ConnectNewChannel (const QString & name, bool save);
 
 
 signals:

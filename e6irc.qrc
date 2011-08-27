@@ -17,7 +17,7 @@
         <file alias="KnownServerList.qml">qml/KnownServerList.qml</file>
         <file alias="GetNewServerName.qml">qml/GetNewServerName.qml</file>
         <file alias="GetNewUserName.qml">qml/GetNewUserName.qml</file>
-        <file alias="GetNewChannelName">qml/GetNewChannelName.qml</file>
+        <file alias="GetNewChannelName.qml">qml/GetNewChannelName.qml</file>
         <file alias="GetString.qml">qml/GetString.qml</file>
         <file alias="CheckItem.qml">qml/CheckItem.qml</file>
         <file alias="Main.qml">qml/Main.qml</file>
