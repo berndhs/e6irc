@@ -26,7 +26,7 @@ import QtQuick 1.0
 Rectangle {
   id: getStringBox
   width: 300
-  height: 300
+  height: childrenRect.height
   color: "white"
   property real topOffset: 12
   property real boxMargin: 4
@@ -35,6 +35,8 @@ Rectangle {
   property real checkBoxTopMargin: 16
   property real checkBoxIndent: 8
   property real titleHeight: 32
+  property bool useCheckList: false
+  property real checkListHeight: 100
   property alias text: stringInputText.text
   property alias titleText: titleBoxText.text
   property alias boxFrame: stringBox.border
@@ -42,19 +44,27 @@ Rectangle {
   property alias inputBackgroundColor: stringBox.color
   property alias inputBoxRadius: stringBox.radius
   property alias inputBoxBorder: stringBox.border
-  property alias echoMode: stringInputText.echoMode
+  property alias echoModus: stringInputText.echoMode
   property alias checkListColor: checkListBox.color
   property alias checkListModel: checkList.model
   property alias checkListDelegate: checkList.delegate
-  property alias checkListHeight: checkListBox.height
+  
+  property real insideWidth:getStringBox.width - 2*getStringBox.border.width
 
   signal isDone ()
-
+  signal tabHit ()
+  signal escapeHit ()
+  
   Rectangle {
     id: titleBox
     color: "transparent"
-    width: getStringBox.width
-    height: titleBoxText == "" ? 0 : getStringBox.titleHeight
+    width: getStringBox.insideWidth
+    height: (titleBoxText.length === 0) ? 0 : getStringBox.titleHeight
+    anchors {
+      top: getStringBox.top
+      horizontalCenter: getStringBox.horizontalCenter
+    }
+
     Text {
       id: titleBoxText
       text: ""
@@ -67,7 +77,7 @@ Rectangle {
     color: "white"
     border.color: "#00ffff"
     border.width: 0
-    width: getStringBox.width - 2 * getStringBox.boxMargin
+    width: getStringBox.insideWidth - 2 * getStringBox.boxMargin
     height: getStringBox.inputHeight
     anchors { 
       top: titleBox.bottom; topMargin: getStringBox.topOffset
@@ -75,7 +85,6 @@ Rectangle {
     }
     TextInput {
       id: stringInputText
-      echoMode: TextInput.Normal
       width: stringBox.width
       color: "red"
       text: "input?"
@@ -85,14 +94,17 @@ Rectangle {
         verticalCenter: stringBox.verticalCenter
       }
       Keys.onReturnPressed: { getStringBox.isDone () }
-      Keys.onEnterPressed: { getStrignBox.isDone () }
+      Keys.onEnterPressed: { getStringBox.isDone () }
+      Keys.onTabPressed: { getStringBox.tabHit () }
+      Keys.onEscapePressed: { getStringBox.escapeHit () }
     }
   }
  
   Rectangle {
     id: checkListBox
-    width: getStringBox.width - 2*getStringBox.checkBoxIndent
-    height: 100
+    width: getStringBox.insideWidth - 2*getStringBox.checkBoxIndent
+    height: getStringBox.useCheckList ? getStringBox.checkListHeight : 0
+    visible: getStringBox.useCheckList
     color: Qt.lighter (getStringBox.color)
     anchors {
       top: stringBox.bottom; topMargin: getStringBox.checkBoxTopMargin

@@ -53,6 +53,9 @@ Rectangle {
   function askNewServer () {
     newServerNameBox.visible = true
   }
+  function askNewUser () {
+    newUserNameBox.visible = true
+  }
 
   signal hideMe ()
   signal tryConnect (string host, int port)
@@ -63,6 +66,7 @@ Rectangle {
   signal login ()
   signal addedChannel ()
   signal wantNewServer (string name, int port, bool save)
+  signal wantNewUser (string name, string pass, bool save)
   
   ChoiceButton {
     anchors {top: parent.top; right: parent.right }
@@ -79,10 +83,12 @@ Rectangle {
     id: newServerNameBox
     visible: false
     z: 2
-    color: "transparent"
+    color: Qt.darker (ircControlBox.baseColor,1.2)
     height: 300
+    rowHeight: ircControlBox.standardRowHeight
+    opacity: 1
     anchors {
-      top: knownListRect.top
+      top: parent.top; topMargin: ircControlBox.standardRowHeight
       horizontalCenter: parent.horizontalCenter
     }
     onHaveNewServer: {
@@ -90,25 +96,42 @@ Rectangle {
       visible = false
       ircControlBox.wantNewServer (name, 6667, save)
     }
+    onNevermind: {
+      visible = false
+    }
   }
 /*
   GetNewChannelName {
     id: newChannelNameBox
     visible: false
     anchors {
-      top: knownListRect.top
+      top: parent.top; topMargin: ircControlBox.standardRowHeight
       horizontalCenter: parent.horizontalCenter
     }
   }
+  */
   GetNewUserName {
-    id: newChannelNameBox
+    id: newUserNameBox
     visible: false
+    z: 2
+    color: Qt.darker (ircControlBox.baseColor,1.2)
+    height: 300
+    rowHeight: ircControlBox.standardRowHeight
+    opacity: 1
     anchors {
-      top: knownListRect.top
+      top: parent.top; topMargin: ircControlBox.standardRowHeight
       horizontalCenter: parent.horizontalCenter
     }
+    onHaveNewUser: {
+      consoleLog.log ("new user " + name + " save " + save)
+      visible = false
+      ircControlBox.wantNewUser (name, pass, save)
+    }
+    onNevermind: {
+      visible = false
+    }
   }
-*/
+
 
 /** Known Server List */
 

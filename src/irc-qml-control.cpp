@@ -472,7 +472,7 @@ IrcQmlControl::NickLogin (const QString & nick, IrcSocket *sock)
   }
   QString useNick (nick);
   if (useNick == noNameNick) {
-    qDebug () << " missing code to get new nick";
+    QMetaObject::invokeMethod (qmlObject,"askNewUser");
     return;
   }
   QString pass;
