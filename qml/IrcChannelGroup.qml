@@ -119,7 +119,7 @@ Rectangle {
     Text {
       anchors.centerIn: parent
       horizontalAlignment: Text.AlignHCenter
-      text: qsTr ("No Channels\n\n( Close )")
+      text: qsTr ("No Channels\n\n-- Close --")
     }
   }
   Rectangle {

@@ -1,11 +1,11 @@
 [Desktop Entry]
-Name=Egalite Internet Messenger
+Name=Egalite IRC Client
 Name[fr]=Messagerie internet Égalité
 GenericName=Internet Messenger
 GenericName[fr]=Messagerie internet
-Comment=Chat over IRC, Google Talk, Jabber/XMPP, Direct SSL Connections
-Exec=egalite
-Icon=egalite
+Comment=Chat over IRC
+Exec=e6irc
+Icon=e6irc
 StartupNotify=false
 Terminal=false
 Type=Application

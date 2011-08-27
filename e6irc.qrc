@@ -2,6 +2,8 @@
     <qresource prefix="/">
         <file alias="icon64.png">icons/64/e6irc.png</file>
         <file alias="palee6.png">images/pale.png</file>
+        <file alias="checked-yes.png">icons/checked-yes.png</file>
+        <file alias="checked-no.png">icons/checked-no.png</file>
     </qresource>
     <qresource prefix="/qml">
         <file alias="ActiveServerList.qml">qml/ActiveServerList.qml</file>
@@ -13,6 +15,11 @@
         <file alias="IrcFloatBox.qml">qml/IrcFloatBox.qml</file>
         <file alias="IrcTestBox.qml">qml/IrcTestBox.qml</file>
         <file alias="KnownServerList.qml">qml/KnownServerList.qml</file>
+        <file alias="GetNewServerName.qml">qml/GetNewServerName.qml</file>
+        <file alias="GetNewUserName.qml">qml/GetNewUserName.qml</file>
+        <file alias="GetNewChannelName">qml/GetNewChannelName.qml</file>
+        <file alias="GetString.qml">qml/GetString.qml</file>
+        <file alias="CheckItem.qml">qml/CheckItem.qml</file>
         <file alias="Main.qml">qml/Main.qml</file>
     </qresource>
 </RCC>

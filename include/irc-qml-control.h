@@ -120,6 +120,8 @@ private slots:
   
   void ViewStatusChange (QDeclarativeView::Status status);
 
+  void ConnectNewServer (const QString & name, int port, bool save);
+
 
 signals:
 

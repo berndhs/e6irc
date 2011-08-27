@@ -183,6 +183,8 @@ IrcQmlControl::ConnectGui ()
            this, SLOT (Join ()));
   connect (qmlObject, SIGNAL (login()),
            this, SLOT (Login ()));
+  connect (qmlObject, SIGNAL (wantNewServer (const QString &, int, bool)),
+           this, SLOT (ConnectNewServer (const QString &, int, bool)));
 }
 
 void
@@ -205,12 +207,26 @@ IrcQmlControl::Exiting ()
 }
 
 void
+IrcQmlControl::ConnectNewServer (const QString & name,
+                                 int port,
+                                 bool save)
+{
+  if (save) {
+    if (knownServers) {
+      knownServers->addServer (name,port);
+    }
+  }
+  TryConnect (name, port);  
+}
+
+void
 IrcQmlControl::TryConnect (const QString & host, int port)
 {
   qDebug () << __PRETTY_FUNCTION__ << host << port;
   QString baseHost (host);
   if (baseHost == noNameServer) {
     qDebug () << " missing code to enter a server name";
+    QMetaObject::invokeMethod (qmlObject, "askNewServer");
     return;
   }
   qDebug () << " try connect to " << baseHost;

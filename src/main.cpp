@@ -47,7 +47,12 @@ main (int argc, char *argv[])
   QCoreApplication::setOrganizationDomain ("egalite.sourceforge.net");
   deliberate::ProgramVersion pv ("E6Irc");
   QCoreApplication::setApplicationVersion (pv.Version());
+
   QApplication app (argc, argv);
+
+  QSettings  settings;
+  deliberate::SetSettings (settings);
+  settings.setValue ("program",pv.MyName());
 
   QSystemDeviceInfo sdi;
 
@@ -55,9 +60,11 @@ main (int argc, char *argv[])
   QString imei = sdi.imei();
   bool isPhone (!(imsi.isEmpty() || imei.isEmpty()));
   qDebug () << __PRETTY_FUNCTION__ << " phone ? " << isPhone;
-  egalite::E6Irc * view = new egalite::E6Irc (0, isPhone);
-  QDeclarativeEngine * engine = view->engine();
-  QDeclarativeContext * context = view->rootContext();
+
+  egalite::E6Irc * irc = new egalite::E6Irc (0, isPhone);
+
+  QDeclarativeEngine * engine = irc->engine();
+  QDeclarativeContext * context = irc->rootContext();
 
   if (context) {
     context->setContextProperty ("isProbablyPhone", QVariant(isPhone));
@@ -75,19 +82,17 @@ main (int argc, char *argv[])
   qmlRegisterType<geuzen::QmlTextBrowser>(uri, 1, 0, "GeuzenTextBrowser");
   qmlRegisterType<geuzen::OrientationWatcher>(uri, 1, 0, "GeuzenOrientation");
 
-  view->setWindowIcon (QIcon (":/icon64.png"));
-  view->run ();
+  irc->setWindowIcon (QIcon (":/icon64.png"));
+  irc->setResizeMode (QDeclarativeView::SizeRootObjectToView);
+  irc->run ();
   if (isPhone) {
-    view->setGeometry (app.desktop()->screenGeometry());
-    view->showFullScreen ();
-  } else {
-    view->setGeometry (0,0,600,400);
+    irc->setGeometry (app.desktop()->screenGeometry());
+    irc->showFullScreen ();
   }
-  view->show ();
-  qDebug () << " view has size " << view->size();
-  view->setResizeMode (QDeclarativeView::SizeRootObjectToView);
+  irc->show ();
+  qDebug () << " irc has size " << irc->size();
 
-  QObject::connect (engine, SIGNAL (quit()),&app, SLOT(quit()));
+  QObject::connect (irc, SIGNAL (quit()), &app, SLOT (quit()));
   int ok = app.exec ();
   return ok;
 }

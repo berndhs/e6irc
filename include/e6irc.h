@@ -15,6 +15,14 @@ public:
   E6Irc (QWidget *parent, bool isPhone);
   
   void run ();
+
+private slots:
+
+  void allDone ();
+
+signals:
+
+  void quit ();
   
 private:
 

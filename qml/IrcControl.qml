@@ -50,6 +50,9 @@ Rectangle {
     console.log (objectName + " added channel")
     addedChannel ()
   }
+  function askNewServer () {
+    newServerNameBox.visible = true
+  }
 
   signal hideMe ()
   signal tryConnect (string host, int port)
@@ -59,17 +62,53 @@ Rectangle {
   signal join ()
   signal login ()
   signal addedChannel ()
+  signal wantNewServer (string name, int port, bool save)
   
   ChoiceButton {
     anchors {top: parent.top; right: parent.right }
     labelText: qsTr ("Show Channels")
     height: ircControlBox.buttonHeight - 2
-    width: 160
+    width: 300
     onClicked: {
       console.log ("Hide Button clicked x " + ircControlBox.x + "  y " + ircControlBox.y)
       ircControlBox.hideMe ()
     }
   }
+
+  GetNewServerName {
+    id: newServerNameBox
+    visible: false
+    z: 2
+    color: "transparent"
+    height: 300
+    anchors {
+      top: knownListRect.top
+      horizontalCenter: parent.horizontalCenter
+    }
+    onHaveNewServer: {
+      console.log ("new server " + name + " save? " + save)
+      visible = false
+      ircControlBox.wantNewServer (name, 6667, save)
+    }
+  }
+/*
+  GetNewChannelName {
+    id: newChannelNameBox
+    visible: false
+    anchors {
+      top: knownListRect.top
+      horizontalCenter: parent.horizontalCenter
+    }
+  }
+  GetNewUserName {
+    id: newChannelNameBox
+    visible: false
+    anchors {
+      top: knownListRect.top
+      horizontalCenter: parent.horizontalCenter
+    }
+  }
+*/
 
 /** Known Server List */
 

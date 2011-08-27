@@ -1,3 +1,10 @@
+e6irc (0.6.1) unstable; urgency=low
+
+  * Second Harmattan Release.
+  * Add new servers
+
+ -- Bernd Stramm <bernd@unknown>  Fri, 26 Aug 2011 12:00:00 -0400
+
 e6irc (0.6.0) unstable; urgency=low
 
   * Initial Harmattan Release.
