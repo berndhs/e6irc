@@ -22,4 +22,18 @@
         <file alias="CheckItem.qml">qml/CheckItem.qml</file>
         <file alias="Main.qml">qml/Main.qml</file>
     </qresource>
+    <qresource prefix="/schemas">
+        <file alias="uniquenick.sql">schemafiles/uniquenick.sql</file>
+        <file alias="ircservers.sql">schemafiles/ircservers.sql</file>
+        <file alias="uniqueircserver.sql">schemafiles/uniqueircserver.sql</file>
+        <file alias="ircchannels.sql">schemafiles/ircchannels.sql</file>
+        <file alias="uniquechannel.sql">schemafiles/uniquechannel.sql</file>
+        <file alias="ircnicks.sql">schemafiles/ircnicks.sql</file>
+        <file alias="uniqueircnick.sql">schemafiles/uniqueircnick.sql</file>
+        <file alias="ircignore.sql">schemafiles/ircignore.sql</file>
+        <file alias="uniqueircignore.sql">schemafiles/uniqueircignore.sql</file>
+        <file alias="ircmessages.sql">schemafiles/ircmessages.sql</file>
+        <file alias="uniqueircmsgs.sql">schemafiles/uniqueircmsgs.sql</file>
+        <file alias="ircchannelservers.sql">schemafiles/ircchannelservers.sql</file>
+    </qresource>
 </RCC>

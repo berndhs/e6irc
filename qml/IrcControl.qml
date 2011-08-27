@@ -66,7 +66,7 @@ Rectangle {
   signal login ()
   signal addedChannel ()
   signal wantNewServer (string name, int port, bool save)
-  signal wantNewUser (string name, string pass, bool save)
+  signal wantNewUser (string nick, string realName, string pass, bool save)
   
   ChoiceButton {
     anchors {top: parent.top; right: parent.right }
@@ -123,9 +123,9 @@ Rectangle {
       horizontalCenter: parent.horizontalCenter
     }
     onHaveNewUser: {
-      consoleLog.log ("new user " + name + " save " + save)
+      console.log ("new user " + nick + " really " + realName + " save " + save)
       visible = false
-      ircControlBox.wantNewUser (name, pass, save)
+      ircControlBox.wantNewUser (nick, realName, pass, save)
     }
     onNevermind: {
       visible = false

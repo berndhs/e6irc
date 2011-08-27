@@ -185,6 +185,14 @@ IrcQmlControl::ConnectGui ()
            this, SLOT (Login ()));
   connect (qmlObject, SIGNAL (wantNewServer (const QString &, int, bool)),
            this, SLOT (ConnectNewServer (const QString &, int, bool)));
+  connect (qmlObject, SIGNAL (wantNewUser (const QString &, 
+                                           const QString &,
+                                           const QString &,
+                                                 bool)),
+           this, SLOT (ConnectNewUser (const QString &, 
+                                       const QString &, 
+                                       const QString &,
+                                             bool)));
 }
 
 void
@@ -211,12 +219,25 @@ IrcQmlControl::ConnectNewServer (const QString & name,
                                  int port,
                                  bool save)
 {
+  qDebug () << __PRETTY_FUNCTION__ << name << port << save;
   if (save) {
-    if (knownServers) {
-      knownServers->addServer (name,port);
-    }
+    CertStore::IF().SaveIrcServer (name);
+    LoadLists ();
   }
   TryConnect (name, port);  
+}
+
+void
+IrcQmlControl::ConnectNewUser (const QString & nick,
+                               const QString & realName,
+                               const QString & pass,
+                               bool save)
+{
+  qDebug () << __PRETTY_FUNCTION__ << nick << realName << pass << save;
+  if (save) {
+    CertStore::IF().SaveIrcNick (nick, realName, pass);
+    LoadLists ();
+  }
 }
 
 void
