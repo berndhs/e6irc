@@ -68,7 +68,7 @@ Rectangle {
     onTabHit: {
       focus = false
     }
-    onEscapeHit: {
+    onCancelled: {
       mainBox.nevermind ()
     }
   }
@@ -93,7 +93,7 @@ Rectangle {
     onTabHit: {
       focus = false
     }
-    onEscapeHit: {
+    onCancelled: {
       mainBox.nevermind ()
     }
   }
@@ -123,7 +123,7 @@ Rectangle {
     onTabHit: {
       focus = false
     }
-    onEscapeHit: {
+    onCancelled: {
       mainBox.nevermind ()
     }
   }

@@ -70,7 +70,7 @@ Rectangle {
       console.log (" check save " + checkSave.isChecked)
       mainBox.haveNewServer (text, checkSave.isChecked)
     }
-    onEscapeHit: {
+    onCancelled: {
       mainBox.nevermind ()
     }
   }

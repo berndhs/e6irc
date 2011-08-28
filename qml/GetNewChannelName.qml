@@ -64,7 +64,7 @@ Rectangle {
     onIsDone: {
       mainBox.haveNewServer (text, checkSave.isChecked)
     }
-    onEscapeHit: {
+    onCancelled: {
       mainBox.nevermind ()
     }
   }

@@ -54,7 +54,7 @@ IRC Chat with colleagues, friends and enemies
 %build
 cp %{name}-linux.pro %{name}-linux.pro.save
 rm -f *.pro
-mv %{name}-linux.pro %{name}.pro
+mv %{name}-linux.pro.save %{name}.pro
 %qmake
 
 %install

@@ -2,6 +2,7 @@
 #define EGALITE_E6IRC_H
 
 #include <QDeclarativeView>
+#include <QSize>
 #include "irc-qml-control.h"
 #include "irc-qml-channel-group.h"
 
@@ -14,7 +15,7 @@ public:
 
   E6Irc (QWidget *parent, bool isPhone);
   
-  void run ();
+  void run (const QSize & desktopSize);
 
 private slots:
 

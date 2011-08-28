@@ -53,7 +53,7 @@ Rectangle {
 
   signal isDone ()
   signal tabHit ()
-  signal escapeHit ()
+  signal cancelled ()
   
   Rectangle {
     id: titleBox
@@ -69,6 +69,12 @@ Rectangle {
       id: titleBoxText
       text: ""
       anchors.centerIn: titleBox
+    }
+    MouseArea {
+      anchors.fill: parent
+      onPressAndHold: {
+        getStringBox.cancelled()
+      }
     }
   }
 
@@ -96,7 +102,7 @@ Rectangle {
       Keys.onReturnPressed: { getStringBox.isDone () }
       Keys.onEnterPressed: { getStringBox.isDone () }
       Keys.onTabPressed: { getStringBox.tabHit () }
-      Keys.onEscapePressed: { getStringBox.escapeHit () }
+      Keys.onEscapePressed: { getStringBox.cancelled () }
     }
   }
  

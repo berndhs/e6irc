@@ -25,6 +25,9 @@
 #include <QDeclarativeView>
 #include <QDeclarativeEngine>
 #include <QDeclarativeContext>
+#include <QDesktopWidget>
+#include <QRect>
+#include <QSize>
 #include <QIcon>
 #include <QFont>
 #include <QSystemDeviceInfo>
@@ -84,7 +87,8 @@ main (int argc, char *argv[])
 
   irc->setWindowIcon (QIcon (":/icon64.png"));
   irc->setResizeMode (QDeclarativeView::SizeRootObjectToView);
-  irc->run ();
+  QRect geo = app.desktop()->screenGeometry();
+  irc->run (geo.size());
   if (isPhone) {
     irc->setGeometry (app.desktop()->screenGeometry());
     irc->showFullScreen ();

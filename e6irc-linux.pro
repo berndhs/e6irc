@@ -9,14 +9,14 @@ QMAKE_CXXFLAGS += -DDELIBERATE_LINUX=1
 
 unix: {
     desktopfile.files = linux/e6irc.desktop
-    desktopfile.path = /usr/local/share/applications
+    desktopfile.path = $$(INSTALL_ROOT)/usr/share/applications
     INSTALLS += desktopfile
 
     icon.files = icons/64/e6irc.png
-    icon.path = /usr/local/share/pixmaps
+    icon.path = $$(INSTALL_ROOT)/usr/share/pixmaps
     INSTALLS += icon
 
-    target.path = /usr/local/bin
+    target.path = $$(INSTALL_ROOT)/usr/bin
     INSTALLS += target
 }
 

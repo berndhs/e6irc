@@ -21,7 +21,7 @@ E6Irc::E6Irc (QWidget *parent, bool isPhone)
 }
 
 void
-E6Irc::run ()
+E6Irc::run (const QSize & desktopSize)
 {
   CertStore::IF().Init();
   control->fillContext(isProbablyPhone);
@@ -38,10 +38,17 @@ E6Irc::run ()
   if (!isFullScreen()) {
     QSize defaultSize = size();
     QSize newsize = Settings().value ("sizes/e6irc", defaultSize).toSize();
-    resize (newsize);
+    if (newsize.isEmpty()) {
+      showMaximized();
+      newsize = desktopSize;
+      resize (newsize);
+    } else {
+      resize (newsize);
+    }
     qDebug () << __PRETTY_FUNCTION__ << " resize to " << newsize
               << " result is " << size();
   }
+  show ();
   Settings().sync ();
 }
 
