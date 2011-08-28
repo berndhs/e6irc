@@ -1,5 +1,8 @@
-* Fri Aug 26 2011 Bernd Stramm <bernd.stramm@gmail.com> - 0.6.1 
- - start new version; use geuzen text browser; some costmetics;
+* Sat Aug 27 2011 Bernd Stramm <bernd.stramm@gmail.com> - 0.6.1 
+ - add channels; gpl2
+ - code for adding servers and nicks to database
+ - use geuzen text browser; some costmetics;
+
 * Wed Aug 24 2011 Bernd Stramm <bernd.stramm@gmail.com> - 0.6.0 
 - convert egalite code to stand-alone IRC client
 - make more suitable for phone-size displays
