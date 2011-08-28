@@ -35,11 +35,13 @@ Rectangle {
   property alias font: checkText.font
   property alias imageHeight: checkBox.height
   property alias imageWidth: checkBox.width
+
+  signal userChanged (bool checked)
  
   
   Image {
     id: checkBox
-    source: checkItem.isChecked ? checkItem.imageTrue :checkItem.imageFalse
+    source: checkItem.isChecked ? checkItem.imageTrue : checkItem.imageFalse
     height: 64
     width: 64
     anchors {
@@ -61,6 +63,7 @@ Rectangle {
       
     onClicked: {
       checkItem.isChecked = ! checkItem.isChecked
+      checkItem.userChanged (checkItem.isChecked)
     }
   }
 }

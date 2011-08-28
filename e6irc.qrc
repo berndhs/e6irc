@@ -20,6 +20,7 @@
         <file alias="GetNewChannelName.qml">qml/GetNewChannelName.qml</file>
         <file alias="GetString.qml">qml/GetString.qml</file>
         <file alias="CheckItem.qml">qml/CheckItem.qml</file>
+        <file alias="Confirm.qml">qml/Confirm.qml</file>
         <file alias="Main.qml">qml/Main.qml</file>
     </qresource>
     <qresource prefix="/schemas">

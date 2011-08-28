@@ -34,6 +34,7 @@ ListView {
   property real rowHeight: 32
   signal selectServer (string name, int port)
   signal connectServer (string name, int port)
+  signal maintainServer (string name)
   signal doneLoading ()
 
   Component {
@@ -82,6 +83,9 @@ ListView {
             knownServerList.currentIndex = index
             console.log ("setting currentindex to " + index)
             knownServerList.selectServer (sname, sport)
+          }
+          onPressAndHold: {
+            knownServerList.maintainServer (sname)
           }
         }
         Text {

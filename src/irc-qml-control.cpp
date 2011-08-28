@@ -183,6 +183,8 @@ IrcQmlControl::ConnectGui ()
            this, SLOT (Join ()));
   connect (qmlObject, SIGNAL (login()),
            this, SLOT (Login ()));
+  connect (qmlObject, SIGNAL (deleteAction (const QString &, const QString &)),
+           this, SLOT (DeleteAction (const QString &, const QString &)));
   connect (qmlObject, SIGNAL (wantNewServer (const QString &, int, bool)),
            this, SLOT (ConnectNewServer (const QString &, int, bool)));
   connect (qmlObject, SIGNAL (wantNewChannel (const QString &, bool)),
@@ -248,6 +250,26 @@ IrcQmlControl::ConnectNewUser (const QString & nick,
   qDebug () << __PRETTY_FUNCTION__ << nick << realName << pass << save;
   if (save) {
     CertStore::IF().SaveIrcNick (nick, realName, pass);
+    LoadLists ();
+  }
+}
+
+void
+IrcQmlControl::DeleteAction (const QString & action, const QString & target)
+{
+  if (action == "delete") {
+    QStringList parts = target.split (QRegExp("\\s+"));
+    qDebug() << __PRETTY_FUNCTION__ << parts;
+    if (parts.count() < 2) {
+      return;
+    }
+    if (parts.at(0) == "channel") {
+      CertStore::IF().RemoveIrcChannel (parts.at(1));
+    } else if (parts.at(0) == "nick") {
+      CertStore::IF().RemoveIrcNick (parts.at(1));
+    } else if (parts.at(0) == "server") {
+      CertStore::IF().RemoveIrcServer (parts.at(1));
+    }
     LoadLists ();
   }
 }

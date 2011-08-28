@@ -71,6 +71,7 @@ Rectangle {
   signal wantNewServer (string name, int port, bool save)
   signal wantNewUser (string nick, string realName, string pass, bool save)
   signal wantNewChannel (string name, bool save)
+  signal deleteAction (string operation, string target)
   
   ChoiceButton {
     anchors {top: parent.top; right: parent.right }
@@ -145,6 +146,34 @@ Rectangle {
       ircControlBox.wantNewUser (nick, realName, pass, save)
     }
     onNevermind: {
+      visible = false
+    }
+  }
+
+  Confirm {
+    id: deleteConfirm
+    visible: false
+    z: 2
+    color: "#ff7755"
+    checkColor: "#dddddd"
+    messageColor: "black"
+    height: 200
+    radius: 12
+    title: qsTr ("Delete ?")
+    anchors {
+      top: parent.top; topMargin: ircControlBox.standardRowHeight
+      horizontalCenter: parent.horizontalCenter
+    }
+    onConfirmed: {
+      console.log ("delete confirmed: " + action + " for " + object)
+      ircControlBox.deleteAction (action, object)
+      visible = false
+    }
+    onDenied: {
+      console.log ("delete denied: " + action + " for " + object)
+      visible = false
+    }
+    onCancelled: {
       visible = false
     }
   }
@@ -243,6 +272,11 @@ Rectangle {
         knownButton.adjust ()
         ircControlBox.tryConnect (name, port)
       }
+      onMaintainServer: {
+        deleteConfirm.askConfirmLong ("delete","server " + name,
+                        qsTr ("Delete ?"), qsTr ("server ") + name)
+      }
+        
       Connections {
         target: cppKnownServerModel
         onContentChange: knownServerList.adjustRows ()
@@ -360,6 +394,11 @@ Rectangle {
                 ircControlBox.selectChannel (name) 
                 console.log (" channel box width " + parent.width + " name " + name)
               }
+              onPressAndHold: {
+                deleteConfirm.askConfirmLong ("delete","channel " + name,
+                                 qsTr ("Delete ?"),
+                                 qsTr ("Channel ") + name)
+              }
             }
             Text {
               id: channelNameText
@@ -436,6 +475,11 @@ Rectangle {
               onClicked:  { 
                 nickList.currentIndex = index; 
                 ircControlBox.selectNick (name) 
+              }
+              onPressAndHold: {
+                deleteConfirm.askConfirmLong ("delete","nick " + name,
+                                 qsTr ("Delete ?"),
+                                 qsTr ("Nick ") + name)
               }
             }
             Text {

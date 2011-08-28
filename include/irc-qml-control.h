@@ -124,6 +124,7 @@ private slots:
   void ConnectNewUser (const QString & nick, const QString & realName,
                        const QString & pass, bool save);
   void ConnectNewChannel (const QString & name, bool save);
+  void DeleteAction (const QString & action, const QString & target);
 
 
 signals:
