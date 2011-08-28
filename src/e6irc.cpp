@@ -52,7 +52,9 @@ E6Irc::run (const QSize & desktopSize)
   }
   show ();
   Settings().sync ();
+  objectCount = 0;
   fixCaps (qmlRoot);
+  qDebug () << objectCount << " objects";
 }
 
 void
@@ -69,6 +71,7 @@ void
 E6Irc::fixCaps (QObject * root)
 {
   if (root) {
+    objectCount++;
     QVariant suppressVar = root->property ("noInitialCaps");
     if (suppressVar.isValid()) {
       qDebug () << "found property on " << root ;

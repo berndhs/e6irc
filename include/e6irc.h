@@ -32,6 +32,8 @@ private:
   bool                  isProbablyPhone;
   IrcQmlChannelGroup  * channelGroup;
   IrcQmlControl       * control; 
+
+  int                   objectCount;
   
 };
 
