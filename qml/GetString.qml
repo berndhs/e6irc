@@ -48,6 +48,7 @@ Rectangle {
   property alias checkListColor: checkListBox.color
   property alias checkListModel: checkList.model
   property alias checkListDelegate: checkList.delegate
+  property alias suppressInitialCaps: stringInputText.noInitialCaps
   
   property real insideWidth:getStringBox.width - 2*getStringBox.border.width
 
@@ -94,6 +95,7 @@ Rectangle {
       width: stringBox.width
       color: "red"
       text: "input?"
+      property bool noInitialCaps: false
       anchors {
         left: stringBox.left
         leftMargin: stringBox.border.width

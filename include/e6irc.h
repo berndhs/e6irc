@@ -27,6 +27,8 @@ signals:
   
 private:
 
+  void fixCaps (QObject * root);
+
   bool                  isProbablyPhone;
   IrcQmlChannelGroup  * channelGroup;
   IrcQmlControl       * control; 

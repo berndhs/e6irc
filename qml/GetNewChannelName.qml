@@ -61,6 +61,7 @@ Rectangle {
     checkListModel: checkOptions
     checkListColor: "transparent"
     checkListHeight: checkOptions.totalHeight
+    suppressInitialCaps: true
     onIsDone: {
       mainBox.haveNewServer (text, checkSave.isChecked)
     }

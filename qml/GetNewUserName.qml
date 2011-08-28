@@ -61,6 +61,7 @@ Rectangle {
     inputBoxRadius: 0
     radius: 0
     useCheckList: false
+    suppressInitialCaps: true
     onIsDone: {
       mainBox.haveNewUser (nickGet.text, realNameGet.text, 
                            passGet.text, checkSave.isChecked)
@@ -86,6 +87,7 @@ Rectangle {
     inputBoxRadius: 0
     radius: 0
     useCheckList: false
+    suppressInitialCaps: false
     onIsDone: {
       mainBox.haveNewUser (nickGet.text, realNameGet.text, 
                            passGet.text, checkSave.isChecked)
@@ -116,6 +118,7 @@ Rectangle {
     checkListModel: saveOptionsModel
     checkListColor: color
     checkListHeight: 1.5* mainBox.rowHeight
+    suppressInitialCaps: true
     onIsDone: {
       mainBox.haveNewUser (nickGet.text, realNameGet.text, 
                            passGet.text, checkSave.isChecked)

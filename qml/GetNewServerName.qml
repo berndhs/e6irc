@@ -63,6 +63,7 @@ Rectangle {
     checkListModel: checkOptions
     checkListColor: "transparent"
     checkListHeight: checkOptions.totalHeight
+    suppressInitialCaps: true
     onIsDone: {
       console.log ("input is done")
       console.log (" check height is " + checkListHeight)

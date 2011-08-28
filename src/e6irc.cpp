@@ -3,6 +3,8 @@
 #include <QDeclarativeItem>
 #include "deliberate.h"
 
+#include <QObjectList>
+
 using namespace deliberate;
 
 
@@ -50,6 +52,7 @@ E6Irc::run (const QSize & desktopSize)
   }
   show ();
   Settings().sync ();
+  fixCaps (qmlRoot);
 }
 
 void
@@ -62,4 +65,29 @@ E6Irc::allDone ()
   emit quit ();
 }
 
+void
+E6Irc::fixCaps (QObject * root)
+{
+  if (root) {
+    QVariant suppressVar = root->property ("noInitialCaps");
+    if (suppressVar.isValid()) {
+      qDebug () << "found property on " << root ;
+      qDebug () << suppressVar;
+      if (suppressVar.type() == QVariant::Bool) {
+        bool suppress = suppressVar.toBool();
+        if (suppress) {
+          QDeclarativeItem * item = qobject_cast<QDeclarativeItem*> (root);
+          if (item) {
+            item->setInputMethodHints (Qt::ImhNoAutoUppercase);
+          }
+        }
+      }
+    }
+    QObjectList children = root->children();
+    for (int i=0; i<children.count(); i++) {
+      fixCaps (children.at(i));
+    }
+  }
 }
+
+} // namespace
