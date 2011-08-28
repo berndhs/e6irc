@@ -75,10 +75,10 @@ if [ 0$WANT_OBS -ge 1 ]; then
   cp $DEB_FILES meego_obs/
 fi
 
-exit
+echo ${VERSION} > ${RPM_PACKDIR}/pack-version
+echo ${NAME} > ${RPM_PACKDIR}/pack-name
 
-mkdir -p ${RPM_PACKDIR}
-cp ${RPM_TARFILE} ${CHANGELOG} ${RPM_PACKDIR}
+cp ${TEMPDIR}/${HARMAT_TARFILE} ${CHANGELOG} ${RPM_PACKDIR}
 
 set +x
 
