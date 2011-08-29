@@ -1,9 +1,19 @@
 e6irc (0.6.1) unstable; urgency=low
 
-  * Second Harmattan Release.
-  * Add new servers
+  * note changes
+  * count objects
+  * suppress initial caps where not appropriate
+  * forfor new component
+  * functions to delete servers, channels, nicks
+  * better editing of new user/server/channel; packing issues;
+  * better packing
+  * add channels; gpl2
+  * code for adding servers and nicks to database
+  * use geuzen text browser; some costmetics;
+  * make user list shorter so it scrolls properly; packaging concerns for debian/harmattan
+  * make some sizes more suitable for little screens on phones
 
- -- Bernd Stramm <bernd@unknown>  Fri, 26 Aug 2011 12:00:00 -0400
+ -- Bernd Stramm <bernd.stramm@gmail.com> Sun, 28 Aug 2011 21:48:46 +0000
 
 e6irc (0.6.0) unstable; urgency=low
 
