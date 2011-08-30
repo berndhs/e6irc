@@ -1,10 +1,13 @@
+e6irc (0.6.2) unstable; urgency=low
+
+  * deal with pop-up virtual keybboard a bit better
+  * functions to delete servers, channels, nicks
+
+ -- Bernd Stramm <bernd.stramm@gmail.com> Tue, 30 Aug 2011 17:27:34 +0000
+
 e6irc (0.6.1) unstable; urgency=low
 
-  * note changes
-  * count objects
   * suppress initial caps where not appropriate
-  * forfor new component
-  * functions to delete servers, channels, nicks
   * better editing of new user/server/channel; packing issues;
   * better packing
   * add channels; gpl2
