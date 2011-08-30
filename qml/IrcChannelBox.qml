@@ -324,6 +324,7 @@ Item {
       id: textEnter
       anchors.fill: parent
       text: ""
+      property bool noInitialCaps: true
       Keys.onEnterPressed: channelBox.userSend ()
       Keys.onReturnPressed: channelBox.userSend ()
       Keys.onUpPressed: channelBox.userUp ()

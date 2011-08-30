@@ -56,6 +56,11 @@ Rectangle {
   signal tabHit ()
   signal cancelled ()
   
+  function takeFocus () {
+    stringInputText.forceActiveFocus()
+    console.log ("taking focus: " + objectName)
+  }
+  
   Rectangle {
     id: titleBox
     color: "transparent"
