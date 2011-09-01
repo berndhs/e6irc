@@ -143,7 +143,7 @@ private:
   typedef QMap <QString, void (*) (IrcQmlControl*, IrcSocket *, const QString &,
                            const QString &, const QString &)>
           ReceiveMapType;
-  typedef QMap <QString, void (*) (IrcQmlControl*, IrcSocket *, QString &, 
+  typedef QMap <QString, void (*) (IrcQmlControl*, IrcSocket *, QStringList &, 
                                    QString &, QString &, QString &)>  
           XformMapType;
   typedef QMap <QString, void (*) (IrcQmlControl*, IrcSocket *, const QString &,
@@ -155,7 +155,9 @@ private:
   void LoadLists ();
   void AddConnect (IrcSocket * sock);
   void NickLogin (const QString & nick, IrcSocket *sock);
-  void TransformSend (IrcSocket * sock, const QString & chan, QString & data);
+  QStringList TransformSend (IrcSocket * sock, 
+                             const QString & chan, 
+                             QString & data);
 
   void AddChannel (IrcSocket * sock, 
                    const QString & chanName, 

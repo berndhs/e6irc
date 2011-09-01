@@ -31,17 +31,17 @@ namespace egalite
 
 void
 IrcQmlSockStatic::TransformDefault (IrcQmlControl * context, IrcSocket *sock,
-                           QString & result, QString & chan, 
+                           QStringList & result, QString & chan, 
                            QString & first, 
                            QString & rest)
 {
   Q_UNUSED (context)
-  result = first + rest;
+  result = QStringList (first + rest);
 }
 
 void
 IrcQmlSockStatic::TransformPRIVMSG (IrcQmlControl * context, IrcSocket *sock,
-                           QString & result, QString & chan, 
+                           QStringList & result, QString & chan, 
                            QString & first, 
                            QString & rest)
 {
@@ -54,13 +54,13 @@ IrcQmlSockStatic::TransformPRIVMSG (IrcQmlControl * context, IrcSocket *sock,
     int len = wordRx.matchedLength ();
     rest.insert (pos + len, " :");
   }
-  result = first + " " + rest;
+  result = QStringList (first + " " + rest);
 qDebug () << " PRIVMSG result " << result;
 }
 
 void
 IrcQmlSockStatic::TransformME (IrcQmlControl * context, IrcSocket *sock,
-                           QString & result, QString & chan, 
+                           QStringList & result, QString & chan, 
                            QString & first, 
                            QString & rest)
 {
@@ -69,17 +69,33 @@ qDebug () << "ME data " << result << chan << first << rest;
   first = "PRIVMSG";
   rest.prepend (QString (" %1 :\001ACTION ").arg(chan));
   rest.append ("\001");
-  result = first + " " + rest;
+  result = QStringList (first + " " + rest);
 qDebug () << " PRIVMSG ME result " << result;
 }
 
 void 
 IrcQmlSockStatic::TransformJOIN (IrcQmlControl * context, IrcSocket *sock,
-                        QString & result, QString & chan,
+                        QStringList & result, QString & chan,
                         QString & first,
                         QString & rest)
 {
-  result = first + rest;
+  QStringList parts = rest.split (QRegExp("\\s+"),QString::SkipEmptyParts);
+  result.clear ();
+  QString line;
+  for (int i=0; i<parts.count(); i++) {
+    if (parts.at(i).startsWith("#")) {
+      if (!line.isEmpty()) { // old line was complete
+        result.append (line);
+        line.clear ();
+      }
+      line = first + " " + parts.at(i);
+    } else {
+      line.append (" " + parts.at(i));
+    }
+  }
+  if (!line.isEmpty()) {
+    result.append(line);
+  }
 }
 
 void

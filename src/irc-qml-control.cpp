@@ -428,10 +428,11 @@ IrcQmlControl::Send ()
 #endif
 }
 
-void
+QStringList
 IrcQmlControl::TransformSend (IrcSocket * sock, const QString & chan,
                               QString & data)
 {
+  QStringList sendData;
   if (data.startsWith(QChar ('/'))) {
     QRegExp wordRx ("(\\S+)");
     int pos = wordRx.indexIn (data, 1);
@@ -441,12 +442,14 @@ IrcQmlControl::TransformSend (IrcSocket * sock, const QString & chan,
       QString rest = data.mid (len+1,-1);
       QString copyChan (chan);
       if (commandXform.contains (first)) {
-        (*commandXform[first]) (this, sock, data, copyChan, first, rest);
+        (*commandXform[first]) (this, sock, sendData, copyChan, first, rest);
       } else {
-        IrcQmlSockStatic::TransformDefault (this, sock, data, copyChan, first, rest);
+        IrcQmlSockStatic::TransformDefault (this, sock, sendData, copyChan, 
+                                                 first, rest);
       }
     }
   }
+  return sendData;
 }
 
 
@@ -806,9 +809,10 @@ IrcQmlControl::Outgoing (QString chan, QString msg)
   }
   IrcSocket * sock = sockets [sname];
   if (trim.startsWith (QChar ('/')) ) {
-    QString cooked (trim);
-    TransformSend (sock, chan, cooked);
-    sock->Send (cooked);
+    QStringList cooked = TransformSend (sock, chan, trim);
+    for (int i=0; i<cooked.count(); i++) {
+      sock->Send (cooked.at(i));
+    }
     qDebug () << " ==========> handed to socket: " << cooked;
     trim.prepend (QString (":%1!%1@localhost ").arg (sock->Nick()));
     ReceiveLine (sock, trim.toUtf8());

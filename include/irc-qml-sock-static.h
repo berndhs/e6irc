@@ -24,6 +24,7 @@
 
 class QString;
 class QRegExp;
+class QStringList;
 
 namespace egalite
 {
@@ -39,19 +40,19 @@ private:
 
 
   static void TransformPRIVMSG (IrcQmlControl * context, IrcSocket *sock,
-                                QString & result, QString & chan, 
+                                QStringList & result, QString & chan, 
                                 QString & first, 
                                 QString & rest);
   static void TransformME (IrcQmlControl * context, IrcSocket *sock,
-                                QString & result, QString & chan, 
+                                QStringList & result, QString & chan, 
                                 QString & first, 
                                 QString & rest);
   static void TransformJOIN    (IrcQmlControl * context, IrcSocket *sock,
-                                QString & result, QString & chan, 
+                                QStringList & result, QString & chan, 
                                 QString & first, 
                                 QString & rest);
   static void TransformDefault (IrcQmlControl * context, IrcSocket *sock,
-                                QString & result, QString & chan, 
+                                QStringList & result, QString & chan, 
                                 QString & first, 
                                 QString & rest);
 
