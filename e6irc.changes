@@ -1,3 +1,6 @@
+* Thu Sep 01 2011 Bernd Stramm <bernd.stramm@gmail.com> - 0.6.3 
+ - support multi-channel join: JOIN #chan1 #chan2 #chan3
+
 * Tue Aug 30 2011 Bernd Stramm <bernd.stramm@gmail.com> - 0.6.2 
  - deal with pop-up virtual keybboard a bit
  - suppress initial caps where not appropriate
