@@ -2,7 +2,7 @@ e6irc (0.6.3) unstable; urgency=low
 
   * support multi-channel join: JOIN #chan1 #chan2 #chan3
 
-  -- Bernd Stramm <bernd.stramm@gmail.com> Thu, 01 Sep 2011 15:01:58 +0000
+ -- Bernd Stramm <bernd.stramm@gmail.com> Thu, 01 Sep 2011 15:01:58 +0000
 
 e6irc (0.6.2) unstable; urgency=low
 
