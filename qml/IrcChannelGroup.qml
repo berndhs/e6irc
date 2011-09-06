@@ -150,6 +150,12 @@ Rectangle {
       text: qsTr ("Add Chanels")
     }
   }
+  onHeightChanged: {
+    channelGroup.changedChannelBox (width, height)
+  }
+  onWidthChanged: {
+    channelGroup.changedChannelBox (width, height)
+  }
   Component.onCompleted: {
     console.log ("loaded IrcChannelGroup")
   }

@@ -66,7 +66,7 @@ private slots:
 
   void ClickedChannel (QString link);
   void ChangedChannelBox (qreal newWidth, qreal newHeight,
-                          qreal leftMargin, qreal topMargin);
+                          qreal leftMargin = -1, qreal topMargin = -1);
   void DebugCheck ();
 
 private:
