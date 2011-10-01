@@ -35,6 +35,8 @@ Rectangle {
   property real middleButtonWidth: 90
   property real standardRowHeight: 32
   property real buttonHeight: standardRowHeight
+  property real mainWidth: width
+  
   width: 600
   height: 400
   x: 0
@@ -77,7 +79,8 @@ Rectangle {
     anchors {top: parent.top; right: parent.right }
     labelText: qsTr ("Show Channels")
     height: ircControlBox.buttonHeight - 2
-    width: 300
+    width: ircControlBox.mainWidth * 0.4
+    radius: height * 0.5
     onClicked: {
       console.log ("Hide Button clicked x " + ircControlBox.x + "  y " + ircControlBox.y)
       ircControlBox.hideMe ()

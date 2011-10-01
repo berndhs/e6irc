@@ -1,3 +1,6 @@
+* Mon Sep 05 2011 Bernd Stramm <bernd.stramm@gmail.com> - 0.6.4 
+ - fix bug in window size change detection
+
 * Thu Sep 01 2011 Bernd Stramm <bernd.stramm@gmail.com> - 0.6.3 
  - support multi-channel join: JOIN #chan1 #chan2 #chan3
 

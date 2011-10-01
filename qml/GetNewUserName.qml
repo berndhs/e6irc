@@ -33,7 +33,7 @@ Rectangle {
   
   signal haveNewUser (string nick, string realName, string pass, bool save)
   signal nevermind ()
-
+  
   VisualItemModel {
     id: saveOptionsModel
     property real itemHeight: 40
@@ -51,118 +51,124 @@ Rectangle {
     width: mainBox.width
     height: mainBox.height
     contentWidth: mainBox.width
-    contentHeight: 2*( nickGet.height + realNameGet.height 
-                      + passGet.height + saveButton.heigt) 
-                   - mainBox.rowHeight
+    contentHeight: scrollBoxContent.height
     clip: false
     boundsBehavior: Flickable.DragAndOvershootBounds
-    GetString {
-      id: nickGet
-      objectName: "NickGet"
-      color: mainBox.color
-      width: mainBox.width
-      radius: mainBox.radius
-      anchors {
-        top: mainBox.top; topMargin: 16
-        horizontalCenter: mainBox.horizontalCenter
-      }
-      inputTextColor: "#000000"
-      titleText: "New User Nick"
-      text: ""
-      inputBoxRadius: 0
-      useCheckList: false
-      suppressInitialCaps: true
-      onIsDone: {
-        focus = false
-        realNameGet.takeFocus()
-      }
-      onTabHit: {
-        console.log ("TAB in nick")
-        focus = false
-        realNameGet.takeFocus()
-      }
-      onCancelled: {
-        mainBox.nevermind ()
-      }
-    }
-    GetString {
-      id: realNameGet
-      objectName: "RealNameGet"
-      color: mainBox.color
-      width: mainBox.width
-      anchors {
-        top: nickGet.bottom
-        horizontalCenter: mainBox.horizontalCenter
-      }
-      inputTextColor: "#000000"
-      titleText: "Real Name"
-      text: ""
-      inputBoxRadius: 0
-      radius: 0
-      useCheckList: false
-      suppressInitialCaps: false
-      onIsDone: {
-        focus = false
-        passGet.takeFocus()
-      }
-      onTabHit: {
-        console.log ("TAB in real name")
-        focus = false
-        passGet.takeFocus()
-      }
-      onCancelled: {
-        mainBox.nevermind ()
-      }
-      onActiveFocusChanged: {
-        console.log ("real name active focus " + activeFocus)
-      }
-    }
     
-    GetString {
-      id: passGet
-      objectName:"PassGet"
-      color: mainBox.color
+    Rectangle {
+      id: scrollBoxContent
       width: mainBox.width
-      anchors {
-        top: realNameGet.bottom
-        horizontalCenter: mainBox.horizontalCenter
+      height: 2*( nickGet.height + realNameGet.height 
+                 + passGet.height + saveButton.heigt) 
+              - mainBox.rowHeight
+      GetString {
+        id: nickGet
+        objectName: "NickGet"
+        color: mainBox.color
+        width: mainBox.width
+        radius: mainBox.radius
+        anchors {
+          top: scrollBoxContent.top; topMargin: 16
+          horizontalCenter: scrollBoxContent.horizontalCenter
+        }
+        inputTextColor: "#000000"
+        titleText: "New User Nick"
+        text: ""
+        inputBoxRadius: 0
+        useCheckList: false
+        suppressInitialCaps: true
+        onIsDone: {
+          focus = false
+          realNameGet.takeFocus()
+        }
+        onTabHit: {
+          console.log ("TAB in nick")
+          focus = false
+          realNameGet.takeFocus()
+        }
+        onCancelled: {
+          mainBox.nevermind ()
+        }
       }
-      inputTextColor: "#000000"
-      titleText: "Password"
-      text: ""
-      echoModus: TextInput.PasswordEchoOnEdit // TextInput.PasswordEchoOnEdit
-      inputBoxRadius: 0
-      radius: 0
-      useCheckList: true
-      checkListModel: saveOptionsModel
-      checkListColor: color
-      checkListHeight: 1.5* mainBox.rowHeight
-      suppressInitialCaps: true
-      onIsDone: {
-        focus: false
+      GetString {
+        id: realNameGet
+        objectName: "RealNameGet"
+        color: mainBox.color
+        width: mainBox.width
+        anchors {
+          top: nickGet.bottom
+          horizontalCenter: scrollBoxContent.horizontalCenter
+        }
+        inputTextColor: "#000000"
+        titleText: "Real Name"
+        text: ""
+        inputBoxRadius: 0
+        radius: 0
+        useCheckList: false
+        suppressInitialCaps: false
+        onIsDone: {
+          focus = false
+          passGet.takeFocus()
+        }
+        onTabHit: {
+          console.log ("TAB in real name")
+          focus = false
+          passGet.takeFocus()
+        }
+        onCancelled: {
+          mainBox.nevermind ()
+        }
+        onActiveFocusChanged: {
+          console.log ("real name active focus " + activeFocus)
+        }
       }
-      onTabHit: {
-        focus = false
+      
+      GetString {
+        id: passGet
+        objectName:"PassGet"
+        color: mainBox.color
+        width: mainBox.width
+        anchors {
+          top: realNameGet.bottom
+          horizontalCenter: scrollBoxContent.horizontalCenter
+        }
+        inputTextColor: "#000000"
+        titleText: "Password"
+        text: ""
+        echoModus: TextInput.PasswordEchoOnEdit // TextInput.PasswordEchoOnEdit
+        inputBoxRadius: 0
+        radius: 0
+        useCheckList: true
+        checkListModel: saveOptionsModel
+        checkListColor: color
+        checkListHeight: 1.5* mainBox.rowHeight
+        suppressInitialCaps: true
+        onIsDone: {
+          focus: false
+        }
+        onTabHit: {
+          focus = false
+        }
+        onCancelled: {
+          mainBox.nevermind ()
+        }
       }
-      onCancelled: {
-        mainBox.nevermind ()
-      }
-    }
-    
-    ChoiceButton {
-      id: saveButton
-      width: mainBox.width
-      height: mainBox.rowHeight
-      labelText:qsTr ("Save") 
-      anchors {
-        top: passGet.bottom
-        horizontalCenter: mainBox.horizontalCenter
-      }
-
-      onClicked: {
-        checkSave.isChecked = true
-        mainBox.haveNewUser (nickGet.text, realNameGet.text, 
-                           passGet.text, checkSave.isChecked)
+      
+      ChoiceButton {
+        id: saveButton
+        width: mainBox.width
+        height: mainBox.rowHeight
+        labelText:qsTr ("Save") 
+        anchors {
+          top: passGet.bottom
+          horizontalCenter: scrollBoxContent.horizontalCenter
+        }
+        
+        onClicked: {
+          checkSave.isChecked = true
+          mainBox.haveNewUser (nickGet.text, realNameGet.text, 
+                               passGet.text, checkSave.isChecked)
+        }
       }
     }
   }

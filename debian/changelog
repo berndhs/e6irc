@@ -1,15 +1,21 @@
+e6irc (0.6.4) unstable; urgency=low
+
+  * fix bug in window size change detection
+
+ -- Bernd Stramm <bernd.stramm@gmail.com>  Tue, 06 Sep 2011 00:00:00 +0000
+
 e6irc (0.6.3) unstable; urgency=low
 
   * support multi-channel join: JOIN #chan1 #chan2 #chan3
 
- -- Bernd Stramm <bernd.stramm@gmail.com> Thu, 01 Sep 2011 15:01:58 +0000
+ -- Bernd Stramm <bernd.stramm@gmail.com>  Thu, 01 Sep 2011 15:01:58 +0000
 
 e6irc (0.6.2) unstable; urgency=low
 
   * deal with pop-up virtual keybboard a bit better
   * functions to delete servers, channels, nicks
 
- -- Bernd Stramm <bernd.stramm@gmail.com> Tue, 30 Aug 2011 17:27:34 +0000
+ -- Bernd Stramm <bernd.stramm@gmail.com>  Tue, 30 Aug 2011 17:27:34 +0000
 
 e6irc (0.6.1) unstable; urgency=low
 
@@ -22,7 +28,7 @@ e6irc (0.6.1) unstable; urgency=low
   * make user list shorter so it scrolls properly; packaging concerns for debian/harmattan
   * make some sizes more suitable for little screens on phones
 
- -- Bernd Stramm <bernd.stramm@gmail.com> Sun, 28 Aug 2011 21:48:46 +0000
+ -- Bernd Stramm <bernd.stramm@gmail.com>  Sun, 28 Aug 2011 21:48:46 +0000
 
 e6irc (0.6.0) unstable; urgency=low
 

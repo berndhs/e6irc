@@ -26,6 +26,7 @@
 #include <QDeclarativeEngine>
 #include <QDeclarativeContext>
 #include <QDesktopWidget>
+#include <QStringList>
 #include <QRect>
 #include <QSize>
 #include <QIcon>
@@ -42,6 +43,33 @@
 
 QTM_USE_NAMESPACE
 
+class ArgFlags {
+public:
+  
+  ArgFlags ()
+    :wantHelp (false),
+     wantVersion (false),
+     wantPhone (false),
+     wantNotPhone (false)
+  {}
+  
+  bool wantHelp;
+  bool wantVersion;
+  bool wantPhone;
+  bool wantNotPhone;
+};
+
+void
+checkOptions (const QStringList & argList, ArgFlags & flags)
+{
+  flags.wantHelp = argList.contains ("-h") || argList.contains ("--help");
+  flags.wantVersion = argList.contains ("-v") || argList.contains ("--version");
+  flags.wantPhone = argList.contains ("-p") 
+                    || argList.contains ("--phone")
+                    || argList.contains ("--smallscreen");
+  flags.wantNotPhone = argList.contains ("-n") || argList.contains ("--notphone");
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -52,6 +80,10 @@ main (int argc, char *argv[])
   QCoreApplication::setApplicationVersion (pv.Version());
 
   QApplication app (argc, argv);
+  
+  ArgFlags options;
+  
+  checkOptions (app.arguments(), options);
 
   QSettings  settings;
   deliberate::SetSettings (settings);
@@ -62,15 +94,16 @@ main (int argc, char *argv[])
   QString imsi = sdi.imsi();
   QString imei = sdi.imei();
   bool isPhone (!(imsi.isEmpty() || imei.isEmpty()));
-  qDebug () << __PRETTY_FUNCTION__ << " phone ? " << isPhone;
+  bool wantPhone = (isPhone || options.wantPhone) && !options.wantNotPhone;
+  qDebug () << __PRETTY_FUNCTION__ << " phone ? " << wantPhone;
 
-  egalite::E6Irc * irc = new egalite::E6Irc (0, isPhone);
+  egalite::E6Irc * irc = new egalite::E6Irc (0, wantPhone);
 
   QDeclarativeEngine * engine = irc->engine();
   QDeclarativeContext * context = irc->rootContext();
 
   if (context) {
-    context->setContextProperty ("isProbablyPhone", QVariant(isPhone));
+    context->setContextProperty ("isProbablyPhone", QVariant(wantPhone));
   }
   
   if (isPhone) {
