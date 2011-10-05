@@ -1,3 +1,9 @@
+e6irc (0.6.5) unstable; urgency=low
+
+  * command line options; qml details
+
+ -- Bernd Stramm <bernd.stramm@gmail.com>  Sat, 01 Oct 2011 00:00:00 +0000
+
 e6irc (0.6.4) unstable; urgency=low
 
   * fix bug in window size change detection
