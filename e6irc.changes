@@ -1,3 +1,8 @@
+* Sat Oct 01 2011 Bernd Stramm <bernd.stramm@gmail.com> - 0.6.5 
+ - command line options; qml details
+ - fix bug in window size change detection
+ - version
+
 * Mon Sep 05 2011 Bernd Stramm <bernd.stramm@gmail.com> - 0.6.4 
  - fix bug in window size change detection
 

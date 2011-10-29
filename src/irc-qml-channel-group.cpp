@@ -76,8 +76,6 @@ IrcQmlChannelGroup::Start ()
            this, SLOT (ClickedChannel (QString)));
   connect (qmlObject, SIGNAL (changedChannelBox (qreal, qreal)),
            this, SLOT (ChangedChannelBox (qreal, qreal)));
-  connect (qmlObject, SIGNAL (hideMe()),
-           this, SLOT (hide ()));
 }
 
 void

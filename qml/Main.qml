@@ -1,4 +1,4 @@
-import QtQuick 1.0
+import QtQuick 1.1
 import moui.geuzen.utils.static 1.0
 
 Rectangle {
@@ -7,6 +7,7 @@ Rectangle {
   y: 0
   rotation: 0
   color:  "yellow"
+  width: 400; height: 400;
   property real mainWidth: width
   property real mainHeight: height
   property real restMainHeight: mainHeight
@@ -19,6 +20,7 @@ Rectangle {
     console.log ("changed standard row height to " + standardRowHeight)
     return standardRowHeight
   }
+  
   IrcChannelGroup {
     id: channelGroup
     objectName:"ChannelGroup"
@@ -59,4 +61,5 @@ Rectangle {
       }
     }
   }
+  
 }
