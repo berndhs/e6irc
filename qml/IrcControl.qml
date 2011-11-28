@@ -65,7 +65,7 @@ Rectangle {
   signal hideMe ()
   signal tryConnect (string host, int port)
   signal selectActiveServer (int index)
-  signal selectChannel (string name)
+  signal selectChannel (string name, bool select)
   signal selectNick (string name)
   signal join ()
   signal login ()
@@ -391,12 +391,16 @@ Rectangle {
             width: channelListBox.width
             height: ircControlBox.buttonHeight
             color: "transparent"
+            property bool selected: false
             MouseArea {
               anchors.fill: parent
               onClicked: { 
                 channelList.currentIndex = index; 
-                ircControlBox.selectChannel (name) 
-                console.log (" channel box width " + parent.width + " name " + name)
+                channelDelegateBox.selected = !channelDelegateBox.selected
+                ircControlBox.selectChannel (name, channelDelegateBox.selected) 
+                console.log (" channel box width " 
+                             + parent.width + " name " + name
+                             + " selected " + channelDelegateBox.selected)
               }
               onPressAndHold: {
                 deleteConfirm.askConfirmLong ("delete","channel " + name,
@@ -404,9 +408,21 @@ Rectangle {
                                  qsTr ("Channel ") + name)
               }
             }
-            Text {
-              id: channelNameText
-              width: channelListBox,width; text: name
+            Row {
+              width: parent.width
+              height: parent.height
+              Text {
+                id: channelOp
+                width: 48
+                text: inUse 
+                      ? qsTr ("On") 
+                      : (selected ? qsTr("/join") : "")
+              }
+              Text {
+                id: channelNameText
+                width: channelListBox.width - channelOp.width 
+                text: name
+              }
             }
           }
         }

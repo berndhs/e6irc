@@ -33,7 +33,78 @@ NameListModel::NameListModel (QObject *parent)
 {
   QHash<int, QByteArray> roles;
   roles[Qt::DisplayRole] = "name";
+  roles[Data_InUse] = "inUse";
+  roles[Data_Selected] = "selected";
   setRoleNames(roles);
+}
+
+void
+NameListModel::load (const QStringList & names)
+{
+  usage.clear();
+  setStringList (names);
+}
+
+QVariant
+NameListModel::data (const QModelIndex & index, int role) const
+{
+  QString name = QStringListModel::data (index,Data_Name).toString();
+  switch (role) {
+  case Data_InUse: 
+    return usage[name].inUse; 
+  case Data_Selected:
+    return usage[name].selected;
+  default:
+    return QStringListModel::data (index,role);
+  }
+}
+
+void
+NameListModel::setInUse (const QString & name, bool used)
+{
+  int row = stringList().indexOf (name);
+  usage[name].inUse = used;
+  emit dataChanged (index (row,0), index(row,0));
+}
+
+void
+NameListModel::setSelected (const QString & name, bool selected)
+{
+  int row = stringList().indexOf (name);
+  usage[name].selected = selected;
+  emit dataChanged (index (row,0), index(row,0));
+}
+
+bool
+NameListModel::inUse (const QString & name) const
+{
+  if (usage.contains(name)) {
+    return usage[name].inUse;
+  } else {
+    return false;
+  }
+}
+
+bool
+NameListModel::selected (const QString & name) const
+{
+  if (usage.contains(name)) {
+    return usage[name].selected;
+  } else {
+    return false;
+  }
+}
+
+QStringList
+NameListModel::selectedNames () const
+{
+  QStringList results;
+  for (auto uit=usage.begin(); uit != usage.end(); uit++) {
+    if (uit.value().selected) {
+      results.append (uit.key());
+    }
+  }
+  return results;
 }
 
 } // namespace

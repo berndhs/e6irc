@@ -1,3 +1,6 @@
+* Fri Oct 28 2011 Bernd Stramm <bernd.stramm@gmail.com> - 0.6.6 
+ - default size for N950
+
 * Sat Oct 01 2011 Bernd Stramm <bernd.stramm@gmail.com> - 0.6.5 
  - command line options; qml details
  - fix bug in window size change detection

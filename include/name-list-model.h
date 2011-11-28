@@ -36,6 +36,32 @@ public:
   
   NameListModel (QObject *parent);
 
+  void load (const QStringList & names);
+  void setInUse (const QString & name, bool used);
+  void setSelected (const QString & name, bool select);
+  bool inUse (const QString & name) const;
+  bool selected (const QString & name) const;
+
+  QStringList selectedNames () const;
+
+  QVariant data (const QModelIndex & index, int role) const;
+
+private:
+
+  enum DataRole {
+    Data_Name = Qt::DisplayRole,
+    Data_InUse = Qt::UserRole +1,
+    Data_Selected = Qt::UserRole +2
+  };
+
+  struct UsageRec {
+    UsageRec () : inUse (false), selected(false) {}
+    bool  inUse;
+    bool  selected;
+  };
+
+  QMap <QString, UsageRec>  usage;
+
 };
 
 } // namespace

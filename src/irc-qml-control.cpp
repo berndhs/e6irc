@@ -163,7 +163,7 @@ IrcQmlControl::LoadLists ()
   chans.append (noNameChannel);
   chans.append (rawServer);
   chans.sort ();
-  channelModel.setStringList (chans);
+  channelModel.load (chans);
 
   ignoreSources = CertStore::IF().IrcIgnores ();
 }
@@ -175,8 +175,8 @@ IrcQmlControl::ConnectGui ()
            this, SLOT (TryConnect (const QString &, int)));
   connect (qmlObject, SIGNAL (selectActiveServer (int)),
            this, SLOT (SetActiveServer (int)));
-  connect (qmlObject, SIGNAL (selectChannel (const QString &)),
-           this, SLOT (SetCurrentChannel (const QString &)));
+  connect (qmlObject, SIGNAL (selectChannel (const QString &, bool)),
+           this, SLOT (SetCurrentChannel (const QString &, bool)));
   connect (qmlObject, SIGNAL (selectNick (const QString & )),
            this, SLOT (SetCurrentNick (const QString & )));
   connect (qmlObject, SIGNAL (join ()),
@@ -568,6 +568,8 @@ IrcQmlControl::AddChannel (IrcSocket * sock,
   }
   IrcAbstractChannel * newchan  = 
         new IrcAbstractChannel (chanName, sock->Name(), this);
+  channelModel.setInUse (chanName, true);
+  channelModel.setSelected (chanName, false);
   channels [chanName] = newchan;
   dockedChannels->AddChannel (newchan);
   newchan->SetHost (sock->HostName());
@@ -636,6 +638,8 @@ qDebug () << " DropChannel doesn't have " << chanName;
     oldFloat->deleteLater ();
   }
   channels.remove (chanName);
+  channelModel.setInUse (chanName, false);
+  channelModel.setSelected (chanName, false);
   chanBox->deleteLater ();
 }
 
@@ -1055,7 +1059,7 @@ IrcQmlControl::SaveIgnore (const QString & name)
 }
 
 void
-IrcQmlControl::RemoveServer (const QString & name)
+IrcQmlControlServer (const QString & name)
 {
   CertStore::IF().RemoveIrcServer (name);
 }
@@ -1097,9 +1101,9 @@ IrcQmlControl::SetActiveServer (int row)
 }
 
 void
-IrcQmlControl::SetCurrentChannel (const QString & chan)
+IrcQmlControl::SetCurrentChannel (const QString & chan, bool select)
 {
-  selectedChannel = chan;
+  channelModel.setSelected (chan, select);
 }
 
 void
@@ -1111,17 +1115,20 @@ IrcQmlControl::SetCurrentNick (const QString & nick)
 void
 IrcQmlControl::Join ()
 {
-  qDebug () << __PRETTY_FUNCTION__ << selectedChannel << selectedServer;
+  qDebug () << __PRETTY_FUNCTION__ << selectedServer;
   if (selectedServer) {
-    if (selectedChannel == rawServer) {
+    QStringList selected = channelModel.selectedNames();
+    if (selected.contains (noNameChannel)) {
+      selected.removeAll (noNameChannel);
+      QMetaObject::invokeMethod (qmlObject,"askNewChannel");
+    }
+    if (selected.contains (rawServer)) {
       qDebug () << "IrcQmlControl:: Join " << selectedServer->HostName();
+      selected.removeAll (rawServer);
       AddChannel (selectedServer, selectedServer->HostName(), true);
-    } else {
-      if (selectedChannel == noNameChannel) {
-        QMetaObject::invokeMethod (qmlObject,"askNewChannel");
-        return;
-      }
-      selectedServer->Send (QString ("JOIN %1").arg(selectedChannel));
+    }
+    for (int c=0; c< selected.count(); c++) {
+      selectedServer->Send (QString ("JOIN %1").arg(selected.at(c)));
     }
   }
 }

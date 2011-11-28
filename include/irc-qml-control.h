@@ -110,7 +110,7 @@ private slots:
   void WantsWhois (QString chan, QString otherUser, bool wantsit);
 
   void SetActiveServer (int row);
-  void SetCurrentChannel (const QString & chan);
+  void SetCurrentChannel (const QString & chan, bool select);
   void SetCurrentNick (const QString & nick);
   void Join ();
   void Login ();
@@ -239,7 +239,6 @@ private:
   NameListModel       nickModel;
 
   IrcSocket          *selectedServer;
-  QString             selectedChannel;
   QString             selectedNick;
 
   int                 fullHeight;
