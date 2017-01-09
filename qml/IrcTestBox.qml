@@ -3,7 +3,7 @@
 /****************************************************************
  * This file is distributed under the following license:
  *
- * Copyright (C) 2011, Bernd Stramm
+ * Copyright (C) 2017, Bernd Stramm
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -23,7 +23,7 @@
 
 /** \brief This is the box around a single IRC channel */
 
-import QtQuick 1.0
+import QtQuick 2.5
 //import net.sf.egalite 1.0
 
 Rectangle {

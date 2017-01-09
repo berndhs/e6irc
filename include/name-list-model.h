@@ -5,7 +5,7 @@
 /****************************************************************
  * This file is distributed under the following license:
  *
- * Copyright (C) 2010, Bernd Stramm
+ * Copyright (C) 2017, Bernd Stramm
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -33,7 +33,7 @@ class NameListModel : public QStringListModel
 {
 Q_OBJECT
 public:
-  
+
   NameListModel (QObject *parent);
 
   void load (const QStringList & names);
@@ -43,6 +43,9 @@ public:
   bool selected (const QString & name) const;
 
   QStringList selectedNames () const;
+
+
+  QHash<int, QByteArray> roleNames();
 
   QVariant data (const QModelIndex & index, int role) const;
 
@@ -59,6 +62,8 @@ private:
     bool  inUse;
     bool  selected;
   };
+
+  QHash<int, QByteArray> roles;
 
   QMap <QString, UsageRec>  usage;
 

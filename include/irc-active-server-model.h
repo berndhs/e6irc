@@ -4,7 +4,7 @@
 /****************************************************************
  * This file is distributed under the following license:
  *
- * Copyright (C) 2011, Bernd Stramm
+ * Copyright (C) 2017, Bernd Stramm
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -25,6 +25,8 @@
 
 #include <QAbstractListModel>
 #include <QString>
+#include <QHash>
+#include <QByteArray>
 #include <QList>
 #include <QHostAddress>
 #include "irc-socket.h"
@@ -48,6 +50,7 @@ public:
   /** \brief the rest */
 
   ActiveServerModel (QObject *parent=0);
+  QHash<int, QByteArray>  roleNames();
 
   void clear ();
 
@@ -87,6 +90,7 @@ signals:
 
 private:
 
+  QHash<int, QByteArray>  roles;
 
   enum DataRoles {
     Role_BaseName = Qt::UserRole+1,

@@ -1,14 +1,17 @@
 
 TEMPALTE = app
-QT += core gui declarative sql network
-CONFIG += mobility
-MOBILITY += systeminfo sensors
+QT += core gui widgets
+QT += quick
+QT += sql
+QT += network
+QT += multimedia multimediawidgets
+QT += sensors
 
 
 RESOURCES += \
     e6irc.qrc
 
-QMAKE_CXXFLAGS = -std=c++0x
+QMAKE_CXXFLAGS = -std=c++11
 
 MOC_DIR = tmp/moc
 RCC_DIR = tmp/rcc

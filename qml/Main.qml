@@ -1,4 +1,4 @@
-import QtQuick 1.1
+import QtQuick 2.5
 import moui.geuzen.utils.static 1.0
 
 Rectangle {

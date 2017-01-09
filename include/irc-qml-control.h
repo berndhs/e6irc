@@ -4,7 +4,7 @@
 /****************************************************************
  * This file is distributed under the following license:
  *
- * Copyright (C) 2011, Bernd Stramm
+ * Copyright (C) 2017, Bernd Stramm
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -32,7 +32,7 @@
 #include <QSize>
 #include <QPoint>
 #include <QGraphicsObject>
-#include <QDeclarativeView>
+#include <QQuickView>
 
 #define EGALITE_IRC_CONTROL_RESIZE 0
 
@@ -51,7 +51,7 @@ Q_OBJECT
 
 public:
 
-  IrcQmlControl (QObject *parent, QDeclarativeView * view, IrcQmlChannelGroup * channelGroup);
+  IrcQmlControl (QObject *parent, QQuickView * view, IrcQmlChannelGroup * channelGroup);
   
   void fillContext (bool assumePhone);
 
@@ -118,7 +118,7 @@ private slots:
   void Outgoing (QString chan, QString msg);
   void SeenWatchAlert (QString chanName, QString data);
   
-  void ViewStatusChange (QDeclarativeView::Status status);
+  void ViewStatusChange (QQuickView::Status status);
 
   void ConnectNewServer (const QString & name, int port, bool save);
   void ConnectNewUser (const QString & nick, const QString & realName,
@@ -202,9 +202,9 @@ private:
   static QStringList LoadIgnores ();
 
 
-  QDeclarativeView   *dView;
+  QQuickView   *dView;
   bool                initDone;
-  QDeclarativeItem   *qmlObject;
+  QQuickItem   *qmlObject;
   bool                isRunning;
   bool                isProbablyPhone;
 

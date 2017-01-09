@@ -3,7 +3,7 @@
 /****************************************************************
  * This file is distributed under the following license:
  *
- * Copyright (C) 2011, Bernd Stramm
+ * Copyright (C) 2017, Bernd Stramm
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -39,7 +39,7 @@
 #include <QFont>
 #include <QFile>
 #include <QMessageBox>
-#include <QDeclarativeContext>
+#include <QQmlContext>
 #include <QDebug>
 
 using namespace deliberate;
@@ -48,7 +48,7 @@ namespace egalite
 {
 
 IrcQmlControl::IrcQmlControl (QObject *parent, 
-                              QDeclarativeView * view,
+                              QQuickView * view,
                               IrcQmlChannelGroup * channelGroup)
   :QObject (parent),
    dView (view),
@@ -93,8 +93,10 @@ IrcQmlControl::IrcQmlControl (QObject *parent,
 void
 IrcQmlControl::fillContext (bool assumePhone)
 {
+  qDebug() << Q_FUNC_INFO << assumePhone;
   isProbablyPhone = assumePhone;
-  QDeclarativeContext * context = dView->rootContext ();
+  QQmlContext * context = dView->rootContext ();
+  qDebug() << Q_FUNC_INFO << "context is " << context;
   if (context == 0) {
     return ;
   }
@@ -114,7 +116,7 @@ IrcQmlControl::Run ()
   }
   QObject * root = dView->rootObject ();
   QObject *obj  = root->findChild<QObject*>("ControlPanel");
-  qmlObject = qobject_cast<QDeclarativeItem*> (obj);
+  qmlObject = qobject_cast<QQuickItem*> (obj);
   qDebug () << " control root " << root << " qml object is " 
             << obj << " or " << qmlObject;
   if (qmlObject == 0) {
@@ -130,11 +132,11 @@ IrcQmlControl::Run ()
 }
 
 void
-IrcQmlControl::ViewStatusChange ( QDeclarativeView::Status status)
+IrcQmlControl::ViewStatusChange ( QQuickView::Status status)
 {
   qDebug () << __PRETTY_FUNCTION__ << " status change " << status;
   qDebug () << "                 " << qmlObject;
-  if (status == QDeclarativeView::Ready && qmlObject) {
+  if (status == QQuickView::Ready && qmlObject) {
     QMetaObject::invokeMethod (qmlObject, "makeVisible");
   }
 }
@@ -1148,7 +1150,7 @@ IrcQmlControl::resizeEvent (QResizeEvent * event)
   if (event) {
     Resize (event->size().width(), event->size().height());
   }   
-  QDeclarativeView::resizeEvent (event); 
+  QQuickView::resizeEvent (event); 
 }
 
 #endif

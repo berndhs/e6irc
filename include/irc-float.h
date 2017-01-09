@@ -4,7 +4,7 @@
 /****************************************************************
  * This file is distributed under the following license:
  *
- * Copyright (C) 2010, Bernd Stramm
+ * Copyright (C) 2017, Bernd Stramm
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -22,7 +22,7 @@
  *  Boston, MA  02110-1301, USA.
  ****************************************************************/
 
-#include <QDeclarativeView>
+#include <QQuickView>
 #include "irc-abstract-channel.h"
 #include <QResizeEvent>
 #include <QCloseEvent>
@@ -32,13 +32,13 @@ class QCloseEvent;
 namespace egalite
 {
 
-class IrcFloat : public QDeclarativeView
+class IrcFloat : public QQuickView
 {
 Q_OBJECT
 
 public:
 
-  IrcFloat (QWidget *parent=0);
+  IrcFloat (QWindow *parent=0);
 
 public slots:
 
@@ -57,8 +57,8 @@ private:
   void CheckQml ();
 
   IrcAbstractChannel      *chanBox;
-  QGraphicsObject         *qmlRoot;
-  QDeclarativeItem        *qmlChannel;
+  QObject           *qmlRoot;
+  QQuickItem        *qmlChannel;
 
 };
 

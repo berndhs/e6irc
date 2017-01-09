@@ -2,7 +2,7 @@
 /****************************************************************
  * This file is distributed under the following license:
  *
- * Copyright (C) 2011, Bernd Stramm
+ * Copyright (C) 2017, Bernd Stramm
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -22,17 +22,16 @@
 
 #include <QApplication>
 #include <QDesktopWidget>
-#include <QDeclarativeView>
-#include <QDeclarativeEngine>
-#include <QDeclarativeContext>
+#include <QQuickView>
+#include <QQmlEngine>
+#include <QQmlContext>
 #include <QDesktopWidget>
 #include <QStringList>
 #include <QRect>
 #include <QSize>
 #include <QIcon>
 #include <QFont>
-#include <QSystemDeviceInfo>
-#include <qdeclarative.h>
+#include <QSysInfo>
 #include "qml-text-browser.h"
 #include "orientation.h"
 #include "e6irc.h"
@@ -40,8 +39,6 @@
 #include "version.h"
 
 #include <QDebug>
-
-QTM_USE_NAMESPACE
 
 class ArgFlags {
 public:
@@ -89,18 +86,14 @@ main (int argc, char *argv[])
   deliberate::SetSettings (settings);
   settings.setValue ("program",pv.MyName());
 
-  QSystemDeviceInfo sdi;
-
-  QString imsi = sdi.imsi();
-  QString imei = sdi.imei();
-  bool isPhone (!(imsi.isEmpty() || imei.isEmpty()));
+  bool isPhone (true);
   bool wantPhone = (isPhone || options.wantPhone) && !options.wantNotPhone;
   qDebug () << __PRETTY_FUNCTION__ << " phone ? " << wantPhone;
 
   egalite::E6Irc * irc = new egalite::E6Irc (0, wantPhone);
 
-  QDeclarativeEngine * engine = irc->engine();
-  QDeclarativeContext * context = irc->rootContext();
+  QQmlEngine * engine = irc->engine();
+  QQmlContext * context = irc->rootContext();
 
   if (context) {
     context->setContextProperty ("isProbablyPhone", QVariant(wantPhone));
@@ -118,8 +111,8 @@ main (int argc, char *argv[])
   qmlRegisterType<geuzen::QmlTextBrowser>(uri, 1, 0, "GeuzenTextBrowser");
   qmlRegisterType<geuzen::OrientationWatcher>(uri, 1, 0, "GeuzenOrientation");
 
-  irc->setWindowIcon (QIcon (":/icon64.png"));
-  irc->setResizeMode (QDeclarativeView::SizeRootObjectToView);
+  irc->setIcon (QIcon (":/icon64.png"));
+  irc->setResizeMode (QQuickView::SizeRootObjectToView);
   QRect geo = app.desktop()->screenGeometry();
   irc->run (geo.size());
   if (isPhone) {

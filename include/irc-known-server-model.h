@@ -4,7 +4,7 @@
 /****************************************************************
  * This file is distributed under the following license:
  *
- * Copyright (C) 2011, Bernd Stramm
+ * Copyright (C) 2017, Bernd Stramm
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -52,6 +52,7 @@ public:
   KnownServerModel (QObject *parent=0);
 
   void clear ();
+  QHash<int, QByteArray> roleNames();
 
   void addServer (const QString & name, int port);
 
@@ -60,6 +61,8 @@ signals:
   void contentChange ();
 
 private:
+
+  QHash<int, QByteArray>  roles;
 
   enum DataRoles {
     Role_Name = Qt::UserRole+1,

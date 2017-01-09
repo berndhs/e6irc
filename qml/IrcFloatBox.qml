@@ -1,5 +1,5 @@
 
-import QtQuick 1.0
+import QtQuick 2.5
 
 /** \brief Container for a single floating IRC channel */
 

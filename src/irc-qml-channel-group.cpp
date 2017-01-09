@@ -4,7 +4,7 @@
 /****************************************************************
  * This file is distributed under the following license:
  *
- * Copyright (C) 2011, Bernd Stramm
+ * Copyright (C) 2017, Bernd Stramm
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -25,7 +25,7 @@
 #include <QCloseEvent>
 #include <QMessageBox>
 #include <QMetaObject>
-#include <QDeclarativeItem>
+#include <QQuickItem>
 #include <QRectF>
 #include "irc-abstract-channel.h"
 #include "qml-text-browser.h"
@@ -34,7 +34,7 @@
 namespace egalite
 {
 
-IrcQmlChannelGroup::IrcQmlChannelGroup (QObject *parent, QDeclarativeView * view)
+IrcQmlChannelGroup::IrcQmlChannelGroup (QObject *parent, QQuickView * view)
   :QObject (parent),
    dView (view),
    qmlObject (0),
@@ -67,7 +67,7 @@ IrcQmlChannelGroup::Start ()
   if (root == 0) {
     return;
   }
-  qmlObject  = root->findChild<QDeclarativeItem*>("ChannelGroup");
+  qmlObject  = root->findChild<QQuickItem*>("ChannelGroup");
   qDebug () << __PRETTY_FUNCTION__ << " qml object " << qmlObject;
   if (qmlObject == 0) {
     return;
@@ -118,7 +118,7 @@ IrcQmlChannelGroup::AddChannel (IrcAbstractChannel * newchan)
     QObject * model = qobject_cast<QObject*>(newchan->userNamesModel());
     QMetaObject::invokeMethod (chanObj, "setModel",
         Q_ARG (QVariant, qVariantFromValue (model)));
-    newchan->SetQmlItem (qobject_cast<QDeclarativeItem*>(chanObj));
+    newchan->SetQmlItem (qobject_cast<QQuickItem*>(chanObj));
     channelList << newchan;
     SetTopmostChannel (newchan);
     SetChannelList ();

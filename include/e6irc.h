@@ -1,19 +1,19 @@
 #ifndef EGALITE_E6IRC_H
 #define EGALITE_E6IRC_H
 
-#include <QDeclarativeView>
+#include <QQuickView>
 #include <QSize>
 #include "irc-qml-control.h"
 #include "irc-qml-channel-group.h"
 
 namespace egalite
 {
-class E6Irc : public QDeclarativeView
+class E6Irc : public QQuickView
 {
 Q_OBJECT
 public:
 
-  E6Irc (QWidget *parent, bool isPhone);
+  E6Irc (QWindow *parent, bool isPhone);
   
   void run (const QSize & desktopSize);
 

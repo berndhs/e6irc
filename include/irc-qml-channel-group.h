@@ -4,7 +4,7 @@
 /****************************************************************
  * This file is distributed under the following license:
  *
- * Copyright (C) 2011, Bernd Stramm
+ * Copyright (C) 2017, Bernd Stramm
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -27,9 +27,9 @@
 #include <QIcon>
 #include <QWidget>
 #include <QGraphicsObject>
-#include <QDeclarativeItem>
-#include <QDeclarativeEngine>
-#include <QDeclarativeView>
+#include <QQuickItem>
+#include <QQmlEngine>
+#include <QQuickView>
 #include <QStringList>
 #include <QList>
 #include <QTimer>
@@ -47,7 +47,7 @@ Q_OBJECT
 
 public:
 
-  IrcQmlChannelGroup (QObject *parent, QDeclarativeView * view);
+  IrcQmlChannelGroup (QObject *parent, QQuickView * view);
 
   void Start ();
 
@@ -76,10 +76,10 @@ private:
   void     SetTopmostChannel (IrcAbstractChannel * topChan);
   void     SetTopmostChannel (const QString & topName);
 
-  QDeclarativeView       *dView;
+  QQuickView       *dView;
   QIcon                   activeIcon;
   QIcon                   quietIcon;
-  QDeclarativeItem       *qmlObject;
+  QQuickItem       *qmlObject;
   QList <IrcAbstractChannel*>  channelList;
   QTimer                  debugTimer;
   QString                 chanLinkPrefix;

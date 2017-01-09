@@ -4,7 +4,7 @@
 /****************************************************************
  * This file is distributed under the following license:
  *
- * Copyright (C) 2010, Bernd Stramm
+ * Copyright (C) 2017, Bernd Stramm
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -31,11 +31,9 @@ namespace egalite
 NameListModel::NameListModel (QObject *parent)
   :QStringListModel (parent)
 {
-  QHash<int, QByteArray> roles;
   roles[Qt::DisplayRole] = "name";
   roles[Data_InUse] = "inUse";
   roles[Data_Selected] = "selected";
-  setRoleNames(roles);
 }
 
 void
@@ -105,6 +103,12 @@ NameListModel::selectedNames () const
     }
   }
   return results;
+}
+
+QHash<int, QByteArray>
+NameListModel::roleNames()
+{
+  return roles;
 }
 
 } // namespace

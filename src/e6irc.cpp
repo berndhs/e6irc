@@ -1,6 +1,6 @@
 #include "e6irc.h"
 #include "cert-store.h"
-#include <QDeclarativeItem>
+#include <QQuickItem>
 #include "deliberate.h"
 
 #include <QObjectList>
@@ -11,8 +11,8 @@ using namespace deliberate;
 namespace egalite
 {
 
-E6Irc::E6Irc (QWidget *parent, bool isPhone)
-  :QDeclarativeView (parent),
+E6Irc::E6Irc (QWindow *parent, bool isPhone)
+  :QQuickView (parent),
    isProbablyPhone (isPhone),
    channelGroup (0),
    control (0)
@@ -31,13 +31,15 @@ E6Irc::run (const QSize & desktopSize)
   channelGroup->Start();
   control->Run ();
   QObject * qmlRoot = rootObject();
-  QDeclarativeItem * qmlItem = qobject_cast<QDeclarativeItem*> (qmlRoot);
+  QQuickItem * qmlItem = qobject_cast<QQuickItem*> (qmlRoot);
   if (qmlItem) {
     qDebug () << __PRETTY_FUNCTION__ << " phone ? " << isProbablyPhone;
     QMetaObject::invokeMethod (qmlItem, "phoneSettings",
       Q_ARG (QVariant, isProbablyPhone));
   }
-  if (!isFullScreen()) {
+  bool fullScreen (false);
+  fullScreen = parent()->windowState() == Qt::WindowFullScreen;
+  if (!fullScreen) {
     QSize defaultSize = size();
     QSize newsize = Settings().value ("sizes/e6irc", defaultSize).toSize();
     if (newsize.isEmpty()) {
@@ -79,7 +81,7 @@ E6Irc::fixCaps (QObject * root)
       if (suppressVar.type() == QVariant::Bool) {
         bool suppress = suppressVar.toBool();
         if (suppress) {
-          QDeclarativeItem * item = qobject_cast<QDeclarativeItem*> (root);
+          QWidget * item = qobject_cast<QWidget*> (root);
           if (item) {
             item->setInputMethodHints (Qt::ImhNoAutoUppercase);
           }

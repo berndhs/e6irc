@@ -4,7 +4,7 @@
 /****************************************************************
  * This file is distributed under the following license:
  *
- * Copyright (C) 2011, Bernd Stramm
+ * Copyright (C) 2017, Bernd Stramm
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -33,10 +33,8 @@ KnownServerModel::KnownServerModel (QObject *parent)
   :QAbstractListModel (parent),
    isAble (false)
 {
-  QHash<int, QByteArray>  roles;
   roles[Role_Name] = "sname";
   roles[Role_Port] = "sport";
-  setRoleNames (roles);
   setObjectName ("KnownServerModel");
 }
 
@@ -56,6 +54,12 @@ KnownServerModel::clear ()
   servers.clear ();
   endResetModel ();
   emit contentChange ();
+}
+
+QHash<int, QByteArray>
+KnownServerModel::roleNames()
+{
+  return roles;
 }
 
 int

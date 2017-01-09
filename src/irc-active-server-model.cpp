@@ -4,7 +4,7 @@
 /****************************************************************
  * This file is distributed under the following license:
  *
- * Copyright (C) 2011, Bernd Stramm
+ * Copyright (C) 2017, Bernd Stramm
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -32,7 +32,6 @@ namespace egalite
 ActiveServerModel::ActiveServerModel (QObject *parent)
   :QAbstractListModel (parent)
 {
-  QHash<int, QByteArray>  roles;
   roles[Role_BaseName] = "basename";
   roles[Role_RealName] = "realname";
   roles[Role_Address] = "address";
@@ -41,7 +40,12 @@ ActiveServerModel::ActiveServerModel (QObject *parent)
   roles[Role_HaveRealName] = "haverealname";
   roles[Role_BytesIn] = "bytesin";
   roles[Role_BytesOut] = "bytesout";
-  setRoleNames (roles);
+}
+
+QHash<int, QByteArray>
+ActiveServerModel::roleNames()
+{
+  return roles;
 }
 
 void
