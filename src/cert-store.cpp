@@ -96,12 +96,15 @@ void
   }
   initDone = true;
   dbFileName =  QStandardPaths::writableLocation
-              (QStandardPaths::ConfigLocation)
+              (QStandardPaths::AppDataLocation)
               + QDir::separator()
               + QString ("addressing.sql");
   dbFileName = Settings().value ("files/addressing",dbFileName).toString();
   Settings().setValue ("files/addressing",dbFileName);
+  qDebug() << Q_FUNC_INFO << QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+  qDebug() << Q_FUNC_INFO << Settings().value("files/addressing");
   qDebug () << "trying for dbname " << dbFileName;
+//  abort();
 
   conName = QString ("addressingDB");
   certDB = QSqlDatabase::addDatabase ("QSQLITE",conName);

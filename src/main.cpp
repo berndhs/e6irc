@@ -70,9 +70,9 @@ checkOptions (const QStringList & argList, ArgFlags & flags)
 int
 main (int argc, char *argv[])
 {
-  QCoreApplication::setApplicationName ("egalite");
+  QCoreApplication::setApplicationName ("e6irc");
   QCoreApplication::setOrganizationName ("BerndStramm");
-  QCoreApplication::setOrganizationDomain ("egalite.sourceforge.net");
+  QCoreApplication::setOrganizationDomain ("com.berndhs");
   deliberate::ProgramVersion pv ("E6Irc");
   QCoreApplication::setApplicationVersion (pv.Version());
 

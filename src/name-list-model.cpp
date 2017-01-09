@@ -31,7 +31,13 @@ namespace egalite
 NameListModel::NameListModel (QObject *parent)
   :QStringListModel (parent)
 {
-  roles[Qt::DisplayRole] = "name";
+  roles[Qt::DisplayRole] = "display";
+  roles[Qt::DecorationRole] ="decoration";
+  roles[Qt::EditRole] = "edit";
+  roles[Qt::ToolTipRole] = "toolTip";
+  roles[Qt::StatusTipRole] = "statusTip";
+  roles[Qt::WhatsThisRole] = "whatsThis";
+  roles[Data_Name] = "name";
   roles[Data_InUse] = "inUse";
   roles[Data_Selected] = "selected";
 }
