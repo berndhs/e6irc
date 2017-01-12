@@ -89,16 +89,23 @@ main (int argc, char *argv[])
   bool isPhone (true);
   bool wantPhone = (isPhone || options.wantPhone) && !options.wantNotPhone;
   qDebug () << __PRETTY_FUNCTION__ << " phone ? " << wantPhone;
-
+qDebug() << Q_FUNC_INFO << __LINE__;
   egalite::E6Irc * irc = new egalite::E6Irc (0, wantPhone);
+  if (!irc) {
+    qDebug()<< "Memory probelm, allocation failed!" ;
+    exit(1);
+  }
+  qDebug() << Q_FUNC_INFO << __LINE__;
 
   QQmlEngine * engine = irc->engine();
+  qDebug() << Q_FUNC_INFO << __LINE__;
   QQmlContext * context = irc->rootContext();
+  qDebug() << Q_FUNC_INFO << __LINE__;
 
   if (context) {
     context->setContextProperty ("isProbablyPhone", QVariant(wantPhone));
   }
-  
+
   if (isPhone) {
     QFont appFont = app.font();
     appFont.setPointSize (appFont.pointSize() + 6);
@@ -113,13 +120,18 @@ main (int argc, char *argv[])
 
   irc->setIcon (QIcon (":/icon64.png"));
   irc->setResizeMode (QQuickView::SizeRootObjectToView);
+  qDebug() << Q_FUNC_INFO << __LINE__;
   QRect geo = app.desktop()->screenGeometry();
+  qDebug() << Q_FUNC_INFO << __LINE__;
   irc->run (geo.size());
+  qDebug() << Q_FUNC_INFO << __LINE__;
   if (isPhone) {
     irc->setGeometry (app.desktop()->screenGeometry());
-    irc->showFullScreen ();
+//    irc->showFullScreen ();
   }
+  qDebug() << Q_FUNC_INFO << __LINE__;
   irc->show ();
+  qDebug() << Q_FUNC_INFO << __LINE__;
   qDebug () << " irc has size " << irc->size();
 
   QObject::connect (irc, SIGNAL (quit()), &app, SLOT (quit()));

@@ -75,9 +75,21 @@ Rectangle {
   signal wantNewChannel (string name, bool save)
   signal deleteAction (string operation, string target)
   
+  Image {
+      id: e6Image;
+      anchors {
+          horizontalCenter: parent.horizontalCenter;
+          verticalCenter: showChannelsButton.verticalCenter;
+      }
+      height: showChannelsButton.height;
+      width: height;
+      source: "qrc:///icon64.png";
+  }
+
   ChoiceButton {
+    id: showChannelsButton
     anchors {top: parent.top; right: parent.right }
-    labelText: qsTr ("Show Channels")
+    labelText: qsTr ("Show Channels") ;
     height: ircControlBox.buttonHeight - 2
     width: ircControlBox.mainWidth * 0.4
     radius: height * 0.5
@@ -202,7 +214,7 @@ Rectangle {
       property alias seeList: knownServerList.normalSize
       color:  seeList ? hideColor : showColor
 
-      labelText: qsTr (" --- Show Known Servers --- ")
+      labelText: qsTr (" -- Show Known Servers -- ") ;
 
       visible: true
      // Behavior on color { PropertyAnimation { duration: rollDelay } }
@@ -435,6 +447,9 @@ Rectangle {
         highlightMoveVelocity: 2000
         highlight: Rectangle { color: "#ffccee"; width:channelListBox.width}
         delegate: channelDelegate
+        Component.onCompleted: {
+            model.dump();
+        }
       }
     }
 

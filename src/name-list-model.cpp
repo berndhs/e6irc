@@ -24,6 +24,7 @@
 
 
 #include <QHash>
+#include <QDebug>
 
 namespace egalite
 {
@@ -52,15 +53,39 @@ NameListModel::load (const QStringList & names)
 QVariant
 NameListModel::data (const QModelIndex & index, int role) const
 {
-  QString name = QStringListModel::data (index,Data_Name).toString();
+  QString name = QStringListModel::data (index,Qt::DisplayRole).toString();
+  qDebug() << Q_FUNC_INFO<< name << usage[name].inUse << usage[name].selected ;
+  abort();
+  static int blow(0);
+  ++blow;
+  if (blow > 3) {  abort(); }
   switch (role) {
-  case Data_InUse: 
+  case Data_InUse:
     return usage[name].inUse; 
   case Data_Selected:
     return usage[name].selected;
   default:
+      qDebug() << Q_FUNC_INFO << "de fault with this system is you man";
     return QStringListModel::data (index,role);
-  }
+    }
+}
+
+QModelIndex
+NameListModel::index(int row, int column, const QModelIndex &parent) const
+{
+  static int blow(0);
+  ++blow;
+  if(blow > 3) abort();
+  qDebug() << Q_FUNC_INFO << row << column;
+  return createIndex(row,column) ;
+}
+
+void NameListModel::dump()
+{
+  qDebug() << Q_FUNC_INFO ;
+  qDebug() << "Model Content";
+  qDebug() << m_data;
+  abort();
 }
 
 void

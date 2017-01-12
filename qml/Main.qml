@@ -1,4 +1,7 @@
 import QtQuick 2.5
+import QtQml 2.2
+import QtQuick.Window 2.2
+
 import moui.geuzen.utils.static 1.0
 
 Rectangle {
@@ -13,6 +16,15 @@ Rectangle {
   property real restMainHeight: mainHeight
   property real standardRowHeight: 32
   property bool showControl: true
+
+  Item {
+      id: devInfo;
+      objectName: "OsInfo";
+      property string theOS: Screen.os;
+      Component.onCompleted: {
+          console.log("have============================= "+objectName+" "+theOS)
+      }
+  }
 
   function phoneSettings (isPhone) {
     isProbablyPhone = isPhone

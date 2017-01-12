@@ -29,7 +29,7 @@
 namespace egalite
 {
 
-class NameListModel : public QStringListModel 
+class NameListModel : public QStringListModel
 {
 Q_OBJECT
 public:
@@ -49,12 +49,17 @@ public:
 
   QVariant data (const QModelIndex & index, int role) const;
 
+  QModelIndex index (int row, int column, const QModelIndex &parent = QModelIndex()) const;
+
+  Q_INVOKABLE void dump();
+
 private:
 
   enum DataRole {
-    Data_Name = Qt::DisplayRole,
-    Data_InUse = Qt::UserRole +1,
-    Data_Selected = Qt::UserRole +2
+//    Data_Name = Qt::DisplayRole,
+    Data_Name = Qt::UserRole+1,
+    Data_InUse = Qt::UserRole +2,
+    Data_Selected = Qt::UserRole +3
   };
 
   struct UsageRec {
@@ -66,6 +71,8 @@ private:
   QHash<int, QByteArray> roles;
 
   QMap <QString, UsageRec>  usage;
+
+  QStringList m_data;
 
 };
 

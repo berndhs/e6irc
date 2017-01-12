@@ -23,6 +23,7 @@
 
 
 import QtQuick 2.5
+import QtQuick.Window 2.2
 
 Rectangle {
   id: button
@@ -59,6 +60,7 @@ Rectangle {
   Text { 
     id: label
     text: "Button"
+    font.pixelSize: Screen.pixelDensity * 3;
     z: parent.z
     wrapMode:Text.Wrap
     width: parent.width

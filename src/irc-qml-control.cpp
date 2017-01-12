@@ -123,8 +123,8 @@ IrcQmlControl::Run ()
     return false;
   }
   ConnectGui ();
-  fullWidth = dView->size().width();
-  fullHeight = dView->size().height();
+//  fullWidth = dView->size().width();
+//  fullHeight = dView->size().height();
   ViewStatusChange (dView->status());
 
   isRunning = true;
