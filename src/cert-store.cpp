@@ -104,7 +104,6 @@ void
   qDebug() << Q_FUNC_INFO << QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
   qDebug() << Q_FUNC_INFO << Settings().value("files/addressing");
   qDebug () << "trying for dbname " << dbFileName;
-//  abort();
 
   conName = QString ("addressingDB");
   certDB = QSqlDatabase::addDatabase ("QSQLITE",conName);

@@ -38,6 +38,7 @@ HEADERS = \
     include/dchat-magic.h \
     include/qml-text-browser.h \
     include/deliberate.h \
+    include/fileinit.h \
     include/e6irc.h
 
 SOURCES = \

@@ -4,6 +4,8 @@
         <file alias="palee6.png">images/pale.png</file>
         <file alias="checked-yes.png">icons/checked-yes.png</file>
         <file alias="checked-no.png">icons/checked-no.png</file>
+        <file>littlemain.qml</file>
+        <file>preload/addressing.sql</file>
     </qresource>
     <qresource prefix="/qml">
         <file alias="ActiveServerList.qml">qml/ActiveServerList.qml</file>
