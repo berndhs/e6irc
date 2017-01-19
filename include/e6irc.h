@@ -15,7 +15,9 @@ public:
 
   E6Irc (QWindow *parent, bool isPhone);
   
-  void run (const QSize & desktopSize);
+public slots:
+
+  void run (const QSize & desktopSize = QSize(600,300));
 
 private slots:
 

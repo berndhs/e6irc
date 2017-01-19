@@ -20,3 +20,10 @@ unix: {
     INSTALLS += target
 }
 
+HEADERS += \
+    src/fileinit.h \
+    include/main.h
+
+SOURCES += \
+    src/fileinit.cpp
+

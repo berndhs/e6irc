@@ -110,6 +110,7 @@ IrcQmlControl::fillContext (bool assumePhone)
 bool
 IrcQmlControl::Run ()
 {
+  qDebug() << Q_FUNC_INFO;
   LoadLists ();
   if (!isRunning) {
     qDebug () << __PRETTY_FUNCTION__ << " Start IrcQmlControl";

@@ -37,8 +37,10 @@
 #include "e6irc.h"
 #include "deliberate.h"
 #include "version.h"
+#include "main.h"
 
 #include <QDebug>
+#include <QTimer>
 
 class ArgFlags {
 public:
@@ -65,6 +67,12 @@ checkOptions (const QStringList & argList, ArgFlags & flags)
                     || argList.contains ("--phone")
                     || argList.contains ("--smallscreen");
   flags.wantNotPhone = argList.contains ("-n") || argList.contains ("--notphone");
+  egalite::globalAndroid = flags.wantPhone && !flags.wantNotPhone;
+}
+
+namespace egalite {
+  bool globalAndroid;
+  bool isPhone;
 }
 
 int
@@ -119,13 +127,12 @@ qDebug() << Q_FUNC_INFO << __LINE__;
   qmlRegisterType<geuzen::OrientationWatcher>(uri, 1, 0, "GeuzenOrientation");
 
   irc->setIcon (QIcon (":/icon64.png"));
-  irc->setResizeMode (QQuickView::SizeRootObjectToView);
+  irc->setResizeMode (QQuickView::SizeViewToRootObject);
+  qDebug() << Q_FUNC_INFO << __LINE__;\
+  QTimer::singleShot(2000,irc,SLOT(run()));
+//  irc->run ();
   qDebug() << Q_FUNC_INFO << __LINE__;
-  QRect geo = app.desktop()->screenGeometry();
-  qDebug() << Q_FUNC_INFO << __LINE__;
-  irc->run (geo.size());
-  qDebug() << Q_FUNC_INFO << __LINE__;
-  if (isPhone) {
+  if (egalite::globalAndroid) {
     irc->setGeometry (app.desktop()->screenGeometry());
 //    irc->showFullScreen ();
   }

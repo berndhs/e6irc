@@ -46,8 +46,11 @@ NameListModel::NameListModel (QObject *parent)
 void
 NameListModel::load (const QStringList & names)
 {
+  qDebug() << Q_FUNC_INFO << "setting to names" << names;
   usage.clear();
   setStringList (names);
+  qDebug() << Q_FUNC_INFO << "after setting stringlist"
+           << m_data.count();
 }
 
 QVariant
@@ -55,10 +58,9 @@ NameListModel::data (const QModelIndex & index, int role) const
 {
   QString name = QStringListModel::data (index,Qt::DisplayRole).toString();
   qDebug() << Q_FUNC_INFO<< name << usage[name].inUse << usage[name].selected ;
-  abort();
+//  abort();
   static int blow(0);
   ++blow;
-  if (blow > 3) {  abort(); }
   switch (role) {
   case Data_InUse:
     return usage[name].inUse; 
@@ -75,7 +77,6 @@ NameListModel::index(int row, int column, const QModelIndex &parent) const
 {
   static int blow(0);
   ++blow;
-  if(blow > 3) abort();
   qDebug() << Q_FUNC_INFO << row << column;
   return createIndex(row,column) ;
 }
@@ -84,8 +85,9 @@ void NameListModel::dump()
 {
   qDebug() << Q_FUNC_INFO ;
   qDebug() << "Model Content";
+  qDebug() << m_data.count() << "items";
   qDebug() << m_data;
-  abort();
+//  abort();
 }
 
 void

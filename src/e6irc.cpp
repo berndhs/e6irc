@@ -1,4 +1,5 @@
 #include "e6irc.h"
+#include "main.h"
 #include "cert-store.h"
 #include <QQuickItem>
 #include "deliberate.h"
@@ -26,7 +27,7 @@ E6Irc::E6Irc (QWindow *parent, bool isPhone)
 void
 E6Irc::run (const QSize & desktopSize)
 {
-  qDebug() << Q_FUNC_INFO << __LINE__;
+  qDebug() << Q_FUNC_INFO << __LINE__ << desktopSize;
   CertStore::IF().Init();
   qDebug() << Q_FUNC_INFO << __LINE__;
   control->fillContext(isProbablyPhone);
@@ -39,16 +40,14 @@ E6Irc::run (const QSize & desktopSize)
   qDebug() << Q_FUNC_INFO << __LINE__;
   QObject * qmlRoot = rootObject();
   QQuickItem * qmlItem = qobject_cast<QQuickItem*> (qmlRoot);
-  QObject * osInfo = qmlRoot->findChild<QObject*>("OsInfo");
   bool android(false);
-  if (osInfo) {
-    qDebug() << Q_FUNC_INFO << "os is " << osInfo->property("theOS");
-    if (osInfo->property("theOS").toString() == QString("android")) {
-      isProbablyPhone = true;
-      android = true;
-    }
+  if (qmlRoot) {
+     qDebug() << qmlRoot->objectName() << qmlRoot->property("theOS")  ;
+     if (qmlRoot->property("theOS").toString() == QString("android"))
+       android = true;
   }
-  qDebug() << Q_FUNC_INFO << __LINE__;
+  egalite::globalAndroid = android;
+  qDebug() << Q_FUNC_INFO << __LINE__ << "android" << android;
   if (qmlItem) {
     qDebug () << __PRETTY_FUNCTION__ << " phone ? " << isProbablyPhone;
     QMetaObject::invokeMethod (qmlItem, "phoneSettings",
@@ -58,9 +57,8 @@ E6Irc::run (const QSize & desktopSize)
   qDebug() << Q_FUNC_INFO << __LINE__;
   QSize defaultSize = size();
   qDebug() << Q_FUNC_INFO << __LINE__;
-  QSize newsize = QSize(500,300);// Settings().value ("ssizes/e6irc", defaultSize).toSize();
+  QSize newsize = QSize(500,300);// Settings().value ("sizes/e6irc", defaultSize).toSize();
   qDebug () << Q_FUNC_INFO << "new size" << newsize << "default" << defaultSize;
-//  abort();
   if (android && isProbablyPhone) {
     qDebug() << Q_FUNC_INFO << __LINE__;
     if (newsize.isEmpty()) {

@@ -201,6 +201,7 @@ IrcAbstractChannel::SetActive (bool a)
 NameListModel *
 IrcAbstractChannel::userNamesModel ()
 {
+  qDebug() << Q_FUNC_INFO;
   return & namesModel;
 }
 
