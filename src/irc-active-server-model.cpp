@@ -43,8 +43,10 @@ ActiveServerModel::ActiveServerModel (QObject *parent)
 }
 
 QHash<int, QByteArray>
-ActiveServerModel::roleNames()
+ActiveServerModel::roleNames() const
 {
+  qDebug() << Q_FUNC_INFO << roles;
+//  abort();
   return roles;
 }
 

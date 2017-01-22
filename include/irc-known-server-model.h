@@ -52,7 +52,7 @@ public:
   KnownServerModel (QObject *parent=0);
 
   void clear ();
-  QHash<int, QByteArray> roleNames();
+  QHash<int, QByteArray> roleNames() const;
 
   void addServer (const QString & name, int port);
 

@@ -29,10 +29,12 @@ E6Irc::run (const QSize & desktopSize)
 {
   qDebug() << Q_FUNC_INFO << __LINE__ << desktopSize;
   CertStore::IF().Init();
+  control->LoadLists();
   qDebug() << Q_FUNC_INFO << __LINE__;
   control->fillContext(isProbablyPhone);
   qDebug() << Q_FUNC_INFO << __LINE__;
   setSource (QUrl ("qrc:///qml/Main.qml"));
+  setResizeMode(SizeRootObjectToView);
   qDebug() << Q_FUNC_INFO << __LINE__;
   channelGroup->Start();
   qDebug() << Q_FUNC_INFO << __LINE__;
@@ -57,19 +59,17 @@ E6Irc::run (const QSize & desktopSize)
   qDebug() << Q_FUNC_INFO << __LINE__;
   QSize defaultSize = size();
   qDebug() << Q_FUNC_INFO << __LINE__;
-  QSize newsize = QSize(500,300);// Settings().value ("sizes/e6irc", defaultSize).toSize();
+  QSize newsize = Settings().value ("sizes/e6irc", defaultSize).toSize();
   qDebug () << Q_FUNC_INFO << "new size" << newsize << "default" << defaultSize;
   if (android && isProbablyPhone) {
     qDebug() << Q_FUNC_INFO << __LINE__;
     if (newsize.isEmpty()) {
-//      showMaximized();
-//      showFullScreen();
       qDebug() << Q_FUNC_INFO << __LINE__;
       newsize = desktopSize;
       qDebug() << Q_FUNC_INFO << __LINE__;
       resize (newsize);
     } else {
-        qDebug() << Q_FUNC_INFO << __LINE__;
+      qDebug() << Q_FUNC_INFO << __LINE__;
       resize (newsize);
     }
     qDebug() << Q_FUNC_INFO << __LINE__;

@@ -257,7 +257,6 @@ Rectangle {
         knownButton.adjust ()
       }
       function adjustRows () {
-        console.log (" knownServerList adjust rows " + knownServerList.modelEnabled)
         if (knownServerList.modelEnabled) {
           var nr = cppKnownServerModel.numberOfRows
           console.log (" known server model now has " + nr)

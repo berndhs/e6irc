@@ -40,7 +40,6 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QQmlContext>
-#include <QDebug>
 
 using namespace deliberate;
 

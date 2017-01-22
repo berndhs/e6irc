@@ -60,7 +60,7 @@ Rectangle {
   Text { 
     id: label
     text: "Button"
-    font.pixelSize: Screen.pixelDensity * 3;
+    font.pixelSize: Screen.pixelDensity * 4;
     z: parent.z
     wrapMode:Text.Wrap
     width: parent.width

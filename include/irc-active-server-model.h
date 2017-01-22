@@ -50,7 +50,7 @@ public:
   /** \brief the rest */
 
   ActiveServerModel (QObject *parent=0);
-  QHash<int, QByteArray>  roleNames();
+  QHash<int, QByteArray>  roleNames() const;
 
   void clear ();
 

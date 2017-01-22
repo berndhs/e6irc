@@ -15,7 +15,7 @@
         <file alias="IrcChannelGroup.qml">qml/IrcChannelGroup.qml</file>
         <file alias="IrcControl.qml">qml/IrcControl.qml</file>
         <file alias="IrcFloatBox.qml">qml/IrcFloatBox.qml</file>
-        <file alias="IrcTestBox.qml">qml/IrcTestBox.qml</file>
+        <file alias="IrcTextBox.qml">qml/IrcTextBox.qml</file>
         <file alias="KnownServerList.qml">qml/KnownServerList.qml</file>
         <file alias="GetNewServerName.qml">qml/GetNewServerName.qml</file>
         <file alias="GetNewUserName.qml">qml/GetNewUserName.qml</file>

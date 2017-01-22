@@ -54,7 +54,7 @@ public:
   IrcQmlControl (QObject *parent, QQuickView * view, IrcQmlChannelGroup * channelGroup);
   
   void fillContext (bool assumePhone);
-
+  void LoadLists ();
   int   OpenCount ();
   bool  IsRunning () { return isRunning; }
 
@@ -152,7 +152,7 @@ private:
 
   void ConnectGui ();
   void Resize (qreal width, qreal height);
-  void LoadLists ();
+
   void AddConnect (IrcSocket * sock);
   void NickLogin (const QString & nick, IrcSocket *sock);
   QStringList TransformSend (IrcSocket * sock, 

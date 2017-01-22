@@ -1,5 +1,5 @@
-#ifndef EGALITE_USER_LIST_MODEL_H
-#define EGALITE_USER_LIST_MODEL_H
+#ifndef EGALITE_NAME_LIST_MODEL_H
+#define EGALITE_NAME_LIST_MODEL_H
 
 
 /****************************************************************
@@ -23,13 +23,14 @@
  *  Boston, MA  02110-1301, USA.
  ****************************************************************/
 
-
-#include <QStringListModel>
+#include <QList>
+#include <QStringList>
+#include <QAbstractItemModel>
 
 namespace egalite
 {
 
-class NameListModel : public QStringListModel
+class NameListModel : public QAbstractItemModel
 {
 Q_OBJECT
 public:
@@ -44,14 +45,31 @@ public:
 
   QStringList selectedNames () const;
 
+  void setStringList (const QStringList &daList);
 
-  QHash<int, QByteArray> roleNames();
+
+  QHash<int, QByteArray> roleNames() const;
 
   QVariant data (const QModelIndex & index, int role) const;
 
   QModelIndex index (int row, int column, const QModelIndex &parent = QModelIndex()) const;
+  QModelIndex parent(const QModelIndex &child) const;
+  int rowCount(const QModelIndex &parent) const;
+  int columnCount(const QModelIndex &parent) const;
 
   Q_INVOKABLE void dump();
+
+public:
+  class UsageRec {
+    public:
+    UsageRec (bool u, bool s, QString v) : inUse(u),selected(s),value(v) {}
+    UsageRec () : inUse (false), selected(false),value(QString()) {}
+    bool  inUse;
+    bool  selected;
+    QString value;
+
+    friend QDebug & operator<<(QDebug debug, const UsageRec &);
+  };
 
 private:
 
@@ -62,17 +80,11 @@ private:
     Data_Selected = Qt::UserRole +3
   };
 
-  struct UsageRec {
-    UsageRec () : inUse (false), selected(false) {}
-    bool  inUse;
-    bool  selected;
-  };
 
   QHash<int, QByteArray> roles;
 
-  QMap <QString, UsageRec>  usage;
-
-  QStringList m_data;
+  QList<UsageRec> m_data;
+  QHash<QString, int> m_index;
 
 };
 

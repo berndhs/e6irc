@@ -57,8 +57,10 @@ KnownServerModel::clear ()
 }
 
 QHash<int, QByteArray>
-KnownServerModel::roleNames()
+KnownServerModel::roleNames() const
 {
+  qDebug() << Q_FUNC_INFO << roles;
+//  abort();
   return roles;
 }
 

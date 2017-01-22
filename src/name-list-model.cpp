@@ -30,7 +30,7 @@ namespace egalite
 {
 
 NameListModel::NameListModel (QObject *parent)
-  :QStringListModel (parent)
+  :QAbstractItemModel (parent)
 {
   roles[Qt::DisplayRole] = "display";
   roles[Qt::DecorationRole] ="decoration";
@@ -47,29 +47,30 @@ void
 NameListModel::load (const QStringList & names)
 {
   qDebug() << Q_FUNC_INFO << "setting to names" << names;
-  usage.clear();
   setStringList (names);
   qDebug() << Q_FUNC_INFO << "after setting stringlist"
            << m_data.count();
+  QModelIndex topLeft = createIndex(0,0);
+  QModelIndex botRight = createIndex(m_data.count(),0);
+  emit dataChanged(topLeft,botRight);
 }
 
 QVariant
 NameListModel::data (const QModelIndex & index, int role) const
 {
-  QString name = QStringListModel::data (index,Qt::DisplayRole).toString();
-  qDebug() << Q_FUNC_INFO<< name << usage[name].inUse << usage[name].selected ;
-//  abort();
-  static int blow(0);
-  ++blow;
+  qDebug() << Q_FUNC_INFO << index << role;
+  int row = index.row();
   switch (role) {
   case Data_InUse:
-    return usage[name].inUse; 
+    return m_data[row].inUse;
   case Data_Selected:
-    return usage[name].selected;
+    return m_data[row].selected;
+  case Data_Name:
+    return m_data[row].value;
   default:
-      qDebug() << Q_FUNC_INFO << "de fault with this system is you man";
-    return QStringListModel::data (index,role);
-    }
+    qDebug() << Q_FUNC_INFO << role <<  " is the rold they want.\nde fault with this system is you man";
+    return QVariant("invalid role");
+  }
 }
 
 QModelIndex
@@ -81,67 +82,106 @@ NameListModel::index(int row, int column, const QModelIndex &parent) const
   return createIndex(row,column) ;
 }
 
-void NameListModel::dump()
+QModelIndex
+NameListModel::parent(const QModelIndex &child) const
+{
+  return createIndex(child.row(),0);
+}
+
+int
+NameListModel::rowCount(const QModelIndex &parent) const
+{
+  return m_data.count();
+}
+
+int
+NameListModel::columnCount(const QModelIndex &parent) const
+{
+  return 1;
+}
+
+void
+NameListModel::dump()
 {
   qDebug() << Q_FUNC_INFO ;
   qDebug() << "Model Content";
   qDebug() << m_data.count() << "items";
   qDebug() << m_data;
-//  abort();
+  //abort();
 }
 
 void
 NameListModel::setInUse (const QString & name, bool used)
-{
-  int row = stringList().indexOf (name);
-  usage[name].inUse = used;
-  emit dataChanged (index (row,0), index(row,0));
+{ 
+  int row = m_index[name];
+  bool oldU = m_data[row].inUse;
+  m_data[row].inUse = used;
+  if (oldU != used) {
+    emit dataChanged (index (row,0), index(row,0));
+  }
 }
 
 void
 NameListModel::setSelected (const QString & name, bool selected)
 {
-  int row = stringList().indexOf (name);
-  usage[name].selected = selected;
-  emit dataChanged (index (row,0), index(row,0));
+  int row = m_index[name];
+  bool oldS = m_data[row].selected;
+  m_data[row].selected = selected;
+  if (oldS != selected) {
+    emit dataChanged (index (row,0), index(row,0));
+  }
 }
 
 bool
 NameListModel::inUse (const QString & name) const
 {
-  if (usage.contains(name)) {
-    return usage[name].inUse;
-  } else {
-    return false;
-  }
+  int row=m_index[name];
+  return m_data[row].inUse;
 }
 
 bool
 NameListModel::selected (const QString & name) const
 {
-  if (usage.contains(name)) {
-    return usage[name].selected;
-  } else {
-    return false;
-  }
+  int row=m_index[name];
+  return m_data[row].selected;
 }
 
 QStringList
 NameListModel::selectedNames () const
 {
   QStringList results;
-  for (auto uit=usage.begin(); uit != usage.end(); uit++) {
-    if (uit.value().selected) {
-      results.append (uit.key());
+  for (auto uit=m_data.begin(); uit != m_data.end(); uit++) {
+    if (uit->selected) {
+      results.append (uit->value);
     }
   }
   return results;
 }
 
-QHash<int, QByteArray>
-NameListModel::roleNames()
+void
+NameListModel::setStringList(const QStringList &daList)
 {
+  beginResetModel();
+  for (auto s=daList.begin(); s!= daList.end(); ++s) {
+    int ndx = m_data.count();
+    m_data.append(UsageRec(true,false,*s));
+    m_index[*s] = ndx;
+  }
+  endResetModel();
+}
+
+QHash<int, QByteArray>
+NameListModel::roleNames() const
+{
+  qDebug() << Q_FUNC_INFO << this << roles;
+//  abort();
   return roles;
+}
+
+QDebug & operator<<(QDebug debug, const NameListModel::UsageRec & rec)
+{
+  debug << "(" << rec.inUse << "," << rec.selected << "," << rec.value << ")";
+  return debug;
 }
 
 } // namespace

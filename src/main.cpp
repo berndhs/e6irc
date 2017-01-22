@@ -114,12 +114,10 @@ qDebug() << Q_FUNC_INFO << __LINE__;
     context->setContextProperty ("isProbablyPhone", QVariant(wantPhone));
   }
 
-  if (isPhone) {
-    QFont appFont = app.font();
-    appFont.setPointSize (appFont.pointSize() + 6);
-    app.setFont (appFont);
-    qDebug () << " it is a phone, set point size to " << appFont.pointSize();
-  }
+  QFont appFont = app.font();
+  appFont.setPixelSize(14);
+  app.setFont (appFont);
+  qDebug () << " it is a phone, set point size to " << appFont.pixelSize();
 
   const char uri[] = "moui.geuzen.utils.static";
 

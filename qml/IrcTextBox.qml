@@ -24,6 +24,7 @@
 /** \brief This is the box around a single IRC channel */
 
 import QtQuick 2.5
+import QtQml 2.2
 //import net.sf.egalite 1.0
 
 Rectangle {
@@ -272,6 +273,12 @@ Rectangle {
     //onWidthChanged: cookedLogBox.setTextWidth (width)
     Component.onCompleted: {
       //cookedLogBox.setTextWidth (cookedFlickBox.width)
+    }
+    MouseArea {
+        anchors.fill: parent;
+        onPressed: {
+            Qt.inputMethod.hide();
+        }
     }
   }
 
