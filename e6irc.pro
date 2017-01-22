@@ -104,6 +104,11 @@ OTHER_FILES += \
     qml/DropMenu.qml \
     qml/ChoiceButton.qml \
     qml/ActiveServerList.qml  \
+    qml/CheckItem.qml \
+    qml/GetNewChannelName.qml \
+    qml/GetNewServerName.qml \
+    qml/GetNewUserName.qml \
+    qml/GetString.qml \
     qml/littlemain.qml
 
 

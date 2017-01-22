@@ -84,6 +84,12 @@ Rectangle {
       height: showChannelsButton.height;
       width: height;
       source: "qrc:///icon64.png";
+      MouseArea {
+          anchors.fill: parent;
+          onClicked: {
+              Qt.quit();
+          }
+      }
   }
 
   ChoiceButton {

@@ -46,16 +46,26 @@ Rectangle {
     GradientStop { position: 0.0; color: topColor }
     GradientStop { position: 1.0; color: bottomColor }
   }
+  Rectangle {
+      id: buttonShadow
+      anchors.centerIn: button;
+      width: button.width +4;
+      height: button.height+4;
+      radius: 4;
+      z:button.z-1;
+      visible: false;
+      color: Qt.darker(bottomColor);
+  }
 
   anchors { 
     topMargin: commonMargin; bottomMargin: commonMargin; 
     leftMargin: commonMargin; rightMargin: commonMargin
   }
   MouseArea {
-    anchors.fill: parent
-    onClicked: { parent.clicked () }
-    onPressAndHold: { parent.pressAndHold () }
-    onPressed: { parent.pressed () }
+    anchors.fill: button
+    onClicked: { button.clicked (); buttonShadow.visible=true; }
+    onPressAndHold: { button.pressAndHold () }
+    onPressed: { button.pressed (); buttonShadow.visible=true;  }
   }
   Text { 
     id: label
