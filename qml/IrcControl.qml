@@ -21,6 +21,7 @@
  ****************************************************************/
 
 import QtQuick 2.5
+import QtQuick.Controls 2.0
 
 Rectangle {
   id: ircControlBox
@@ -75,13 +76,25 @@ Rectangle {
   signal wantNewChannel (string name, bool save)
   signal deleteAction (string operation, string target)
   
+  Button {
+      id: e6ImageButton;
+      text: cppPlatform.os;
+      anchors {
+          horizontalCenter: parent.horizontalCenter;
+          top: showChannelsButton.top;
+      }
+      width: e6Image.width;
+      height: showChannelsButton.height;
+  }
+
   Image {
       id: e6Image;
       anchors {
-          horizontalCenter: parent.horizontalCenter;
-          verticalCenter: showChannelsButton.verticalCenter;
+          horizontalCenter: e6imageButton.horizontalCenter;
+          top: e6ImageButton.bottom;
+          topMargin: 2;
       }
-      height: showChannelsButton.height;
+      height: showChannelsButton.height * 0.6;
       width: height;
       source: "qrc:///icon64.png";
       MouseArea {

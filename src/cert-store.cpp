@@ -63,7 +63,9 @@ CertStore::Object ()
 }
 
 CertStore::CertStore ()
-  :QObject (0),
+  :QObject (Q_NULLPTR),
+   fileInit(this),
+   initIsComplete(false),
    lastDirUsed ("")
 {
   dbElementList 
@@ -78,19 +80,21 @@ CertStore::CertStore ()
                 << "ircmessages"
                 << "uniqueircmsgs"
                 << "ircchannelservers";
+  Connect();
 }
 
 void
 CertStore::Connect ()
 {
-
+  connect (&fileInit,SIGNAL(movedAddressingTo(QString)),this,SLOT(haveAddrPath(QString)));
 
 }
 
 void
   CertStore::Init ()
 {
-  bool initDone (false);
+  fileInit.checkInitialized();
+  static bool initDone (false);
   if (initDone) {
     return;
   }
@@ -104,13 +108,6 @@ void
   qDebug() << Q_FUNC_INFO << QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
   qDebug() << Q_FUNC_INFO << Settings().value("files/addressing");
   qDebug () << "trying for dbname " << dbFileName;
-
-  conName = QString ("addressingDB");
-  certDB = QSqlDatabase::addDatabase ("QSQLITE",conName);
-  CheckExists (dbFileName);
-  certDB.setDatabaseName (dbFileName);
-  certDB.open ();
-  CheckDBComplete (dbFileName);
 }
 
 
@@ -255,6 +252,18 @@ bool
 CertStore::RemoveIrcIgnore (const QString & name)
 {
   return RemoveIrc ("name", name, "ircignore");
+}
+
+void CertStore::haveAddrPath(const QString &ap)
+{
+  dbFileName = ap;
+  conName = QString ("addressingDB");
+  certDB = QSqlDatabase::addDatabase ("QSQLITE",conName);
+  CheckExists (dbFileName);
+  certDB.setDatabaseName (dbFileName);
+  certDB.open ();
+  CheckDBComplete (dbFileName);
+  initIsComplete = true;
 }
 
 void

@@ -6,6 +6,7 @@ import moui.geuzen.utils.static 1.0
 
 Rectangle {
   id: mainBox
+  objectName: "MainBox";
   x: 0
   y: 0
   rotation: 0
@@ -16,6 +17,12 @@ Rectangle {
   property real restMainHeight: mainHeight
   property real standardRowHeight: 32
   property bool showControl: true
+
+  /* the next few properties are needed for C++ to know things about the display */
+  property string theOS: Screen.os;
+  property real mmPerPix: Screen.devicePixelRatio;
+  property int  screenWidth: Screen.desktopAvailableWidth;
+  property int  screenHeight: Screen.desktopAvailableHeight;
 
   Item {
       id: devInfo;

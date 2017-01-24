@@ -2,6 +2,7 @@
 #include "main.h"
 #include "cert-store.h"
 #include <QQuickItem>
+#include <QQmlContext>
 #include "deliberate.h"
 
 #include <QObjectList>
@@ -18,6 +19,7 @@ E6Irc::E6Irc (QWindow *parent, bool isPhone)
    channelGroup (0),
    control (0)
 {
+  platFormStuff = new PlatformDep (this);
   channelGroup = new IrcQmlChannelGroup (this, this);
   control = new IrcQmlControl (this, this, channelGroup);
   connect (engine(), SIGNAL (quit()), this, SLOT(allDone()));
@@ -41,6 +43,11 @@ E6Irc::run (const QSize & desktopSize)
   control->Run ();
   qDebug() << Q_FUNC_INFO << __LINE__;
   QObject * qmlRoot = rootObject();
+  platFormStuff->setRoot(qmlRoot);
+  QQmlContext *context = rootContext();
+  if (context) {
+    context->setContextProperty("cppPlatform",platFormStuff);
+  }
   QQuickItem * qmlItem = qobject_cast<QQuickItem*> (qmlRoot);
   bool android(false);
   if (qmlRoot) {

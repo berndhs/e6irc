@@ -2,6 +2,9 @@
 #define FILEINIT_H
 
 #include <QObject>
+#include <QString>
+
+namespace egalite {
 
 class FileInit : public QObject
 {
@@ -9,9 +12,20 @@ class FileInit : public QObject
 public:
   explicit FileInit(QObject *parent = 0);
 
+  void checkInitialized();
+
 signals:
 
+  void movedAddressingTo (const QString & fileIsAt );
+
 public slots:
+
+private:
+  QString writablePath();
+  QString qrcPath();
+
+  QString     destFilepath;
 };
 
+} // namespace
 #endif // FILEINIT_H

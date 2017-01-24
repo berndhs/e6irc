@@ -27,6 +27,7 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QStringList>
+#include "fileinit.h"
 
 class QStandardItemModel;
 class QStandardItem;
@@ -94,6 +95,8 @@ public:
 
 public slots:
 
+  void   haveAddrPath (const QString & ap);
+
 private slots:
 private:
 
@@ -112,10 +115,12 @@ private:
                   const QString & table);
   void IrcGetList (const QString & qryCmd, QStringList & result);
 
+  FileInit         fileInit;
   QString          dbFileName;
   QSqlDatabase     certDB;
   QString          conName;
   bool             viewDetails;
+  bool             initIsComplete;
 
   QStringList     dbElementList;
 

@@ -5,6 +5,7 @@
 #include <QSize>
 #include "irc-qml-control.h"
 #include "irc-qml-channel-group.h"
+#include "platformdep.h"
 
 namespace egalite
 {
@@ -31,6 +32,7 @@ private:
 
   void fixCaps (QObject * root);
 
+  PlatformDep         * platFormStuff;
   bool                  isProbablyPhone;
   IrcQmlChannelGroup  * channelGroup;
   IrcQmlControl       * control; 

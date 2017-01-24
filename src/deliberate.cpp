@@ -37,7 +37,7 @@ QTextStream & StdOut ()
 }
 
 
-static QSettings * mySettings(0);
+static QSettings * mySettings(Q_NULLPTR);
   
 void
 SetSettings (QSettings & settings)
