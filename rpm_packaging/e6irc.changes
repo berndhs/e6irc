@@ -1,0 +1,33 @@
+* Fri Oct 28 2011 Bernd Stramm <bernd.stramm@gmail.com> - 0.6.6 
+ - default size for N950
+
+* Sat Oct 01 2011 Bernd Stramm <bernd.stramm@gmail.com> - 0.6.5 
+ - command line options; qml details
+ - fix bug in window size change detection
+ - version
+
+* Mon Sep 05 2011 Bernd Stramm <bernd.stramm@gmail.com> - 0.6.4 
+ - fix bug in window size change detection
+
+* Thu Sep 01 2011 Bernd Stramm <bernd.stramm@gmail.com> - 0.6.3 
+ - support multi-channel join: JOIN #chan1 #chan2 #chan3
+
+* Tue Aug 30 2011 Bernd Stramm <bernd.stramm@gmail.com> - 0.6.2 
+ - deal with pop-up virtual keybboard a bit
+ - suppress initial caps where not appropriate
+ - functions to delete servers, channels, nicks
+ - better editing of new user/server/channel; packing issues;
+
+* Sun Aug 28 2011 Bernd Stramm <bernd.stramm@gmail.com> - 0.6.1 
+ - count objects
+ - suppress initial caps where not appropriate
+ - functions to delete servers, channels, nicks
+ - better editing of new user/server/channel; packing issues;
+ - add channels; servers and nicks to database
+ - use geuzen text browser; some costmetics;
+ - mark things as being gpl2, hopefully in all neccessary places
+
+* Wed Aug 24 2011 Bernd Stramm <bernd.stramm@gmail.com> - 0.6.0 
+- convert egalite code to stand-alone IRC client
+- make more suitable for phone-size displays
+
