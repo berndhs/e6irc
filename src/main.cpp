@@ -119,7 +119,7 @@ qDebug() << Q_FUNC_INFO << __LINE__;
   app.setFont (appFont);
   qDebug () << " it is a phone, set point size to " << appFont.pixelSize();
 
-  const char uri[] = "moui.geuzen.utils.static";
+  const char uri[] = GEUZEN_URI;
 
   qmlRegisterType<geuzen::QmlTextBrowser>(uri, 1, 0, "GeuzenTextBrowser");
   qmlRegisterType<geuzen::OrientationWatcher>(uri, 1, 0, "GeuzenOrientation");

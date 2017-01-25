@@ -96,7 +96,9 @@ IrcQmlControl::fillContext (bool assumePhone)
   isProbablyPhone = assumePhone;
   QQmlContext * context = dView->rootContext ();
   qDebug() << Q_FUNC_INFO << "context is " << context;
-  if (context == 0) {
+  if (context == Q_NULLPTR) {
+    qDebug() << "no context, cannot set properties for QML, giving up";
+    abort();
     return ;
   }
   context->setContextProperty ("cppKnownServerModel", knownServers);
