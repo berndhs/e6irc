@@ -68,6 +68,7 @@ CertStore::CertStore ()
    initIsComplete(false),
    lastDirUsed ("")
 {
+  qDebug() << Q_FUNC_INFO;
   dbElementList 
                 << "ircservers"
                 << "uniqueircserver"
@@ -86,34 +87,55 @@ CertStore::CertStore ()
 void
 CertStore::Connect ()
 {
-  connect (&fileInit,SIGNAL(movedAddressingTo(QString)),this,SLOT(haveAddrPath(QString)));
+//  connect (&fileInit,SIGNAL(movedAddressingTo(QString)),this,SLOT(haveAddrPath(QString)));
 
 }
 
 void
-  CertStore::Init ()
+CertStore::Init ()
 {
-  fileInit.checkInitialized();
-  static bool initDone (false);
-  if (initDone) {
+  qDebug() << Q_FUNC_INFO;
+  haveAddrPath(fileInit.writablePath());
+  initFromFile(fileInit.qrcContentPath());
+  emit initDone();
+}
+
+void CertStore::initFromFile(QString qrcFile)
+{
+  qDebug() << Q_FUNC_INFO << qrcFile;
+  qDebug() << Q_FUNC_INFO << "certDB is open " << certDB.isOpen();
+  if (qrcFile.isEmpty()) {
+    qDebug() << Q_FUNC_INFO << "no file, exiting";
     return;
   }
-  initDone = true;
-  dbFileName =  QStandardPaths::writableLocation
-              (QStandardPaths::AppDataLocation)
-              + QDir::separator()
-              + QString ("addressing.sql");
-  dbFileName = Settings().value ("files/addressing",dbFileName).toString();
-  Settings().setValue ("files/addressing",dbFileName);
-  qDebug() << Q_FUNC_INFO << QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-  qDebug() << Q_FUNC_INFO << Settings().value("files/addressing");
-  qDebug () << "trying for dbname " << dbFileName;
+  CheckExists(dbFileName);
+  CheckDBComplete(dbFileName);
+  QSqlQuery query (certDB);
+  QFile qrcSrc(qrcFile);
+  if (!qrcSrc.exists()) {
+    QMessageBox::critical(0,QString("No File!"),qrcFile);
+    abort();
+  }
+  qrcSrc.open(QFile::ReadOnly);
+  QByteArray wholeThing = qrcSrc.readAll();
+  qDebug() << Q_FUNC_INFO << "will try " << wholeThing;
+//  query.exec(QString(wholeThing));
+  QStringList qList = QString(wholeThing).split(";\n");
+  for (auto q=qList.begin(); q != qList.end(); ++q) {
+    certDB.exec(*q);
+    qDebug() << Q_FUNC_INFO << "did try " << *q;
+  }
+  qDebug() << Q_FUNC_INFO << "did try " << query.executedQuery();
+  QMessageBox::information(0,QString(Q_FUNC_INFO),QString("file %1 has %2 bytes of which I read %3")
+                           .arg(qrcFile).arg(qrcSrc.size())
+                           .arg(wholeThing.size()));
 }
 
 
 void
 CertStore::CheckExists (const QString filename)
 {
+  qDebug() << Q_FUNC_INFO << filename;
   QFileInfo dbfileInfo (filename);
   if (!dbfileInfo.exists()) {
     QDir dir (dbfileInfo.absolutePath());
@@ -128,6 +150,7 @@ CertStore::CheckExists (const QString filename)
 void
 CertStore::CheckDBComplete (const QString filename)
 {
+  qDebug() << Q_FUNC_INFO << filename;
   CheckExists (filename);
   QStringList::iterator  elit;
   QString el_name;
@@ -143,6 +166,7 @@ CertStore::CheckDBComplete (const QString filename)
 QString
 CertStore::ElementType (QString name)
 {
+  qDebug() << Q_FUNC_INFO << name;
   QSqlQuery query (certDB);
   QString cmdPat ("select * from main.sqlite_master where name=\"%1\"");
   QString cmd = cmdPat.arg (name);
@@ -157,6 +181,7 @@ CertStore::ElementType (QString name)
 void
 CertStore::MakeElement (const QString elem)
 {
+  qDebug() << Q_FUNC_INFO << elem;
   QString filename = QString (":/schemas/%1.sql").arg (elem);
   QFile schemafile (filename);
   schemafile.open (QFile::ReadOnly);
@@ -166,13 +191,14 @@ CertStore::MakeElement (const QString elem)
   QSqlQuery qry (certDB);
   qry.prepare (querytext);
   bool done = qry.exec ();
-qDebug () << " making  element " << elem << done;
-qDebug () << "    using " << qry.executedQuery();
+qDebug () << Q_FUNC_INFO << " making element " << elem << done;
+qDebug () << Q_FUNC_INFO << "    using " << qry.executedQuery();
 }
 
 QStringList
 CertStore::IrcServers ()
 {
+  qDebug() << Q_FUNC_INFO;
   QStringList list;
   IrcGetList ("select name from ircservers", list);
   return list;
@@ -254,16 +280,23 @@ CertStore::RemoveIrcIgnore (const QString & name)
   return RemoveIrc ("name", name, "ircignore");
 }
 
-void CertStore::haveAddrPath(const QString &ap)
+void
+CertStore::haveAddrPath(const QString &ap)
 {
+  qDebug() << Q_FUNC_INFO << ap;
+  qDebug() << Q_FUNC_INFO << "certDB is open " << certDB.isOpen();
   dbFileName = ap;
+  Settings().setValue ("files/addressing",dbFileName);
   conName = QString ("addressingDB");
   certDB = QSqlDatabase::addDatabase ("QSQLITE",conName);
   CheckExists (dbFileName);
   certDB.setDatabaseName (dbFileName);
   certDB.open ();
+  qDebug() << Q_FUNC_INFO << "certDB is open " << certDB.isOpen();
   CheckDBComplete (dbFileName);
+  QMessageBox::information(0,QString(Q_FUNC_INFO),ap);
   initIsComplete = true;
+  qDebug() << Q_FUNC_INFO << "certDB is open " << certDB.isOpen();
 }
 
 void

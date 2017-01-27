@@ -58,7 +58,7 @@ NameListModel::load (const QStringList & names)
 QVariant
 NameListModel::data (const QModelIndex & index, int role) const
 {
-  qDebug() << Q_FUNC_INFO << index << role;
+//  qDebug() << Q_FUNC_INFO << index << role;
   int row = index.row();
   switch (role) {
   case Data_InUse:

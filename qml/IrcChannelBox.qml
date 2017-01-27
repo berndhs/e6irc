@@ -207,15 +207,15 @@ Item {
       gradient: buttonShade
       onClicked: { channelBox.showControl (); channelMenu.hide () }
     }
-    ChoiceButton {
-      id: logChannelButton
-      height: parent.itemHeight
-      width: parent.itemWidth
-      radius: channelMenu.buttonRadius
-      labelText: channelBox.logging ? qsTr ("Stop Logging") : qsTr("Log Channel")
-      gradient: buttonShade
-      onClicked: { channelBox.toggleLog (); channelMenu.hide () }
-    }
+//    ChoiceButton {
+//      id: logChannelButton
+//      height: parent.itemHeight
+//      width: parent.itemWidth
+//      radius: channelMenu.buttonRadius
+//      labelText: channelBox.logging ? qsTr ("Stop Logging") : qsTr("Log Channel")
+//      gradient: buttonShade
+//      onClicked: { channelBox.toggleLog (); channelMenu.hide () }
+//    }
  
   }
   Rectangle {

@@ -11,7 +11,7 @@ Rectangle {
   y: 0
   rotation: 0
   color:  "green"
-  width: 400; height: 400;
+  width: 600; height: 400;
   property real mainWidth: width
   property real mainHeight: height
   property real restMainHeight: mainHeight

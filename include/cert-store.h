@@ -61,6 +61,8 @@ public:
   
   void Init ();
 
+  void initFromFile (QString qrcFile);
+
   QStringList IrcServers ();
   QStringList IrcNicks ();
   QStringList IrcChannels ();
@@ -93,9 +95,15 @@ public:
   bool        RemoveIrcChannelServers (const QString & chan);
   bool        RemoveIrcServerChannels (const QString & server);
 
+  QString     dbFile() { return dbFileName; }
+
 public slots:
 
   void   haveAddrPath (const QString & ap);
+
+signals:
+
+  void  initDone();
 
 private slots:
 private:

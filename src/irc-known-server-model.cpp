@@ -85,7 +85,7 @@ KnownServerModel::numRows () const
 QVariant
 KnownServerModel::data (const QModelIndex & index, int role) const
 {
-qDebug () << " KnownServerModel data " << index << " role " << role;
+//qDebug () << " KnownServerModel data " << index << " role " << role;
   if (!index.isValid()) {
     return QVariant ();
   }

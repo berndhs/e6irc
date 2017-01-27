@@ -3,6 +3,7 @@
 #include "cert-store.h"
 #include <QQuickItem>
 #include <QQmlContext>
+#include <QMessageBox>
 #include "deliberate.h"
 
 #include <QObjectList>
@@ -30,7 +31,8 @@ void
 E6Irc::run (const QSize & desktopSize)
 {
   qDebug() << Q_FUNC_INFO << __LINE__ << desktopSize;
-  CertStore::IF().Init();
+
+  QMessageBox::information(0,QString(Q_FUNC_INFO),CertStore::IF().dbFile());
   control->LoadLists();
   qDebug() << Q_FUNC_INFO << __LINE__;
   control->fillContext(isProbablyPhone);
