@@ -158,7 +158,8 @@ Rectangle {
   }
 
   ActiveChannelMenu {
-   id: channelMenu
+   id: channelMenu;
+   channelParent: channelBox;
     anchors {
       top: channelBoxLabelRect.bottom;
       left: channelBoxLabelRect.left
@@ -177,56 +178,6 @@ Rectangle {
       GradientStop { position: 0.00; color: "#c6e6e6" }
       GradientStop { position: 1.00; color: "#f0f0f0" }
     }
-
-//    ChoiceButton {
-//      id: stopButton
-//      height: parent.itemHeight
-//      width: parent.itemWidth
-//      radius: channelMenu.buttonRadius
-//      labelText: cookedFlickBox.interactive ?
-//                    qsTr (" Stop Scroll ") : qsTr (" Start Scroll ")
-//      gradient: buttonShade
-//      onClicked: {
-//        cookedFlickBox.interactive = !cookedFlickBox.interactive
-//        channelMenu.hide ()
-//      }
-//    }
-//    ChoiceButton {
-//      id: partButton
-//      height: parent.itemHeight
-//      width: parent.itemWidth
-//      radius: channelMenu.buttonRadius
-//      labelText: qsTr ("  Leave Channel  ")
-//      gradient: buttonShade
-//      onClicked: { channelBox.wantPart (); channelMenu.hide () }
-//    }
-//    ChoiceButton {
-//      id: floatButton
-//      height: parent.itemHeight
-//      width: parent.itemWidth
-//      radius: channelMenu.buttonRadius
-//      labelText: qsTr ("Float/Dock")
-//      gradient: buttonShade
-//      onClicked: { channelBox.toggleFloat (); channelMenu.hide () }
-//    }
-//    ChoiceButton {
-//      id: showControlButton
-//      height: parent.itemHeight
-//       width: parent.itemWidth
-//      radius: channelMenu.buttonRadius
-//      labelText: qsTr ("Show Control")
-//      gradient: buttonShade
-//      onClicked: { channelBox.showControl (); channelMenu.hide () }
-//    }
-//    ChoiceButton {
-//      id: logChannelButton
-//      height: parent.itemHeight
-//      width: parent.itemWidth
-//      radius: channelMenu.buttonRadius
-//      labelText: channelBox.logging ? qsTr ("Stop Logging") : qsTr("Log Channel")
-//      gradient: buttonShade
-//      onClicked: { channelBox.toggleLog (); channelMenu.hide () }
-//    }
  
   }
 

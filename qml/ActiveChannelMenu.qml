@@ -3,8 +3,9 @@ import QtQuick.Controls 2.1
 
 Rectangle {
     id: channelMenu;
-    color: "beige";
+    color: "blue";
     property real itemWidth: 100;
+    property Item channelParent: NULL;
     function popup () {
         console.log ("ActiveChannelMenu popup" , channelMenuMenu);
         channelMenuMenu.open();
@@ -20,7 +21,6 @@ Rectangle {
             onReleased: {
                 menuImage.opacity = 0.5;
                 channelMenuMenu.open();
-                menuImage.visible = false;
             }
         }
     }
@@ -29,16 +29,13 @@ Rectangle {
     
     Component.onCompleted: {
         menuImage.visible = true;
+        menuImage.opacity = 1.0;
     }
 
 
     Menu {
         id: channelMenuMenu;
         objectName: "ChannelMenu";
-        Component.onCompleted: {
-            open();
-            console.log ("have channel menu at ",channelMenu);
-        }
 
         title: "Ops"
         visible: true;
@@ -53,34 +50,39 @@ Rectangle {
         MenuItem {
             text: qsTr("Float/Dock");
             onTriggered: {
-                channelBox.toggleFloat();
+                channelParent.toggleFloat();
             }
         }
         MenuItem {
             text: cookedFlickBox.interactive ?
-                      qsTr (" Stop Scroll ") : qsTr (" Start Scroll ");
+                      qsTr ("Stop Scroll") : qsTr ("Start Scroll");
             onTriggered: {
-                cookedFlickBox.interactive = !cookedFlickBox.interactive;
+                channelParent.toggleScroll();
             }
         }
         MenuItem {
-            text: qsTr("  Leave Channel  ");
+            text: qsTr("Leave Channel");
             onTriggered: {
-                channelBox.wantPart();
+                channelParent.wantPart();
             }
         }
         MenuItem {
-            text: qsTr (" Show Control  ");
+            text: qsTr ("Show Control");
             onTriggered: {
-                channelBox.showControl();
+                channelParent.showControl();
             }
         }
         MenuItem {
-            text: qsTr("Leave Chat");
+            text: qcTr ("Toggle Log");
             onTriggered: {
-                Qt.quit();
+                channelParent.toggleLog();
+            }
+            MenuItem {
+                text: qsTr("Leave Chat");
+                onTriggered: {
+                    Qt.quit();
+                }
             }
         }
-
     }
 }
