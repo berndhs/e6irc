@@ -37,7 +37,7 @@ public:
   static QString ShortVersion ();
   static QString MyName ();
   
-  static void ShowVersionWindow ();
+  static void ShowVersionWindow (int msecs=30000);
   static void CLIVersion ();
   
 private:

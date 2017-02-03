@@ -15,10 +15,11 @@ Q_OBJECT
 public:
 
   E6Irc (QWindow *parent, bool isPhone);
-  
+
+  PlatformDep * cppPlatform () { return platFormStuff; }
 public slots:
 
-  void run (const QSize & desktopSize = QSize(600,300));
+  void run (const QSize & desktopSize = QSize(0,0));
 
 private slots:
 

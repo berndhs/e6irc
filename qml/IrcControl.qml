@@ -37,7 +37,8 @@ Rectangle {
   property real standardRowHeight: 32
   property real buttonHeight: standardRowHeight
   property real mainWidth: width
-  
+  property string theOS: Qt.platform.os;
+
   width: 600
   height: 400
   x: 0
@@ -90,7 +91,7 @@ Rectangle {
   Image {
       id: e6Image;
       anchors {
-          horizontalCenter: e6imageButton.horizontalCenter;
+          horizontalCenter: e6ImageButton.horizontalCenter;
           top: e6ImageButton.bottom;
           topMargin: 2;
       }
@@ -410,7 +411,7 @@ Rectangle {
         Text {
           width: parent.width
           horizontalAlignment: Text.AlignHCenter
-          text: qsTr ("Channel Names")
+          text: qsTr ("Channel Names") + " " + channelList.count
         }
       }
       ListView {
@@ -511,7 +512,7 @@ Rectangle {
         Text {
           width: parent.width
           horizontalAlignment: Text.AlignHCenter
-          text: qsTr ("Nick Names")
+          text: qsTr ("Nick Names") + " " + nickList.count
         }
       }
       ListView {

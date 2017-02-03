@@ -25,6 +25,7 @@
         <file alias="CheckItem.qml">qml/CheckItem.qml</file>
         <file alias="Confirm.qml">qml/Confirm.qml</file>
         <file alias="Main.qml">qml/Main.qml</file>
+        <file alias="ActiveChannelMenu.qml">qml/ActiveChannelMenu.qml</file>
     </qresource>
     <qresource prefix="/schemas">
         <file alias="uniquenick.sql">schemafiles/uniquenick.sql</file>

@@ -48,8 +48,6 @@ NameListModel::load (const QStringList & names)
 {
   qDebug() << Q_FUNC_INFO << "setting to names" << names;
   setStringList (names);
-  qDebug() << Q_FUNC_INFO << "after setting stringlist"
-           << m_data.count();
   QModelIndex topLeft = createIndex(0,0);
   QModelIndex botRight = createIndex(m_data.count(),0);
   emit dataChanged(topLeft,botRight);
@@ -76,9 +74,6 @@ NameListModel::data (const QModelIndex & index, int role) const
 QModelIndex
 NameListModel::index(int row, int column, const QModelIndex &parent) const
 {
-  static int blow(0);
-  ++blow;
-  qDebug() << Q_FUNC_INFO << row << column;
   return createIndex(row,column) ;
 }
 
@@ -113,6 +108,7 @@ NameListModel::dump()
 void
 NameListModel::setInUse (const QString & name, bool used)
 { 
+  qDebug() << Q_FUNC_INFO << name << used;
   int row = m_index[name];
   bool oldU = m_data[row].inUse;
   m_data[row].inUse = used;
@@ -164,7 +160,7 @@ NameListModel::setStringList(const QStringList &daList)
   beginResetModel();
   for (auto s=daList.begin(); s!= daList.end(); ++s) {
     int ndx = m_data.count();
-    m_data.append(UsageRec(true,false,*s));
+    m_data.append(UsageRec(false,false,*s));
     m_index[*s] = ndx;
   }
   endResetModel();

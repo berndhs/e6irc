@@ -23,11 +23,17 @@
 
 /** \brief This is the box around a single IRC channel */
 
-import QtQuick 2.5
 import moui.geuzen.utils.static 1.0
 
-Item {
+import QtQuick 2.5
+import QtQml 2.2
+import QtQuick.Controls 2.0
+import QtQuick.Window 2.0
+//import net.sf.egalite 1.0
+
+Rectangle {
   id: channelBox
+
 
   property string channelName: qsTr ("no channel")
   property bool topmost: true
@@ -111,6 +117,7 @@ Item {
 
   Rectangle {
     id: channelBoxLabelRect
+    objectName: "channelBoxLabelRectInIrcChannelBox";
     height: Math.max (0.5* channelBox.standardRowHeight, channelBoxLabel.height + 4)
     width: channelBoxLabel.width + 8
     anchors { top: parent.top; left: parent.left }
@@ -125,11 +132,16 @@ Item {
       anchors.fill: parent
       onPressAndHold: topicBox.toggleHeight()
       onClicked: {
+          console.log ("clicked");
+          cppPlatform.iAmHere(parent);
+          console.log("try to pop up menu " + channelMenu);
+          channelMenu.popup();
+          /*
         if (channelMenu.isShown) {
           channelMenu.hide ()
         } else {
           channelMenu.show ()
-        }
+        }*/
       }
     }
     Text {
@@ -144,13 +156,13 @@ Item {
       text: " "
     }
   }
-  
-  DropMenu {
+
+  ActiveChannelMenu {
    id: channelMenu
-    anchors { 
-      top: channelBoxLabelRect.bottom; 
-      left: channelBoxLabelRect.left 
-      leftMargin: 8 
+    anchors {
+      top: channelBoxLabelRect.bottom;
+      left: channelBoxLabelRect.left
+      leftMargin: 8
       topMargin: 0
     }
     itemWidth: 150
@@ -158,8 +170,7 @@ Item {
     property real buttonRadius: 0.4 * itemHeight
     z: parent.z + 2
     isShown: false
-    rollDelay: 75
-    spacing: 2
+    // rollDelay: 75
 
     Gradient {
       id: buttonShade
@@ -167,46 +178,46 @@ Item {
       GradientStop { position: 1.00; color: "#f0f0f0" }
     }
 
-    ChoiceButton {
-      id: stopButton
-      height: parent.itemHeight
-      width: parent.itemWidth
-      radius: channelMenu.buttonRadius
-      labelText: cookedFlickBox.interactive ? 
-                    qsTr (" Stop Scroll ") : qsTr (" Start Scroll ")
-      gradient: buttonShade
-      onClicked: { 
-        cookedFlickBox.interactive = !cookedFlickBox.interactive
-        channelMenu.hide () 
-      }
-    }
-    ChoiceButton {
-      id: partButton
-      height: parent.itemHeight
-      width: parent.itemWidth
-      radius: channelMenu.buttonRadius
-      labelText: qsTr ("  Leave Channel  ")
-      gradient: buttonShade
-      onClicked: { channelBox.wantPart (); channelMenu.hide () }
-    }
-    ChoiceButton {
-      id: floatButton 
-      height: parent.itemHeight
-      width: parent.itemWidth
-      radius: channelMenu.buttonRadius
-      labelText: qsTr ("Float/Dock")
-      gradient: buttonShade
-      onClicked: { channelBox.toggleFloat (); channelMenu.hide () }
-    }
-    ChoiceButton {
-      id: showControlButton
-      height: parent.itemHeight
-       width: parent.itemWidth
-      radius: channelMenu.buttonRadius
-      labelText: qsTr ("Show Control")
-      gradient: buttonShade
-      onClicked: { channelBox.showControl (); channelMenu.hide () }
-    }
+//    ChoiceButton {
+//      id: stopButton
+//      height: parent.itemHeight
+//      width: parent.itemWidth
+//      radius: channelMenu.buttonRadius
+//      labelText: cookedFlickBox.interactive ?
+//                    qsTr (" Stop Scroll ") : qsTr (" Start Scroll ")
+//      gradient: buttonShade
+//      onClicked: {
+//        cookedFlickBox.interactive = !cookedFlickBox.interactive
+//        channelMenu.hide ()
+//      }
+//    }
+//    ChoiceButton {
+//      id: partButton
+//      height: parent.itemHeight
+//      width: parent.itemWidth
+//      radius: channelMenu.buttonRadius
+//      labelText: qsTr ("  Leave Channel  ")
+//      gradient: buttonShade
+//      onClicked: { channelBox.wantPart (); channelMenu.hide () }
+//    }
+//    ChoiceButton {
+//      id: floatButton
+//      height: parent.itemHeight
+//      width: parent.itemWidth
+//      radius: channelMenu.buttonRadius
+//      labelText: qsTr ("Float/Dock")
+//      gradient: buttonShade
+//      onClicked: { channelBox.toggleFloat (); channelMenu.hide () }
+//    }
+//    ChoiceButton {
+//      id: showControlButton
+//      height: parent.itemHeight
+//       width: parent.itemWidth
+//      radius: channelMenu.buttonRadius
+//      labelText: qsTr ("Show Control")
+//      gradient: buttonShade
+//      onClicked: { channelBox.showControl (); channelMenu.hide () }
+//    }
 //    ChoiceButton {
 //      id: logChannelButton
 //      height: parent.itemHeight
@@ -218,6 +229,7 @@ Item {
 //    }
  
   }
+
   Rectangle {
     id: topicBox
     property real maxHeight: channelBoxLabelRect.height

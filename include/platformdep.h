@@ -12,9 +12,12 @@ class PlatformDep : public QObject
 public:
   explicit PlatformDep(QObject *parent = 0);
   void setRoot (QObject * rootObj);
-  Q_PROPERTY(QString os READ getOS)
+  Q_PROPERTY(QString os READ getOS NOTIFY osChanged)
 
   Q_INVOKABLE qreal pixelSize(int mm);
+
+  Q_INVOKABLE void iAmHere (QObject *obj=0);
+  Q_INVOKABLE void blow();
 
   QString getOS() const
   {
@@ -22,6 +25,8 @@ public:
   }
 
 signals:
+
+  void osChanged (QString newOs);
 
 public slots:
 

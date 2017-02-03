@@ -29,6 +29,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QSqlQuery>
+#include <QSqlError>
 #include <QSqlRecord>
 #include <QDateTime>
 #include <QApplication>
@@ -108,6 +109,11 @@ void CertStore::initFromFile(QString qrcFile)
     qDebug() << Q_FUNC_INFO << "no file, exiting";
     return;
   }
+  QStringList servers = IrcServers();
+  if (servers.count() > 1) {
+    qDebug() << "have servers in DB, not initializing" << Q_FUNC_INFO;
+    return;
+  }
   CheckExists(dbFileName);
   CheckDBComplete(dbFileName);
   QSqlQuery query (certDB);
@@ -122,13 +128,19 @@ void CertStore::initFromFile(QString qrcFile)
 //  query.exec(QString(wholeThing));
   QStringList qList = QString(wholeThing).split(";\n");
   for (auto q=qList.begin(); q != qList.end(); ++q) {
-    certDB.exec(*q);
-    qDebug() << Q_FUNC_INFO << "did try " << *q;
+    if ((*q).contains("BEGIN TRANSACTION",Qt::CaseInsensitive)
+        || (*q).contains("COMMIT")) {
+      continue;
+    }
+    certDB.transaction();
+    QSqlQuery qry = certDB.exec(*q);
+    certDB.commit();
+    qDebug() << Q_FUNC_INFO << qry.lastError() << " did try " << *q;
   }
   qDebug() << Q_FUNC_INFO << "did try " << query.executedQuery();
-  QMessageBox::information(0,QString(Q_FUNC_INFO),QString("file %1 has %2 bytes of which I read %3")
-                           .arg(qrcFile).arg(qrcSrc.size())
-                           .arg(wholeThing.size()));
+//  QMessageBox::information(0,QString(Q_FUNC_INFO),QString("file %1 has %2 bytes of which I read %3")
+//                           .arg(qrcFile).arg(qrcSrc.size())
+//                           .arg(wholeThing.size()));
 }
 
 
@@ -294,9 +306,19 @@ CertStore::haveAddrPath(const QString &ap)
   certDB.open ();
   qDebug() << Q_FUNC_INFO << "certDB is open " << certDB.isOpen();
   CheckDBComplete (dbFileName);
-  QMessageBox::information(0,QString(Q_FUNC_INFO),ap);
+//  QMessageBox::information(0,QString(Q_FUNC_INFO),ap);
   initIsComplete = true;
   qDebug() << Q_FUNC_INFO << "certDB is open " << certDB.isOpen();
+}
+
+void CertStore::quit()
+{
+  qDebug() << Q_FUNC_INFO;
+  if (certDB.isOpen()) {
+    bool didCLose = certDB.commit();
+    certDB.close();
+    qDebug() << Q_FUNC_INFO << "commit was " << didCLose;
+  }
 }
 
 void

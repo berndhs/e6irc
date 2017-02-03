@@ -16,7 +16,7 @@ namespace egalite
 
 E6Irc::E6Irc (QWindow *parent, bool isPhone)
   :QQuickView (parent),
-   isProbablyPhone (isPhone),
+   isProbablyPhone (false),
    channelGroup (0),
    control (0)
 {
@@ -30,9 +30,13 @@ E6Irc::E6Irc (QWindow *parent, bool isPhone)
 void
 E6Irc::run (const QSize & desktopSize)
 {
-  qDebug() << Q_FUNC_INFO << __LINE__ << desktopSize;
+  QSize theSize (desktopSize);
+  if (desktopSize == QSize(0,0)) {
+    theSize =Settings().value("sizes/e6irc",QSize(600,300)).toSize();
+    resize(theSize);
+  }
+  qDebug() << Q_FUNC_INFO << __LINE__ << theSize;
 
-  QMessageBox::information(0,QString(Q_FUNC_INFO),CertStore::IF().dbFile());
   control->LoadLists();
   qDebug() << Q_FUNC_INFO << __LINE__;
   control->fillContext(isProbablyPhone);
@@ -48,10 +52,11 @@ E6Irc::run (const QSize & desktopSize)
   platFormStuff->setRoot(qmlRoot);
   QQmlContext *context = rootContext();
   if (context) {
-    context->setContextProperty("cppPlatform",platFormStuff);
+    context->setContextProperty("cppPlatform",cppPlatform());
   }
   QQuickItem * qmlItem = qobject_cast<QQuickItem*> (qmlRoot);
   bool android(false);
+  qDebug() << Q_FUNC_INFO << __LINE__ << "root" << qmlRoot;
   if (qmlRoot) {
      qDebug() << qmlRoot->objectName() << qmlRoot->property("theOS")  ;
      if (qmlRoot->property("theOS").toString() == QString("android"))
@@ -59,14 +64,15 @@ E6Irc::run (const QSize & desktopSize)
   }
   egalite::globalAndroid = android;
   qDebug() << Q_FUNC_INFO << __LINE__ << "android" << android;
+  isProbablyPhone = android;
   if (qmlItem) {
     qDebug () << __PRETTY_FUNCTION__ << " phone ? " << isProbablyPhone;
     QMetaObject::invokeMethod (qmlItem, "phoneSettings",
-      Q_ARG (QVariant, isProbablyPhone));
+      Q_ARG (QVariant, android));
     qDebug() << Q_FUNC_INFO << __LINE__;
   }
   qDebug() << Q_FUNC_INFO << __LINE__;
-  QSize defaultSize = size();
+  QSize defaultSize = theSize;
   qDebug() << Q_FUNC_INFO << __LINE__;
   QSize newsize = Settings().value ("sizes/e6irc", defaultSize).toSize();
   qDebug () << Q_FUNC_INFO << "new size" << newsize << "default" << defaultSize;
@@ -74,7 +80,7 @@ E6Irc::run (const QSize & desktopSize)
     qDebug() << Q_FUNC_INFO << __LINE__;
     if (newsize.isEmpty()) {
       qDebug() << Q_FUNC_INFO << __LINE__;
-      newsize = desktopSize;
+      newsize = theSize;
       qDebug() << Q_FUNC_INFO << __LINE__;
       resize (newsize);
     } else {
@@ -105,6 +111,7 @@ E6Irc::allDone ()
   Settings().setValue ("sizes/e6irc",currentSize);
   Settings().sync();
   qDebug() << Q_FUNC_INFO << "did sync settings";
+  CertStore::IF().quit();
   emit quit ();
 }
 

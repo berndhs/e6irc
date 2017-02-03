@@ -91,9 +91,6 @@ main (int argc, char *argv[])
 
   QApplication app (argc, argv);
 
-  QMessageBox::warning(0,QString("       Qt Version      "),
-                       QString(Q_FUNC_INFO)+"\n"+QString(QT_VERSION_STR)
-                       +QString(" line %1").arg(__LINE__));
   ArgFlags options;
   
   checkOptions (app.arguments(), options);
@@ -102,7 +99,7 @@ main (int argc, char *argv[])
   deliberate::SetSettings (settings);
   settings.setValue ("program",pv.MyName());
 
-  bool isPhone (true);
+  bool isPhone (false);
   bool wantPhone = (isPhone || options.wantPhone) && !options.wantNotPhone;
   egalite::E6Irc * irc = new egalite::E6Irc (0, wantPhone);
   if (!irc) {
@@ -110,9 +107,15 @@ main (int argc, char *argv[])
     exit(1);
   }
 
+  if (options.wantVersion) {
+    pv.ShowVersionWindow(15000);
+    exit(0);
+  }
+
   QQmlContext *context = irc->rootContext();
   if (context) {
     context->setContextProperty ("isProbablyPhone", QVariant(wantPhone));
+    context->setContextProperty("cppPlatform",irc->cppPlatform());
   }
 
   QFont appFont = app.font();

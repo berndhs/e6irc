@@ -24,6 +24,7 @@
 
 
 import QtQuick 2.5
+import QtQuick.Window 2.0
 
 Rectangle {
   id: channelGroup
@@ -47,6 +48,7 @@ Rectangle {
     console.log (" create returns " + compo + "  status " + compo.status)
     if (compo.status == Component.Error) {
       console.log ("    create error " + compo.errorString())
+      cppPlatform.blow();
     }
     if (compo.status == Component.Ready) {
       var newBox = compo.createObject (channelGroup)

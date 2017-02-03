@@ -107,6 +107,7 @@ OTHER_FILES += \
     qml/GetNewServerName.qml \
     qml/GetNewUserName.qml \
     qml/GetString.qml \
+    qml/ActiveChannelMenu.qml \
     qml/littlemain.qml
 
 

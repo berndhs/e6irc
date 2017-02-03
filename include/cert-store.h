@@ -100,6 +100,7 @@ public:
 public slots:
 
   void   haveAddrPath (const QString & ap);
+  void   quit();
 
 signals:
 

@@ -28,7 +28,7 @@
  
 namespace deliberate {
 
-  QString ProgramVersion::theVersionNumber ("0.7.0");
+  QString ProgramVersion::theVersionNumber ("0.8.0");
 
   QString ProgramVersion::theProgramName("e6irc");
   QString ProgramVersion::theCopyright ("Copyright (C) 2017 Bernd Stramm");
@@ -58,18 +58,18 @@ namespace deliberate {
                    + theVersionNumber;
   }
 
-  void ProgramVersion::ShowVersionWindow ()
+  void ProgramVersion::ShowVersionWindow (int msecs)
   {
-    QString versionMessage(Version());
+    QString versionMessage(Version()+ QString("\nbuild with Qt %1").arg(QT_VERSION_STR));
     QMessageBox box;
     box.setText (versionMessage);
-    QTimer::singleShot(30000,&box,SLOT(accept()));
+    QTimer::singleShot(msecs,&box,SLOT(accept()));
     box.exec();
   }
   
   void ProgramVersion::CLIVersion ()
   {
-    StdOut() << Version() << endl;
+    StdOut() << Version() << "\nbuilt with Qt " << QT_VERSION_STR << endl;
   }
   
   QString ProgramVersion::MyName()

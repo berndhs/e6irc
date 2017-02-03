@@ -25,6 +25,8 @@
 
 import QtQuick 2.5
 import QtQml 2.2
+import QtQuick.Controls 2.0
+import QtQuick.Window 2.0
 //import net.sf.egalite 1.0
 
 Rectangle {
@@ -89,6 +91,7 @@ Rectangle {
 
   Rectangle {
     id: channelBoxLabelRect
+    objectName: "channelBoxLabelRectInIrcTextBox";
     height: channelBoxLabel.height + 3
     width: channelBoxLabel.width + 6
     anchors { top: parent.top; left: parent.left }
@@ -97,13 +100,16 @@ Rectangle {
     z: parent.z+1
     MouseArea { 
       anchors.fill: parent
-      onPressAndHold: topicBox.toggleHeight()
+//      onPressAndHold: topicBox.toggleHeight()
       onClicked: {
-        if (channelMenu.isShown) {
-          channelMenu.hide ()
-        } else {
-          channelMenu.show ()
-        }
+          cppPlatform.iAmHere(parent);
+          console.log("try to pop up menu " + channelMenu);
+          channelMenu.popup();
+//        if (channelMenu.isShown) {
+//          channelMenu.hide ()
+//        } else {
+//          channelMenu.show ()
+//        }
       }
     }
     Text {
@@ -113,7 +119,7 @@ Rectangle {
     }
   }
 
-  DropMenu {
+  ActiveChannelMenu {
     id: channelMenu
     color: "transparent"
     itemWidth: 150
@@ -122,6 +128,7 @@ Rectangle {
     z: parent.z + 1
     isShown: false
     rollDelay: 75
+
     anchors { 
       top: channelBoxLabelRect.bottom; 
       left: channelBoxLabelRect.left 
@@ -394,6 +401,6 @@ Rectangle {
     }
   }
 
-  Component.onCompleted: console.log ("Loaded ChannelBox.qml")
+  Component.onCompleted: console.log ("Loaded IrcTextBox.qml")
 }
 

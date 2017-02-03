@@ -86,7 +86,6 @@ IrcQmlControl::IrcQmlControl (QObject *parent,
 
   connect (&activeServers, SIGNAL (wantDisconnect (IrcSocket*)),
            this, SLOT (DisconnectServer (IrcSocket*)));
-  qDebug () << " IrcQmlControl allocated and initialized";
 }
 
 void
@@ -378,10 +377,11 @@ IrcQmlControl::ReceiveLine (IrcSocket * sock, QByteArray line)
     rest = data.right (restlen);
     cmd = cmd.trimmed ();
     QRegExp numericRx ("\\d\\d\\d");
-    qDebug () << __PRETTY_FUNCTION__ << " cmd " << cmd;
-    if (receiveHandler.contains (cmd.toUpper())) {
-      qDebug () << "                 " << " have handler ";
-      (*receiveHandler [cmd]) (this, sock, first, cmd, rest);
+    qDebug () << Q_FUNC_INFO << " cmd " << cmd;
+    QString kmd = cmd.toUpper();
+    if (receiveHandler.contains (kmd)) {
+      qDebug () << "                 " << " have handler for kmd " << kmd;
+      (*receiveHandler [kmd]) (this, sock, first, cmd, rest);
     } else if (numericRx.exactMatch (cmd)) {
       qDebug () << "                 " << " numeric ";
       IrcQmlSockStatic::ReceiveNumeric (this, sock, first, cmd, rest);
@@ -404,7 +404,7 @@ IrcQmlControl::ReceiveLine (IrcSocket * sock, QByteArray line)
 void
 IrcQmlControl::ReceiveRaw (IrcSocket * sock, const QByteArray & line)
 {
-  qDebug () << " IrcQmlControl::ReceiveRaw " << sock
+  qDebug () << Q_FUNC_INFO << sock
             << sock->HostName() << line;
   ChannelMapType::iterator cit;
   for (cit=channels.begin(); cit != channels.end(); cit++) {
@@ -563,7 +563,7 @@ IrcQmlControl::AddChannel (IrcSocket * sock,
                            const QString & chanName, 
                            bool isRaw)
 {
-  qDebug () << __PRETTY_FUNCTION__ << sock << chanName << isRaw;
+  qDebug () << Q_FUNC_INFO << sock << chanName << isRaw;
   if (channels.contains (chanName)) {
     return;
   }
@@ -579,6 +579,8 @@ IrcQmlControl::AddChannel (IrcSocket * sock,
   newchan->SetHost (sock->HostName());
   newchan->SetPartMsg (sock->PartMsg ());
   newchan->SetRaw (isRaw);
+  QMessageBox::information(0,QString("New Channel %1").arg(chanName),
+                           QString("at %1").arg(quintptr(newchan),0,16));
   if (!isRaw) {
     newchan->StartWatching 
       (QRegExp (QString ("\\b%1\\b").arg(sock->Nick())));

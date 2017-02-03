@@ -1,4 +1,4 @@
-%define sourceversion 0.6.7
+%define sourceversion 0.7.0
 %define relcount 2
 %define assume_meego 0
 
