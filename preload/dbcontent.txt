@@ -1,6 +1,3 @@
-BEGIN TRANSACTION;
-INSERT INTO "ircservers" VALUES('chat.freenode.net');
-INSERT INTO "ircservers" VALUES('irc.stealth.net');
 INSERT INTO "ircservers" VALUES('irc.oftc.net');
 INSERT INTO "ircservers" VALUES('irc.devnode.net');
 INSERT INTO "ircservers" VALUES('irc://irc.oft.net');
@@ -41,8 +38,4 @@ INSERT INTO "ircchannels" VALUES('#sailfishos');
 INSERT INTO "ircchannels" VALUES('#sailfish-porters');
 INSERT INTO "ircchannels" VALUES('#sailfishos-porters');
 INSERT INTO "ircchannels" VALUES('#latex');
-INSERT INTO "ircnicks" VALUES('berndhs','zuiderzee','Bernd Stramm');
-INSERT INTO "ircnicks" VALUES('berndhs-e','zuiderzee','Bernd Stramm');
-INSERT INTO "ircnicks" VALUES('berndhs-a','zuiderzee','Bernd Stramm');
 INSERT INTO "ircmessages" VALUES('berndhs','we are the cat','you just wait...');
-COMMIT;
