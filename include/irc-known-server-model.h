@@ -51,6 +51,7 @@ public:
 
   KnownServerModel (QObject *parent=0);
 
+  void dump ();
   void clear ();
   QHash<int, QByteArray> roleNames() const;
 

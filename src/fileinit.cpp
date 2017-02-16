@@ -124,8 +124,8 @@ int FileInit::copyFile(const QString dest, const QString source)
   int numKs = nBytes / oneK;
   int numLeft = nBytes % oneK;
   int totalWrote = 0;
-  QMessageBox::warning(0,QString ("Copy db file"),QString ("to %1\nbytes %2 from %3")
-                       .arg(target.fileName()).arg(nBytes).arg(srcInfo.size()));
+//  QMessageBox::warning(0,QString ("Copy db file"),QString ("to %1\nbytes %2 from %3")
+//                       .arg(target.fileName()).arg(nBytes).arg(srcInfo.size()));
   for (int i=0; i<numKs; ++i) {
     QByteArray bytes = src.read(oneK);
     int wrote = target.write(bytes);

@@ -17,7 +17,7 @@ Rectangle {
 
     /* the next few properties are needed for C++ to know things about the display */
     property string theOS: Qt.platform.os;
-    property real mmPerPix: Screen.devicePixelRatio;
+    property real pixelRate: Screen.devicePixelRatio;
     property int  screenWidth: Screen.desktopAvailableWidth;
     property int  screenHeight: Screen.desktopAvailableHeight;
 

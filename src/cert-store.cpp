@@ -107,13 +107,16 @@ void CertStore::initFromFile(QString qrcFile)
   qDebug() << Q_FUNC_INFO << "certDB is open " << certDB.isOpen();
   if (qrcFile.isEmpty()) {
     qDebug() << Q_FUNC_INFO << "no file, exiting";
-    return;
   }
   QStringList servers = IrcServers();
+  qDebug() << Q_FUNC_INFO << "servers:\n" << servers;
+  QString smsg ("have servers in DB, not initializing" );
   if (servers.count() > 1) {
-    qDebug() << "have servers in DB, not initializing" << Q_FUNC_INFO;
-    return;
+    qDebug() << smsg << Q_FUNC_INFO;
+//    return;
   }
+  smsg = "not so many";
+  QMessageBox::information(0,QString(Q_FUNC_INFO)+qrcFile,smsg);
   CheckExists(dbFileName);
   CheckDBComplete(dbFileName);
   QSqlQuery query (certDB);
@@ -141,6 +144,9 @@ void CertStore::initFromFile(QString qrcFile)
 //  QMessageBox::information(0,QString(Q_FUNC_INFO),QString("file %1 has %2 bytes of which I read %3")
 //                           .arg(qrcFile).arg(qrcSrc.size())
 //                           .arg(wholeThing.size()));
+
+  servers = IrcServers();
+  qDebug() << Q_FUNC_INFO << "\nservers:\n" << servers;
 }
 
 

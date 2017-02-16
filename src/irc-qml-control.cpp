@@ -152,6 +152,7 @@ IrcQmlControl::LoadLists ()
   int ns = servers.count();
   for (int i=0; i< ns; i++) {
     knownServers->addServer (servers.at(i), 6667);
+    qDebug() << Q_FUNC_INFO << " adding server " << servers.at(i);
   }
 
   QStringList  nicks = CertStore::IF().IrcNicks ();
@@ -169,6 +170,10 @@ IrcQmlControl::LoadLists ()
   channelModel.load (chans);
 
   ignoreSources = CertStore::IF().IrcIgnores ();
+  qDebug () << Q_FUNC_INFO << "ignore these " << ignoreSources;
+  qDebug () << Q_FUNC_INFO << "known are\n";
+  knownServers->dump();
+  abort();
 }
 
 void
@@ -579,8 +584,8 @@ IrcQmlControl::AddChannel (IrcSocket * sock,
   newchan->SetHost (sock->HostName());
   newchan->SetPartMsg (sock->PartMsg ());
   newchan->SetRaw (isRaw);
-  QMessageBox::information(0,QString("New Channel %1").arg(chanName),
-                           QString("at %1").arg(quintptr(newchan),0,16));
+//  QMessageBox::information(0,QString("New Channel %1").arg(chanName),
+//                           QString("at %1").arg(quintptr(newchan),0,16));
   if (!isRaw) {
     newchan->StartWatching 
       (QRegExp (QString ("\\b%1\\b").arg(sock->Nick())));

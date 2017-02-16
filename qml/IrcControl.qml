@@ -366,17 +366,17 @@ Rectangle {
       onSelectedServer: {
         ircControlBox.selectActiveServer (index)
       }
-      Connections {
-        target: cppActiveServerModel
-        onSelectRow: {
-          console.log (" Select Row " + row)
-          activeServerList.selectRow (row)
-        }
-        onContentChange: {
-          console.log (" Active Server List data change ")
-          activeServerList.resetHeight ()
-        }
-      }
+//      Connections {
+//        target: cppActiveServerModel
+//        onSelectRow: {
+//          console.log (" Select Row " + row)
+//          activeServerList.selectRow (row)
+//        }
+//        onContentChange: {
+//          console.log (" Active Server List data change ")
+//          activeServerList.resetHeight ()
+//        }
+//      }
       Component.onCompleted: {
         resetHeight ()
         console.log ("have active server list, height is " + activeServerList.height )

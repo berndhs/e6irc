@@ -129,12 +129,12 @@ main (int argc, char *argv[])
   qmlRegisterType<geuzen::OrientationWatcher>(uri, 1, 0, "GeuzenOrientation");
 
   irc->setIcon (QIcon (":/icon64.png"));
-  irc->setResizeMode (QQuickView::SizeViewToRootObject);
+  irc->setResizeMode (QQuickView::SizeRootObjectToView);
   qDebug() << Q_FUNC_INFO << __LINE__;
 
   CertStore::IF().Init();
-//  QObject::connect (&(CertStore::IF()),SIGNAL(initDone()),irc,SLOT(run()));
-  irc->run();
+  QSize lastSize = deliberate::Settings().value("sizes/e6irc",QSize(700,400)).toSize();
+  irc->run(lastSize);
   if (egalite::globalAndroid) {
     irc->setGeometry (app.desktop()->screenGeometry());
   }

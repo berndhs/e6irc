@@ -38,6 +38,14 @@ KnownServerModel::KnownServerModel (QObject *parent)
   setObjectName ("KnownServerModel");
 }
 
+void KnownServerModel::dump()
+{
+  qDebug() << Q_FUNC_INFO << "there are " << servers.count() << "servers:\n";
+  for (auto s=servers.begin(); s!= servers.end(); ++s) {
+    qDebug() << "server \t " << s->name << ":" << s->port;
+  }
+}
+
 void
 KnownServerModel::setEnabled (bool able)
 {

@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QString>
+#include "deliberate.h"
 
 namespace egalite {
 
@@ -13,6 +14,7 @@ public:
   explicit PlatformDep(QObject *parent = 0);
   void setRoot (QObject * rootObj);
   Q_PROPERTY(QString os READ getOS NOTIFY osChanged)
+  Q_PROPERTY(int stdRowHeight READ stdRowHeight NOTIFY stdRowHeightChanged)
 
   Q_INVOKABLE qreal pixelSize(int mm);
 
@@ -21,23 +23,27 @@ public:
 
   QString getOS() const
   {
-    return os;
+    return m_os;
   }
+
+  int stdRowHeight() const;
 
 signals:
 
   void osChanged (QString newOs);
+
+  void stdRowHeightChanged(int stdRowHeight);
 
 public slots:
 
 private:
 
   QObject *theRoot;
-  QString os;
-  qreal   mmPerPix;
+  qreal   pixelRate;
   int     widthPixels;
   int     heightPixels;
   QString m_os;
+  int     m_stdRowHeight;
 };
 
 } // namespace

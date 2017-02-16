@@ -51,9 +51,9 @@ Rectangle {
   property real topMargin: 0
   property real visibleHeight: 300
   property bool dynamic: false
-  property real standardRowHeight: 32
-  property real inputHeight: standardRowHeight - 4
-  property real labelHeight: standardRowHeight + 4
+  property real standardRowHeight: cppPlatform.stdRowHeight;
+  property real inputHeight: standardRowHeight
+  property real labelHeight: standardRowHeight
 
   objectName: "ChannelBox_" + channelName
 
@@ -163,8 +163,6 @@ Rectangle {
     anchors {
       top: channelBoxLabelRect.bottom;
       left: channelBoxLabelRect.left
-      leftMargin: 8
-      topMargin: 0
     }
     itemWidth: 150
     itemHeight: channelBox.standardRowHeight
@@ -172,12 +170,6 @@ Rectangle {
     z: parent.z + 2
     isShown: false
     // rollDelay: 75
-
-    Gradient {
-      id: buttonShade
-      GradientStop { position: 0.00; color: "#c6e6e6" }
-      GradientStop { position: 1.00; color: "#f0f0f0" }
-    }
  
   }
 
@@ -297,7 +289,7 @@ Rectangle {
       id: sendButton
       labelText: qsTr ("Send")
       width: labelWidth
-      height: inputHeight -4
+      height: inputHeight;
       anchors { verticalCenter: parent.verticalCenter; left: textEnter.right }
       onLabelChanged: { width = labelWidth }
       onClicked: { channelBox.userSend () }

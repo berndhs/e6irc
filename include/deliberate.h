@@ -22,7 +22,6 @@
  *  Boston, MA  02110-1301, USA.
  ****************************************************************/
  
-#include <qapplication.h>
 #include <stdio.h>
 #include <QTextStream>
 #include <QSettings>

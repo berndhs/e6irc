@@ -33,20 +33,22 @@ E6Irc::run (const QSize & desktopSize)
   QSize theSize (desktopSize);
   if (desktopSize == QSize(0,0)) {
     theSize =Settings().value("sizes/e6irc",QSize(600,300)).toSize();
-    resize(theSize);
   }
-  qDebug() << Q_FUNC_INFO << __LINE__ << theSize;
-
+  qDebug() << Q_FUNC_INFO << __LINE__ << theSize << desktopSize;
+  resize(theSize);
+  show();
+//  QMessageBox::warning(0,QString("Look at debug lod"),QString("     look               "));
   control->LoadLists();
-  qDebug() << Q_FUNC_INFO << __LINE__;
-  control->fillContext(isProbablyPhone);
   qDebug() << Q_FUNC_INFO << __LINE__;
   setSource (QUrl ("qrc:///qml/Main.qml"));
   setResizeMode(SizeRootObjectToView);
+  resize(theSize);
   qDebug() << Q_FUNC_INFO << __LINE__;
+//  QMessageBox::warning(0,QString("Look at debug lod"),QString("     look               "));
   channelGroup->Start();
   qDebug() << Q_FUNC_INFO << __LINE__;
   control->Run ();
+//  QMessageBox::warning(0,QString("Look at debug lod"),QString("     look               "));
   qDebug() << Q_FUNC_INFO << __LINE__;
   QObject * qmlRoot = rootObject();
   platFormStuff->setRoot(qmlRoot);
@@ -65,34 +67,20 @@ E6Irc::run (const QSize & desktopSize)
   egalite::globalAndroid = android;
   qDebug() << Q_FUNC_INFO << __LINE__ << "android" << android;
   isProbablyPhone = android;
+  qDebug() << Q_FUNC_INFO << __LINE__;
+  control->fillContext(isProbablyPhone);
   if (qmlItem) {
     qDebug () << __PRETTY_FUNCTION__ << " phone ? " << isProbablyPhone;
     QMetaObject::invokeMethod (qmlItem, "phoneSettings",
       Q_ARG (QVariant, android));
     qDebug() << Q_FUNC_INFO << __LINE__;
   }
-  qDebug() << Q_FUNC_INFO << __LINE__;
-  QSize defaultSize = theSize;
-  qDebug() << Q_FUNC_INFO << __LINE__;
-  QSize newsize = Settings().value ("sizes/e6irc", defaultSize).toSize();
-  qDebug () << Q_FUNC_INFO << "new size" << newsize << "default" << defaultSize;
-  if (android && isProbablyPhone) {
-    qDebug() << Q_FUNC_INFO << __LINE__;
-    if (newsize.isEmpty()) {
-      qDebug() << Q_FUNC_INFO << __LINE__;
-      newsize = theSize;
-      qDebug() << Q_FUNC_INFO << __LINE__;
-      resize (newsize);
-    } else {
-      qDebug() << Q_FUNC_INFO << __LINE__;
-      resize (newsize);
-    }
-    qDebug() << Q_FUNC_INFO << __LINE__;
-    qDebug () << __PRETTY_FUNCTION__ << " resize to " << newsize
-              << " result is " << size();
+  qDebug() << Q_FUNC_INFO << __LINE__ << android;
+  if (android) {
+    showFullScreen();
+  } else {
+    show ();
   }
-  qDebug() << Q_FUNC_INFO << __LINE__;
-  show ();
   qDebug() << Q_FUNC_INFO << __LINE__;
   Settings().sync ();
   qDebug() << Q_FUNC_INFO << __LINE__;
