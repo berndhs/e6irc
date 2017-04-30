@@ -575,6 +575,7 @@ IrcQmlControl::AddChannel (IrcSocket * sock,
   newchan->SetHost (sock->HostName());
   newchan->SetPartMsg (sock->PartMsg ());
   newchan->SetRaw (isRaw);
+  newchan->SetNick(sock->Nick());
   if (!isRaw) {
     newchan->StartWatching 
       (QRegExp (QString ("\\b%1\\b").arg(sock->Nick())));

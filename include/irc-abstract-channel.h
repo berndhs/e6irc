@@ -176,6 +176,9 @@ private:
   bool                logging;
   QFile               logFile;
 
+public:
+  static bool         someMention;
+
 };
 
 

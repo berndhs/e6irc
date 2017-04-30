@@ -45,7 +45,7 @@ IrcQmlChannelGroup::IrcQmlChannelGroup (QObject *parent, QDeclarativeView * view
     ("["
      "<span "
      "style=\"color: red\"; font-weight: normal\">"
-     " ! "
+     " ? "
      "</span>"
      "%1] "),
     channelMaskMentioned
@@ -92,18 +92,26 @@ IrcQmlChannelGroup::SetChannelList ()
   if (qmlObject) {
     QString chanAnchList;
     int nc = channelList.count ();
+    IrcAbstractChannel::someMention = false;
     for (int i=0; i<nc; i++) {
        IrcAbstractChannel * chan = channelList.at(i);
        if (chan) {
          bool ment = chan->IsMentioned();
          bool acti = chan->IsActive();
          chanAnchList.append (
+//               QString("%1%2").arg(ment).arg(acti) +
                (ment ?
                   channelMaskMentioned :
                   (acti ? channelMaskActive
                                     : channelMaskIdle))
-                  .arg(ChannelAnchor (chan->Name(),ment & !acti))
+                  .arg(ChannelAnchor (chan->Name(),ment))
                );
+       }
+    }
+    for (int i=0; i<nc; i++) {
+       IrcAbstractChannel * chan = channelList.at(i);
+       if (chan) {
+         chan->SetMentioned(false);
        }
     }
     QMetaObject::invokeMethod (qmlObject, "setChannelList",
@@ -223,6 +231,9 @@ IrcQmlChannelGroup::NickMentioned(IrcAbstractChannel *chan, bool mentioned)
   qDebug() << Q_FUNC_INFO << chan << mentioned;
   if (chan) {
     chan->SetMentioned(mentioned);
+  }
+  if (IrcAbstractChannel::someMention) {
+    SetChannelList();
   }
 }
 

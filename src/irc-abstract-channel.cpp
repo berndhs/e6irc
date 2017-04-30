@@ -45,6 +45,7 @@
 
 namespace egalite
 {
+bool IrcAbstractChannel::someMention (false);
 
 IrcAbstractChannel::IrcAbstractChannel (const QString & name,
                               const QString & sock,
@@ -213,6 +214,9 @@ IrcAbstractChannel::SetActive (bool a)
 void
 IrcAbstractChannel::SetMentioned (bool m)
 {
+  if (m) { // something changed
+    someMention = true;
+  }
   mentioned = m;
 }
 
@@ -312,7 +316,10 @@ IrcAbstractChannel::Incoming (const QString & message,
   QString cooked = HtmlMangle::Anchorize (message,
                          HtmlMangle::HttpExp(),
                          HtmlMangle::HtmlAnchor);
-qDebug () << " cooked message " << cooked;
+//qDebug () << " raw " << Q_FUNC_INFO << rawMessage
+//          << "\n" << nickName
+//          << "\ncooked: " << cooked
+//          << rawMessage.indexOf(nickName,2);
   QDateTime now = QDateTime::currentDateTime ();
   QString smalldate ("<span style=\"font-size:small\">"
                      "%1</span> %2");
@@ -331,7 +338,7 @@ qDebug () << " cooked message " << cooked;
   if (!rawMessage.startsWith(nickName)) { // was it just ourselves?
     emit Active (this);
   }
-  if (rawMessage.indexOf(nickName,1) != -1) { // they mentioned us?
+  if (rawMessage.indexOf(nickName) > -1) { // they mentioned us?
     emit MentionMe (this);
   }
 }
