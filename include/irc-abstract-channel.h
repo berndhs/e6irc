@@ -32,6 +32,7 @@
 #include <QFile>
 
 #include "name-list-model.h"
+#include "irc-socket.h"
 
 
 namespace egalite
@@ -59,6 +60,7 @@ public:
   void SetPartMsg (const QString & part)
                { partMsg = part; }
   void SetRaw (bool isRaw);
+  void SetNick (const QString & nick);
   bool Raw ();
 
   void AddNames (const QString & names);
@@ -82,7 +84,9 @@ public:
                           qreal top = -1, 
                           qreal left = -1);
   bool IsActive ();
+  bool IsMentioned ();
   void SetActive (bool a);
+  void SetMentioned (bool m);
   QRectF cookedBoundingRect () const;
   void   UpdateCooked ();
 
@@ -124,6 +128,7 @@ signals:
   void OutRaw (QString sockName, QString data);
   void WantWhois (QString channel, QString otherUser, bool want);
   void Active (IrcAbstractChannel * box);
+  void MentionMe (IrcAbstractChannel * box);
   void InUse (IrcAbstractChannel * box);
   void WantFloat (IrcAbstractChannel * box);
   void WantDock (IrcAbstractChannel * box);
@@ -150,6 +155,7 @@ private:
 
   QString             chanName;
   QString             sockName;
+  QString             nickName;
   QString             partMsg;
   QString             topic;
   QStringList         oldNames;
@@ -165,6 +171,7 @@ private:
   QObject            *qmlItem;
   bool                topmost;
   bool                active;
+  bool                mentioned;
   bool                raw;
   bool                logging;
   QFile               logFile;

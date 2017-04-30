@@ -57,6 +57,7 @@ IrcAbstractChannel::IrcAbstractChannel (const QString & name,
    qmlItem (0),
    topmost (false),
    active (false),
+   mentioned (false),
    logging (false)
 {
   Connect ();
@@ -134,6 +135,11 @@ IrcAbstractChannel::SetRaw (bool isRaw)
   raw = isRaw;
 }
 
+void IrcAbstractChannel::SetNick(const QString &nick)
+{
+  nickName = nick;
+}
+
 bool
 IrcAbstractChannel::Raw ()
 {
@@ -192,11 +198,24 @@ IrcAbstractChannel::IsActive ()
   return active;
 }
 
+bool
+IrcAbstractChannel::IsMentioned ()
+{
+  return mentioned;
+}
+
+
 void
 IrcAbstractChannel::SetActive (bool a)
 {
   active = a;
 }
+void
+IrcAbstractChannel::SetMentioned (bool m)
+{
+  mentioned = m;
+}
+
 
 NameListModel *
 IrcAbstractChannel::userNamesModel ()
@@ -290,7 +309,7 @@ void
 IrcAbstractChannel::Incoming (const QString & message,
                          const QString & rawMessage)
 {
-  QString cooked = HtmlMangle::Anchorize (message, 
+  QString cooked = HtmlMangle::Anchorize (message,
                          HtmlMangle::HttpExp(),
                          HtmlMangle::HtmlAnchor);
 qDebug () << " cooked message " << cooked;
@@ -309,7 +328,12 @@ qDebug () << " cooked message " << cooked;
     logFile.flush ();
   }
   CheckWatch (rawMessage.length() > 0 ? rawMessage : message);
-  emit Active (this);
+  if (!rawMessage.startsWith(nickName)) { // was it just ourselves?
+    emit Active (this);
+  }
+  if (rawMessage.indexOf(nickName,1) != -1) { // they mentioned us?
+    emit MentionMe (this);
+  }
 }
 
 void
@@ -322,7 +346,7 @@ IrcAbstractChannel::SetTopic (const QString & newTopic)
 void
 IrcAbstractChannel::RefreshTopic ()
 {
-  QString cooked = HtmlMangle::Anchorize (topic, 
+  QString cooked = HtmlMangle::Anchorize (topic,
                          HtmlMangle::HttpExp(),
                          HtmlMangle::HtmlAnchor);
   if (qmlItem) {

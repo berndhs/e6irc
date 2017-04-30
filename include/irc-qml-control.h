@@ -99,6 +99,7 @@ private slots:
   void ReceiveLine (IrcSocket * sock, QByteArray line);
   void ChangedHostName (IrcSocket * sock, QString name);
   void ChanActive (IrcAbstractChannel * chan);
+  void NickMentioned (IrcAbstractChannel *chan);
   void ChanInUse (IrcAbstractChannel * chan);
   void ChanWantsDock (IrcAbstractChannel * chan);
   void ChanWantsFloat (IrcAbstractChannel * chan);

@@ -587,6 +587,8 @@ IrcQmlControl::AddChannel (IrcSocket * sock,
            this, SLOT (SendRaw (QString, QString )));
   connect (newchan, SIGNAL (Active (IrcAbstractChannel *)),
            this, SLOT (ChanActive (IrcAbstractChannel *)));
+  connect (newchan, SIGNAL (MentionMe (IrcAbstractChannel *)),
+           this, SLOT (NickMentioned(IrcAbstractChannel *)));
   connect (newchan, SIGNAL (InUse (IrcAbstractChannel *)),
            this, SLOT (ChanInUse (IrcAbstractChannel *)));
   connect (newchan, SIGNAL (WantFloat (IrcAbstractChannel *)),
@@ -730,6 +732,12 @@ void
 IrcQmlControl::ChanActive (IrcAbstractChannel *chan)
 {
   dockedChannels->MarkActive (chan, true);
+}
+
+void IrcQmlControl::NickMentioned(IrcAbstractChannel *chan)
+{
+  dockedChannels->MarkActive (chan, false);
+  dockedChannels->NickMentioned(chan, true);
 }
 
 void

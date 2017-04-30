@@ -54,6 +54,7 @@ public:
   void AddChannel (IrcAbstractChannel * chan);
   void RemoveChannel (IrcAbstractChannel * chan);
   void MarkActive (IrcAbstractChannel * chan, bool active);
+  void NickMentioned (IrcAbstractChannel *chan, bool mentioned);
   bool HaveChannel (IrcAbstractChannel * chan);
   void ShowChannel (IrcAbstractChannel * chan);
  
@@ -71,7 +72,7 @@ private slots:
 
 private:
 
-  QString  ChannelAnchor (const QString & name);
+  QString  ChannelAnchor (const QString & name, bool isMentioned=false);
   void     SetChannelList ();
   void     SetTopmostChannel (IrcAbstractChannel * topChan);
   void     SetTopmostChannel (const QString & topName);
@@ -84,6 +85,7 @@ private:
   QTimer                  debugTimer;
   QString                 chanLinkPrefix;
   QString                 channelMaskActive;
+  QString                 channelMaskMentioned;
   QString                 channelMaskIdle;
 
 };

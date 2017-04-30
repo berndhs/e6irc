@@ -36,20 +36,28 @@ namespace egalite
 
 IrcQmlChannelGroup::IrcQmlChannelGroup (QObject *parent, QDeclarativeView * view)
   :QObject (parent),
-   dView (view),
-   qmlObject (0),
-   debugTimer (this),
-   chanLinkPrefix 
-     ("chanlink://channel_"),
-   channelMaskActive 
-     ("["
-         "<span "
-           "style=\"color: red\"; font-weight: bold\">"
-           " ! "
-         "</span>"
-       "%1] "),
-   channelMaskIdle 
-     ("[%1] ")
+    dView (view),
+    qmlObject (0),
+    debugTimer (this),
+    chanLinkPrefix
+    ("chanlink://channel_"),
+    channelMaskActive
+    ("["
+     "<span "
+     "style=\"color: red\"; font-weight: normal\">"
+     " ! "
+     "</span>"
+     "%1] "),
+    channelMaskMentioned
+    ("["
+      "<span "
+      "style=\"color: red\"; font-style: italic; font-weight: bold\">"
+      " ! "
+      "</span>"
+      "%1] "
+      ),
+    channelMaskIdle
+    ("[%1] ")
 {
   activeIcon = QIcon (":/ircicons/active.png");
   quietIcon = QIcon (":/ircicons/inactive.png");
@@ -87,11 +95,15 @@ IrcQmlChannelGroup::SetChannelList ()
     for (int i=0; i<nc; i++) {
        IrcAbstractChannel * chan = channelList.at(i);
        if (chan) {
+         bool ment = chan->IsMentioned();
+         bool acti = chan->IsActive();
          chanAnchList.append (
-             (chan->IsActive() ? channelMaskActive 
-                               : channelMaskIdle)
-               .arg(ChannelAnchor (chan->Name()))
-             );
+               (ment ?
+                  channelMaskMentioned :
+                  (acti ? channelMaskActive
+                                    : channelMaskIdle))
+                  .arg(ChannelAnchor (chan->Name(),ment & !acti))
+               );
        }
     }
     QMetaObject::invokeMethod (qmlObject, "setChannelList",
@@ -129,10 +141,15 @@ IrcQmlChannelGroup::AddChannel (IrcAbstractChannel * newchan)
 }
 
 QString
-IrcQmlChannelGroup::ChannelAnchor (const QString & name)
+IrcQmlChannelGroup::ChannelAnchor (const QString & name, bool isMentioned)
 {
-  return QString("<a href=\"%2%1\">%1</a>")
-         .arg(name).arg (chanLinkPrefix);
+  if (isMentioned) {
+    return QString("<a href=\"%2%1\" style=\"color: red\">%1</a>")
+        .arg(name).arg (chanLinkPrefix);
+  } else {
+    return QString("<a href=\"%2%1\"style=\"color: green\">%1</a>")
+        .arg(name).arg (chanLinkPrefix);
+  }
 }
 
 void
@@ -196,7 +213,16 @@ IrcQmlChannelGroup::MarkActive (IrcAbstractChannel * chan, bool active)
 {
   if (chan) {
     chan->SetActive (active);
-    SetChannelList ();
+  }
+  SetChannelList ();
+}
+
+void
+IrcQmlChannelGroup::NickMentioned(IrcAbstractChannel *chan, bool mentioned)
+{
+  qDebug() << Q_FUNC_INFO << chan << mentioned;
+  if (chan) {
+    chan->SetMentioned(mentioned);
   }
 }
 
