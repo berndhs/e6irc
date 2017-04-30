@@ -4,7 +4,7 @@
 /****************************************************************
  * This file is distributed under the following license:
  *
- * Copyright (C) 2011, Bernd Stramm
+ * Copyright (C) 2017, Bernd Stramm
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -27,6 +27,9 @@
 #include <QMetaObject>
 #include <QDeclarativeItem>
 #include <QRectF>
+#include <QSound>
+#include <QTime>
+
 #include "irc-abstract-channel.h"
 #include "qml-text-browser.h"
 #include "dchat-magic.h"
@@ -90,6 +93,7 @@ void
 IrcQmlChannelGroup::SetChannelList ()
 {
   if (qmlObject) {
+    bool someMention(false);
     QString chanAnchList;
     int nc = channelList.count ();
     IrcAbstractChannel::someMention = false;
@@ -97,6 +101,7 @@ IrcQmlChannelGroup::SetChannelList ()
        IrcAbstractChannel * chan = channelList.at(i);
        if (chan) {
          bool ment = chan->IsMentioned();
+         someMention |= ment;
          bool acti = chan->IsActive();
          chanAnchList.append (
 //               QString("%1%2").arg(ment).arg(acti) +
@@ -113,6 +118,20 @@ IrcQmlChannelGroup::SetChannelList ()
        if (chan) {
          chan->SetMentioned(false);
        }
+    }
+    if (someMention) {
+      QTime t0 = QTime::currentTime();
+      t0.start();
+      QFile bf (":/sounds/beep.wav");
+      qDebug() << Q_FUNC_INFO << "file " << bf.fileName()
+               << " exists " << bf.exists();
+      QSound beep (":/sounds/beep.wav");
+      qDebug() << beep.fileName();
+      beep.setLoops(1);
+      beep.play();
+      qDebug() << Q_FUNC_INFO << "done playing" << beep.isFinished();
+
+      qDebug() << Q_FUNC_INFO << "time taken from " << t0.elapsed();
     }
     QMetaObject::invokeMethod (qmlObject, "setChannelList",
              Q_ARG (QVariant, nc),

@@ -5,6 +5,9 @@
         <file alias="checked-yes.png">icons/checked-yes.png</file>
         <file alias="checked-no.png">icons/checked-no.png</file>
     </qresource>
+   <qresource prefix="/sounds">
+        <file alias="beep.wav">sounds/receive.wav</file>
+    </qresource>
     <qresource prefix="/qml">
         <file alias="ActiveServerList.qml">qml/ActiveServerList.qml</file>
         <file alias="ChoiceButton.qml">qml/ChoiceButton.qml</file>
