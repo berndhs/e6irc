@@ -1,5 +1,5 @@
 #ifndef EGALITE_IRC_ACTIVE_SERVER_MODEL_H
-#define EGALITE_IRC_ACITVE_SERVER_MODEL_H
+#define EGALITE_IRC_ACTIVE_SERVER_MODEL_H
 
 /****************************************************************
  * This file is distributed under the following license:
@@ -18,7 +18,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 51 Franklin Street, Fifth Floor, 
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor,
  *  Boston, MA  02110-1301, USA.
  ****************************************************************/
 
@@ -40,7 +40,7 @@ public:
   /** \brief stuff invokable from QML */
 
   Q_INVOKABLE int rowCount (const QModelIndex & index = QModelIndex()) const;
-  QVariant data (const QModelIndex & index, 
+  QVariant data (const QModelIndex & index,
                   int role = Qt::DisplayRole) const;
 
   Q_INVOKABLE void disconnectServer (int row);
@@ -52,7 +52,7 @@ public:
   void clear ();
 
   void addServer (IrcSocket * sock,
-                  const QString & baseName, 
+                  const QString & baseName,
                   const QString & realName,
                   const QHostAddress & address,
                     int port,
@@ -110,7 +110,7 @@ private:
     ServerStruct (IrcSocket * sck,
                   const QString & bn,
                   const QString & rn,
-                  const QHostAddress & ad, 
+                  const QHostAddress & ad,
                   int pm,
                   bool haveReal = false);
     ServerStruct (const ServerStruct & other);

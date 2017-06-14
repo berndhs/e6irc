@@ -122,10 +122,27 @@ IrcQmlChannelGroup::SetChannelList ()
     if (someMention) {
       QTime t0 = QTime::currentTime();
       t0.start();
-      QFile bf (":/sounds/beep.wav");
+      QFile bf (":/palee6.png");
       qDebug() << Q_FUNC_INFO << "file " << bf.fileName()
                << " exists " << bf.exists();
-      QSound beep (":/sounds/beep.wav");
+      QByteArray cont = bf.readAll();
+      qDebug() << Q_FUNC_INFO << "size " << cont.length();
+      bf.close();
+      bf.setFileName (":/qml/Main.qml");
+      qDebug() << Q_FUNC_INFO << "file " << bf.fileName()
+               << " exists " << bf.exists();
+      cont = bf.readAll();
+      qDebug() << Q_FUNC_INFO << "size " << cont.length();
+      bf.close();
+      bf.setFileName (":/qml/nomain.qml");
+      qDebug() << Q_FUNC_INFO << "file " << bf.fileName()
+               << " exists " << bf.exists();
+      cont = bf.readAll();
+      qDebug() << Q_FUNC_INFO << "size " << cont.length();
+      bf.close();
+
+
+      QSound beep (":/beep.wav");
       qDebug() << beep.fileName();
       beep.setLoops(1);
       beep.play();

@@ -49,6 +49,7 @@ public:
   void    SetPartMsg (const QString & msg) { partMsg = msg; }
   void    SetQuitMsg (const QString & msg) { quitMsg = msg; }
   void    SetHostName (const QString & name);
+  void    SetPort(int p) { m_port = p; }
   void    connectToHost ( const QString & hostName, 
                           quint16 port);
 
@@ -73,6 +74,7 @@ private slots:
   void SendPing ();
   void SockError (QAbstractSocket::SocketError err);
   void CountBytesOut (qint64 bytes);
+  void ReConnect ();
 
 signals:
 
@@ -97,6 +99,8 @@ private:
   bool             needPing;
   qint64           numBytesIn;
   qint64           numBytesOut;
+  bool             onTheWayOut;
+  int              m_port;
 
   static int sockCount;
 

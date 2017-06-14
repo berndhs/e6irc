@@ -1,5 +1,5 @@
 #ifndef IRC_CHANNEL_GROUP_H
-#define ITC_CHANNEL_GROUP_H
+#define IRC_CHANNEL_GROUP_H
 
 /****************************************************************
  * This file is distributed under the following license:

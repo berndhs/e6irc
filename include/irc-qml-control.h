@@ -4,7 +4,7 @@
 /****************************************************************
  * This file is distributed under the following license:
  *
- * Copyright (C) 2011, Bernd Stramm
+ * Copyright (C) 2017, Bernd Stramm
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -85,12 +85,12 @@ public slots:
   void  EditIgnores ();
   void  SendRaw (QString sockName, QString data);
   void  ShowControl ();
+  void  TryConnect (const QString & host, int port);
 
 private slots:
 
   void Exit ();
   void Exiting ();
-  void TryConnect (const QString & host, int port);
   void TryDisconnect ();
   void DisconnectServer (IrcSocket * sock);
   void TryPart ();

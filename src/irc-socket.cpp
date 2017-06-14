@@ -26,6 +26,11 @@
 #include <QStringList>
 #include <QTimer>
 #include <QHostAddress>
+#include <QMessageBox>
+#include <QVariant>
+#include "irc-qml-control.h"
+#include "reconnector.h"
+#include "deliberate.h"
 
 namespace egalite
 {
@@ -36,7 +41,8 @@ IrcSocket::IrcSocket (QObject *parent)
   :QTcpSocket (parent),
    needPing (true),
    numBytesIn (0),
-   numBytesOut (0)
+   numBytesOut (0),
+   onTheWayOut(false)
 {
   sockCount++;
   setObjectName (QString("IrcSocket-%1").arg(sockCount));
@@ -121,15 +127,19 @@ IrcSocket::SetHostName (const QString & name)
 void
 IrcSocket::DidConnect ()
 {
+  onTheWayOut = false;
   hostName = peerAddress().toString();
   emit connected (this);
   scriptTimer->start (1000);
-  pingTimer->start (2*60*1000);
+  int pingSecs = deliberate::Settings().value("network/pingsecs",35).toInt();
+  pingTimer->start(pingSecs*1000);
 }
 
 void
 IrcSocket::DidDisconnect ()
 {
+  qDebug() << Q_FUNC_INFO << this;
+  onTheWayOut = true;
   emit disconnected (this);
 }
 
@@ -222,8 +232,23 @@ IrcSocket::SendPing ()
 void 
 IrcSocket::SockError (QAbstractSocket::SocketError err)
 {
+  qDebug() << Q_FUNC_INFO << "\n\t" << hostName << m_port ;
   qDebug () << " socket error " << err;
   qDebug () << " socket error text " << errorString ();
+  if (err == QAbstractSocket::RemoteHostClosedError
+      && !onTheWayOut) {
+    /* unexpected? try to reconnect */
+    ReConnect();
+  }
+}
+
+void
+IrcSocket::ReConnect()
+{
+  qDebug() << Q_FUNC_INFO;
+  IrcQmlControl *daddy = qobject_cast<IrcQmlControl*>(parent());
+  Reconnector *reco = new Reconnector (daddy,hostName,m_port);
+
 }
 
 

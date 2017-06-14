@@ -3,7 +3,7 @@
 /****************************************************************
  * This file is distributed under the following license:
  *
- * Copyright (C) 2011, Bernd Stramm
+ * Copyright (C) 2017, Bernd Stramm
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -287,6 +287,7 @@ IrcQmlControl::TryConnect (const QString & host, int port)
   qDebug () << " try connect to " << baseHost;
   IrcSocket *socket = new IrcSocket (this);
   sockets [socket->Name()] = socket;
+  socket->SetPort(port);
   activeServers.addServer (socket, baseHost, QString (""),
                            QHostAddress(), port);
   connect (socket, SIGNAL (connected (IrcSocket*)),

@@ -4,7 +4,7 @@
 /****************************************************************
  * This file is distributed under the following license:
  *
- * Copyright (C) 2011, Bernd Stramm
+ * Copyright (C) 2017, Bernd Stramm
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -383,7 +383,9 @@ qDebug () << " IrcAbstractChannel :: AddName " << name;
     oldNames.append (name);
     RefreshNames ();
   }
-  AppendSmall (cookedLog, tr(" Enter: -&gt; %1").arg(name));
+  QDateTime now = QDateTime::currentDateTime();
+  AppendSmall (cookedLog, tr("at %2 Enter: -&gt; %1").arg(name)
+               .arg(now.toString ("hh:mm:ss")));
   UpdateCooked ();
 }
 
@@ -412,7 +414,9 @@ IrcAbstractChannel::DropName (const QString & name, const QString & msg)
     qmlItem->setProperty ("userListCounter",
       tr("%1 Users").arg (oldNames.size()));
   }
-  AppendSmall (cookedLog, tr(" Exit: &lt;- %1 %2").arg(name).arg(msg));
+  QDateTime now = QDateTime::currentDateTime();
+  AppendSmall (cookedLog, tr("at %3 Exit: &lt;- %1 %2").arg(name).arg(msg)
+               .arg(now.toString ("hh:mm:ss")));
   UpdateCooked ();
 }
 

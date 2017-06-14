@@ -73,7 +73,7 @@ checkOptions (const QStringList & argList, ArgFlags & flags)
 int
 main (int argc, char *argv[])
 {
-  QCoreApplication::setApplicationName ("egalite");
+  QCoreApplication::setApplicationName ("e6irc");
   QCoreApplication::setOrganizationName ("BerndStramm");
   QCoreApplication::setOrganizationDomain ("egalite.sourceforge.net");
   deliberate::ProgramVersion pv ("E6Irc");
@@ -88,6 +88,10 @@ main (int argc, char *argv[])
   QSettings  settings;
   deliberate::SetSettings (settings);
   settings.setValue ("program",pv.MyName());
+  if(options.wantVersion) {
+    pv.CLIVersion();
+    exit(0);  
+  }
 
   QSystemDeviceInfo sdi;
 

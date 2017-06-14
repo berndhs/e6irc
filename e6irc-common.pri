@@ -17,6 +17,7 @@ OBJECTS_DIR = tmp/obj
 INCLUDEPATH += ./include
 
 HEADERS = \
+    include/reconnector.h \
     include/irc-abstract-channel.h \
     include/irc-active-server-model.h \
     include/irc-ctcp.h \
@@ -38,6 +39,7 @@ HEADERS = \
     include/e6irc.h
 
 SOURCES = \
+    src/reconnector.cpp \
     src/irc-abstract-channel.cpp \
     src/irc-active-server-model.cpp \
     src/irc-ctcp.cpp \
