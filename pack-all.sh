@@ -42,19 +42,19 @@ HARMAT_DIFF=${HARMAT_ARCHIVE}.diff.gz
 
 pack_archive ${ARCHIVE}/ ${TARFILE}
 TEMPDIR=build_${NAME}_${VERSION}
-mkdir -p $TEMPDIR
-cp $TARFILE $TEMPDIR
-cd $TEMPDIR
+#mkdir -p $TEMPDIR
+#cp $TARFILE $TEMPDIR
+#cd $TEMPDIR
 
-tar zxf $TARFILE
+#tar zxf $TARFILE
 
-#mad -t harmattan-platform-api dpkg-source -b ${ARCHIVE}
+##mad -t harmattan-platform-api dpkg-source -b ${ARCHIVE}
 
-dpkg-source -b ${ARCHIVE}
+#dpkg-source -b ${ARCHIVE}
 
-cd ..
+#cd ..
 
-#tar zcf debian.tar.gz debian/
+##tar zcf debian.tar.gz debian/
 
 RPM_PACKDIR=rpm_packaging
 RPM_TARFILE=${HARMAT_TARFILE}

@@ -266,7 +266,7 @@ IrcQmlChannelGroup::NickMentioned(IrcAbstractChannel *chan, bool mentioned)
 {
   qDebug() << Q_FUNC_INFO << chan << mentioned;
   if (chan) {
-    chan->SetMentioned(mentioned);
+    chan->SetMentioned(true);
   }
   if (IrcAbstractChannel::someMention) {
     SetChannelList();
