@@ -45,20 +45,15 @@ IrcQmlChannelGroup::IrcQmlChannelGroup (QObject *parent, QDeclarativeView * view
     chanLinkPrefix
     ("chanlink://channel_"),
     channelMaskActive
-    ("["
-     "<span "
+    ("<span "
      "style=\"color: red\"; font-weight: normal\">"
      " ? "
-     "</span>"
-     "%1] "),
+     "</span>"),
     channelMaskMentioned
-    ("["
-      "<span "
+    ("<span "
       "style=\"color: red\"; font-style: italic; font-weight: bold\">"
       " ! "
-      "</span>"
-      "%1] "
-      ),
+      "</span>"),
     channelMaskIdle
     ("[%1] ")
 {
@@ -101,16 +96,9 @@ IrcQmlChannelGroup::SetChannelList ()
        IrcAbstractChannel * chan = channelList.at(i);
        if (chan) {
          bool ment = chan->IsMentioned();
-         someMention |= ment;
          bool acti = chan->IsActive();
-         chanAnchList.append (
-//               QString("%1%2").arg(ment).arg(acti) +
-               (ment ?
-                  channelMaskMentioned :
-                  (acti ? channelMaskActive
-                                    : channelMaskIdle))
-                  .arg(ChannelAnchor (chan->Name(),ment))
-               );
+         bool top = chan->Topmost();
+         chanAnchList.append (ChannelMask (chan->Name(),acti, ment, top));
        }
     }
     for (int i=0; i<nc; i++) {
@@ -302,6 +290,23 @@ IrcQmlChannelGroup::DebugCheck ()
     qDebug () << " channel " << chan->Name() << " bounds "
               << chan->cookedBoundingRect ();
   }
+}
+
+QString
+IrcQmlChannelGroup::ChannelMask(const QString & txt, bool active, bool mentioned, bool top)
+{
+  QString open (top ? "<strong>[ " : "[ ");
+  QString close (top ? " ]</strong>" : " ]");
+  QString label;
+  QString link = ChannelAnchor (txt,mentioned);
+  if (mentioned) {
+    label = open + channelMaskActive + link + close;
+  } else if (active) {
+    label = open + channelMaskMentioned + link + close;
+  } else {
+    label = open + link + close;
+  }
+  return label;
 }
 
 } // namespace

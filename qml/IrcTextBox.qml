@@ -98,6 +98,7 @@ Rectangle {
       anchors.fill: parent
       onPressAndHold: topicBox.toggleHeight()
       onClicked: {
+          console.log("channelBoxLabelRect clicked");
         if (channelMenu.isShown) {
           channelMenu.hide ()
         } else {
@@ -323,6 +324,7 @@ Rectangle {
         text: qsTr("No Users")
       }
       MouseArea {
+          console.log("userListCountRect clicked");
         anchors.fill: parent
         onClicked: {
           userListBox.shortView = !userListBox.shortView

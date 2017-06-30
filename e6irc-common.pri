@@ -64,7 +64,6 @@ SOURCES = \
 OTHER_FILES += \
     qml/Main.qml \
     qml/KnownServerList.qml \
-    qml/IrcTestBox.qml \
     qml/IrcFloatBox.qml \
     qml/IrcControl.qml \
     qml/IrcChannelGroup.qml \
@@ -72,3 +71,6 @@ OTHER_FILES += \
     qml/DropMenu.qml \
     qml/ChoiceButton.qml \
     qml/ActiveServerList.qml
+
+DISTFILES += \
+    $$PWD/qml/IrcTextBox.qml

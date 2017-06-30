@@ -42,7 +42,7 @@ Rectangle {
   signal showControl ()
 
   function addChannel () {
-    console.log ("  XXXXXXXXXXXXX channelGroup add ")
+    console.log ("channelGroup addChannel ")
     var compo =  Qt.createComponent("IrcChannelBox.qml")
     console.log (" create returns " + compo + "  status " + compo.status)
     if (compo.status == Component.Error) {
@@ -62,6 +62,7 @@ Rectangle {
     return null
   }
   function setChannelList (theCount, theList) {
+      console.log("channelGroup setChannelList ",theList)
     console.log ("Channel Group list " + theList)
     channelListText.text = theList
     channelList.channelCount = theCount
@@ -91,6 +92,23 @@ Rectangle {
       onHeightChanged: {
         channelGroup.adjustChannelHeight (channelList.height)
       }
+//      Rectangle {
+//          id: channelListTextOverlay;
+//          anchors.fill: channelListText;
+//          color: "red";
+//          opacity: 0.5;
+//          MouseArea {
+//              anchors.fill: channelListTextOverlay;
+//              onPressed: {
+//                  console.log("channelListTextOverlay mouse area pressed");
+//                  console.log ("X ",mouseX," Y ", mouseY);
+//              }
+//              onReleased: {
+//                  console.log("channelListTextOverlay mouse area released");
+//                  console.log ("X ",mouseX," Y ", mouseY);
+//              }
+//          }
+//      }
     }
   }
 

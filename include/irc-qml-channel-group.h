@@ -72,6 +72,7 @@ private slots:
 
 private:
 
+  QString  ChannelMask (const QString & txt, bool active, bool mentioned, bool top);
   QString  ChannelAnchor (const QString & name, bool isMentioned=false);
   void     SetChannelList ();
   void     SetTopmostChannel (IrcAbstractChannel * topChan);

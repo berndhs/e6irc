@@ -438,6 +438,7 @@ IrcAbstractChannel::Link (const QUrl & url)
 void
 IrcAbstractChannel::ActivatedCookedLink (const QString & link)
 {
+  qDebug() << Q_FUNC_INFO << link;
   QUrl url (link);
   if (url.scheme () == "ircsender") {
     if (qmlItem) {

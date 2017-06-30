@@ -30,6 +30,7 @@ Item {
   id: channelBox
 
   property string channelName: qsTr ("no channel")
+  property string color: "transparent"
   property bool topmost: true
   property real userNameHeight: 20
   property real countWidth: 0.25 * width
@@ -110,7 +111,7 @@ Item {
   }
 
   Rectangle {
-    id: channelBoxLabelRect
+    id: channelBoxLabelRect  // for current on top channel
     height: Math.max (0.5* channelBox.standardRowHeight, channelBoxLabel.height + 4)
     width: channelBoxLabel.width + 8
     anchors { top: parent.top; left: parent.left }
@@ -125,6 +126,7 @@ Item {
       anchors.fill: parent
       onPressAndHold: topicBox.toggleHeight()
       onClicked: {
+          console.log ("tickedy tickedy");
         if (channelMenu.isShown) {
           channelMenu.hide ()
         } else {
@@ -261,6 +263,7 @@ Item {
         id: topicBoxContent
         name: "Topic_" + channelBox.channelName
         onActivatedLink: {
+            console.log("topicBoxContent onActivatedLink ",link)
           channelBox.activatedLink (link)
         }
       }
@@ -298,6 +301,7 @@ Item {
       id: cookedLogBox
       name: "Cooked_" + channelBox.channelName
       onActivatedLink: { 
+          console.log("cookedLogBox onActivatedLink ",link)
         channelBox.activatedLink (link)
       }
       onHeightChanged: {
