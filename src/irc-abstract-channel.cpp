@@ -610,6 +610,7 @@ IrcAbstractChannel::UserSend ()
       history.append (data);
       history.removeDuplicates ();
       historyIndex = history.size();
+      emit seeUser();
     }
   }
 }
@@ -638,14 +639,12 @@ IrcAbstractChannel::AlmostRaw (const QString & data)
 void
 IrcAbstractChannel::UserUp ()
 {
-  qDebug () << " User Up arrow ";
   DoHistory (Qt::Key_Up, history, historyIndex, historyBottom);
 }
 
 void
 IrcAbstractChannel::UserDown ()
 {
-  qDebug () << " User Down arrow ";
   DoHistory (Qt::Key_Down, history, historyIndex, historyBottom);
 }
 

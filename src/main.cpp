@@ -122,7 +122,7 @@ main (int argc, char *argv[])
   qmlRegisterType<geuzen::QmlTextBrowser>(uri, 1, 0, "GeuzenTextBrowser");
   qmlRegisterType<geuzen::OrientationWatcher>(uri, 1, 0, "GeuzenOrientation");
 
-  irc->setWindowIcon (QIcon (":/icon64.png"));
+  irc->setIconNames(QString(":/icon64.png"),QString(":/rev_icon64.png"));
   irc->setResizeMode (QDeclarativeView::SizeRootObjectToView);
   QRect geo = app.desktop()->screenGeometry();
   irc->run (geo.size());

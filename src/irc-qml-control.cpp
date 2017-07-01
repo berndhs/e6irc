@@ -47,6 +47,8 @@ using namespace deliberate;
 namespace egalite
 {
 
+int  IrcQmlControl::totalMentions(0);
+
 IrcQmlControl::IrcQmlControl (QObject *parent, 
                               QDeclarativeView * view,
                               IrcQmlChannelGroup * channelGroup)
@@ -583,6 +585,7 @@ IrcQmlControl::AddChannel (IrcSocket * sock,
     connect (newchan, SIGNAL (WatchAlert (QString, QString)),
            this, SLOT (SeenWatchAlert (QString, QString)));
   }
+  connect (newchan, SIGNAL(seeUser()),this,SIGNAL(seeUser()));
   connect (newchan, SIGNAL (Outgoing (QString, QString)),
            this, SLOT (Outgoing (QString, QString)));
   connect (newchan, SIGNAL (OutRaw (QString, QString)),
@@ -608,6 +611,7 @@ IrcQmlControl::AddChannel (IrcSocket * sock,
   connect (newchan, SIGNAL (ShowControl()),
            this, SLOT (ShowControl()));
   EmitAddedChannel ();
+  emit seeUser();
 }
 
 void
@@ -645,6 +649,7 @@ qDebug () << " DropChannel doesn't have " << chanName;
   channelModel.setInUse (chanName, false);
   channelModel.setSelected (chanName, false);
   chanBox->deleteLater ();
+  emit seeUser();
 }
 
 void
@@ -740,6 +745,7 @@ void IrcQmlControl::NickMentioned(IrcAbstractChannel *chan)
 {
   dockedChannels->MarkActive (chan, false);
   dockedChannels->NickMentioned(chan, true);
+  totalMentions += 1;
 }
 
 void

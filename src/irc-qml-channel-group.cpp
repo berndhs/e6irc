@@ -205,6 +205,7 @@ IrcQmlChannelGroup::SetTopmostChannel (IrcAbstractChannel * topChan)
     IrcAbstractChannel *chan = channelList.at(i);
     chan->SetTopmost (chan == topChan);
   }
+  emit seeUser();
 }
 
 void

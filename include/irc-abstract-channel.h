@@ -90,6 +90,10 @@ public:
   QRectF cookedBoundingRect () const;
   void   UpdateCooked ();
 
+signals:
+
+  void seeUser();
+
 public slots:
 
   void Incoming (const QString & message, const QString & raw = QString());

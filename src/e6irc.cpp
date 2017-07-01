@@ -11,25 +11,33 @@ using namespace deliberate;
 namespace egalite
 {
 
+int E6Irc::m_mentionedCount(0);
+
 E6Irc::E6Irc (QWidget *parent, bool isPhone)
   :QDeclarativeView (parent),
    isProbablyPhone (isPhone),
-   channelGroup (0),
-   control (0)
+   m_channelGroup (0),
+   m_control (0),
+   m_iconChanger (0)
 {
-  channelGroup = new IrcQmlChannelGroup (this, this);
-  control = new IrcQmlControl (this, this, channelGroup);
+  m_channelGroup = new IrcQmlChannelGroup (this, this);
+  m_control = new IrcQmlControl (this, this, m_channelGroup);
   connect (engine(), SIGNAL (quit()), this, SLOT(allDone()));
+  m_iconChanger = new QTimer(this);
+  connect (m_iconChanger,SIGNAL(timeout()),this,SLOT(checkMention()));
+  m_iconChanger->start(15000);
+  connect (m_control,SIGNAL(seeUser()),this,SLOT(userLooking()));
+  connect (m_channelGroup,SIGNAL(seeUser()),this,SLOT(userLooking()));
 }
 
 void
 E6Irc::run (const QSize & desktopSize)
 {
   CertStore::IF().Init();
-  control->fillContext(isProbablyPhone);
+  m_control->fillContext(isProbablyPhone);
   setSource (QUrl ("qrc:///qml/Main.qml"));
-  channelGroup->Start();
-  control->Run ();
+  m_channelGroup->Start();
+  m_control->Run ();
   QObject * qmlRoot = rootObject();
   QDeclarativeItem * qmlItem = qobject_cast<QDeclarativeItem*> (qmlRoot);
   if (qmlItem) {
@@ -55,6 +63,40 @@ E6Irc::run (const QSize & desktopSize)
   objectCount = 0;
   fixCaps (qmlRoot);
   qDebug () << objectCount << " objects";
+}
+
+void
+E6Irc::setIconNames(const QString &normalName, const QString &hiName)
+{
+  qDebug() << Q_FUNC_INFO << normalName << hiName;
+  m_normalIcon = normalName;
+  m_hiIcon = hiName;
+  setWindowIcon(QIcon(m_normalIcon));
+  m_usingHiIcon = false;
+}
+
+void
+E6Irc::checkMention()
+{
+  int newMents =  m_control->mentionedCount();
+  qDebug() << Q_FUNC_INFO << newMents;
+  if (newMents != m_mentionedCount) {
+    QString curIconName =  windowIcon().name();
+    qDebug() << Q_FUNC_INFO << " change from " << curIconName;
+    if (m_usingHiIcon) {
+      setWindowIcon(QIcon(m_normalIcon));
+    } else {
+      setWindowIcon(QIcon(m_hiIcon));
+    }
+    m_usingHiIcon = !m_usingHiIcon;
+    m_mentionedCount = newMents;
+  }
+  m_control->resetMentioned();
+}
+
+void E6Irc::userLooking()
+{
+  checkMention();
 }
 
 void

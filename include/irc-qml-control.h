@@ -58,6 +58,9 @@ public:
   int   OpenCount ();
   bool  IsRunning () { return isRunning; }
 
+  int mentionedCount() { return totalMentions; }
+  void resetMentioned() { totalMentions = 0; }
+
   void  CloseCleanup ();
 
   void  InChanMsg (IrcSocket * sock,
@@ -132,6 +135,7 @@ signals:
 
   void StatusChange ();
   void WatchAlert (QString message);
+  void seeUser();
 
 private:
 
@@ -244,6 +248,8 @@ private:
 
   int                 fullHeight;
   int                 fullWidth;
+
+  static int totalMentions;
 
   friend class IrcQmlSockStatic;
   friend class IrcCtcp;

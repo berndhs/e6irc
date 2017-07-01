@@ -60,6 +60,11 @@ public:
  
   void Close ();
 
+signals:
+
+  void foundMention();
+  void seeUser();
+
 public slots:
 
 

@@ -12,7 +12,8 @@ unix: {
     desktopfile.path = $$(INSTALL_ROOT)/usr/share/applications
     INSTALLS += desktopfile
 
-    icon.files = icons/64/e6irc.png
+    icon.files += icons/64/e6irc.png
+    icon.files += icons/64/e6irc-rev.png
     icon.path = $$(INSTALL_ROOT)/usr/share/pixmaps
     INSTALLS += icon
 
