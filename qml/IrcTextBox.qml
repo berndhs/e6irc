@@ -324,9 +324,10 @@ Rectangle {
         text: qsTr("No Users")
       }
       MouseArea {
-        console.log("userListCountRect clicked");
+        id: userListMouse;
         anchors.fill: parent
         onClicked: {
+            console.log("userListCountRect clicked");
           userListBox.shortView = !userListBox.shortView
           if (userListBox.shortView) {
             userListDataRect.yScale = 0

@@ -585,6 +585,7 @@ IrcQmlControl::AddChannel (IrcSocket * sock,
     connect (newchan, SIGNAL (WatchAlert (QString, QString)),
            this, SLOT (SeenWatchAlert (QString, QString)));
   }
+  connect (newchan, SIGNAL(exitPgm()),this,SIGNAL(exitPgm()));
   connect (newchan, SIGNAL(seeUser()),this,SIGNAL(seeUser()));
   connect (newchan, SIGNAL (Outgoing (QString, QString)),
            this, SLOT (Outgoing (QString, QString)));

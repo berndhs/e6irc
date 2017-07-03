@@ -136,6 +136,7 @@ signals:
   void StatusChange ();
   void WatchAlert (QString message);
   void seeUser();
+  void exitPgm();
 
 private:
 

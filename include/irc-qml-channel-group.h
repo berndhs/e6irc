@@ -33,6 +33,7 @@
 #include <QStringList>
 #include <QList>
 #include <QTimer>
+#include <QSettings>
 
 class QCloseEvent;
 
@@ -57,6 +58,8 @@ public:
   void NickMentioned (IrcAbstractChannel *chan, bool mentioned);
   bool HaveChannel (IrcAbstractChannel * chan);
   void ShowChannel (IrcAbstractChannel * chan);
+
+  void reportChannels (QSettings & zettings);
  
   void Close ();
 
@@ -64,6 +67,7 @@ signals:
 
   void foundMention();
   void seeUser();
+  void exitPgm();
 
 public slots:
 

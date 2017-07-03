@@ -244,7 +244,7 @@ IrcAbstractChannel::CopyClip ()
 void
 IrcAbstractChannel::SetHost (const QString & hostName)
 {
-  //ui.serverLabel->setText (hostName);
+  m_host = hostName;
 }
 
 void
@@ -603,6 +603,8 @@ IrcAbstractChannel::UserSend ()
         data.remove (0, 6);
         Whois (data.trimmed());
         sendout = false;
+      } else if (data.startsWith("/exit")) {
+        emit exitPgm();
       }
       if (sendout) {
         emit Outgoing (chanName, data);
@@ -632,6 +634,8 @@ IrcAbstractChannel::AlmostRaw (const QString & data)
   } else if (prepared.startsWith ("/whois")) {
     prepared.remove (0,6);
     prepared.prepend ("WHOIS");
+  } else if (prepared.startsWith("/exit")) {
+    emit exitPgm();
   }
   emit OutRaw (sockName, prepared);
 }

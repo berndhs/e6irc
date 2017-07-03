@@ -1,5 +1,5 @@
-#ifndef IRC_CHANNEL_BOX_H
-#define IRC_CHANNEL_BOX_H
+#ifndef IRC_ABSTRACT_CHANNEL_H
+#define IRC_ABSTRACT_CHANNEL_H
 
 /****************************************************************
  * This file is distributed under the following license:
@@ -72,6 +72,7 @@ public:
   QString Name ()  { return chanName; }
   QString Sock () { return sockName; }
   QObject * QmlItem () { return qmlItem; }
+  QString Host() { return m_host; }
 
   void SetQmlItem (QObject * item);
 
@@ -93,6 +94,7 @@ public:
 signals:
 
   void seeUser();
+  void exitPgm();
 
 public slots:
 
@@ -179,6 +181,7 @@ private:
   bool                raw;
   bool                logging;
   QFile               logFile;
+  QString             m_host;
 
 public:
   static bool         someMention;

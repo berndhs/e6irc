@@ -28,6 +28,8 @@ E6Irc::E6Irc (QWidget *parent, bool isPhone)
   m_iconChanger->start(15000);
   connect (m_control,SIGNAL(seeUser()),this,SLOT(userLooking()));
   connect (m_channelGroup,SIGNAL(seeUser()),this,SLOT(userLooking()));
+  connect (m_control,SIGNAL(exitPgm()),this,SLOT(allDone()));
+  connect (m_channelGroup,SIGNAL(exitPgm()),this,SLOT(allDone()));
 }
 
 void
@@ -104,6 +106,7 @@ E6Irc::allDone ()
 {
   QSize currentSize = size();
   qDebug () << __PRETTY_FUNCTION__ << " leaving " << currentSize;
+  m_channelGroup->reportChannels (Settings());
   Settings().setValue ("sizes/e6irc",currentSize);
   Settings().sync();
   emit quit ();

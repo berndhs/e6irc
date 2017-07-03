@@ -29,6 +29,9 @@
 #include <QRectF>
 #include <QSound>
 #include <QTime>
+#include <QVariant>
+#include <QPair>
+#include <QSettings>
 
 #include "irc-abstract-channel.h"
 #include "qml-text-browser.h"
@@ -279,6 +282,25 @@ IrcQmlChannelGroup::Close ()
 void
 IrcQmlChannelGroup::ShowChannel (IrcAbstractChannel *chan)
 {
+}
+
+void
+IrcQmlChannelGroup::reportChannels(QSettings &zetts)
+{
+  qDebug() << Q_FUNC_INFO;
+  int nc = channelList.count();
+  for (int i=0; i<nc; i++) {
+    IrcAbstractChannel * chan = channelList.at(i);
+    zetts.setValue(QString("channels/%1").arg(i),
+                   QString("server:%1|channel:%2")
+                   .arg(chan->Host())
+                   .arg(chan->Name()));
+    qDebug() <<QString("channels/%1").arg(i) <<
+        QString("server:%1|channel:%2")
+        .arg(chan->Host())
+        .arg(chan->Name())
+             ;
+  }
 }
 
 void
